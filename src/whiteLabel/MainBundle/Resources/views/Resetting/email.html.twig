@@ -1,0 +1,17 @@
+{% block body_html %}
+    <p>Bonjour <b>{{ user.username }}</b>,</p>
+
+    <p>Pour lancer le processus de réinitialisation du mot de passe de votre compte Chèque Eco-Energie <b>{{  user.email }}</b>, cliquez sur le lien ci-dessous :</p>
+    <br>
+
+    <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a>
+
+    <br><br>
+    <p>Si ce lien ne fonctionne pas, copiez l'URL, puis collez-la dans une nouvelle fenêtre de navigateur.</p>
+
+    <p>Attention ! Ce lien n'est valable que 1 heure après l'envoi de ce message et à condition que vous n'ayez pas effectué une nouvelle demande de réinitialisation de mot de passe.</p>
+
+    <p>Si vous avez reçu ce message par erreur, il est possible qu'un autre utilisateur ait saisi votre adresse e-mail par inadvertance alors qu'il tentait de réinitialiser un mot de passe.</p>
+
+    <p>L'équipe Chèque Eco-Energie de la Région Normandie.</p>
+{% endblock %}

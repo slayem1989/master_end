@@ -1,0 +1,18 @@
+################################
+###     Bundles Routing      ###
+################################
+white_label_web:
+    resource: "@whiteLabelWebBundle/Resources/config/routing.yml"
+    prefix:   /
+
+white_label_main:
+    resource: "@whiteLabelMainBundle/Resources/config/routing.yml"
+    prefix:   /
+
+white_label_back_office:
+    resource: "@whiteLabelBackOfficeBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+white_label_front_office:
+    resource: "@whiteLabelFrontOfficeBundle/Resources/config/routing.yml"
+    prefix:   /member

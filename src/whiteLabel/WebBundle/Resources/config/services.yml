@@ -1,0 +1,4 @@
+services:
+#    white_label_web.example:
+#        class: whiteLabel\WebBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

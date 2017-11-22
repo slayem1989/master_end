@@ -1,0 +1,17 @@
+{# src/whiteLabel/MainBundle/Resources/views/Homepage/index.html.twig #}
+{% extends "whiteLabelMainBundle::layout_core.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/homepage/index.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block fos_user_content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
+    <h2>Index</h2>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{# src/whiteLabel/MainBundle/Resources/views/Macros/captcha.html.twig #}
+{% macro recaptcha(siteKey) %}
+<div class="text-xs-center">
+    <div class="g-recaptcha" data-sitekey="{{siteKey}}"></div>
+</div>
+{% endmacro %}

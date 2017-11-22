@@ -1,0 +1,56 @@
+{# src/whiteLabel/MainBundle/Resources/views/Resetting/reset.html.twig #}
+{% extends "whiteLabelMainBundle::layout_core.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/resetting/common.css'
+    'bundles/whitelabelmain/css/resetting/reset.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+{% block fos_user_content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
+    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+
+    <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" method="post" id="form_reset" class="fos_user_resetting_reset">
+        <div class="container-form">
+            <h1>R&eacute;initialisation du mot de passe</h1>
+
+<form>
+    <div id="pswd_info">
+        <p>Le mot de passe doit respecter les r&egrave;gles suivantes:</p>
+        <ul>
+            <li id="pswd_letter" class="invalid">Au moins <strong>une lettre minuscule</strong></li>
+            <li id="pswd_capital" class="invalid">Au moins <strong>une lettre majuscule</strong></li>
+            <li id="pswd_number" class="invalid">Au moins <strong>un chiffre</strong></li>
+            <li id="pswd_length" class="invalid">Au moins <strong>8 caract&egrave;res</strong></li>
+        </ul>
+    </div>
+
+    <div class="form-group">
+        <label for="password">{{ 'form.new_password'|trans({}, 'FOSUserBundle') }}</label>
+        <p id="result"></p>
+        <input type="password" id="password" name="fos_user_resetting_form[plainPassword][first]" required="required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+    </div>
+
+    <div class="form-group">
+        <label for="password_repeat">{{ 'form.new_password_confirmation'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="password" id="password_repeat" name="fos_user_resetting_form[plainPassword][second]" required="required" />
+    </div>
+
+    {{form_widget(form._token)}}
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-warning" name="_submit" value="{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}" />
+    </div>
+</form>
+
+        </div>
+    </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+parameters:
+    whiteLabel_backoffice.authentication.handler.login_success_handler.class: whiteLabel\BackOfficeBundle\Listener\Authentication\Handler\LoginSuccessHandler
+    whiteLabel_backoffice.access.handler.access_denied_handler.class: whiteLabel\BackOfficeBundle\Listener\Access\Handler\AccessDeniedHandler
+    whiteLabel_main.authentication.handler.login_success_handler.class: whiteLabel\MainBundle\Listener\Authentication\Handler\LoginSuccessHandler
+    whiteLabel_main.authentication.handler.login_listener_handler.class: whiteLabel\MainBundle\Listener\Authentication\Handler\LoginListener
+    whiteLabel_main.listener.exception.exception_listener.class: whiteLabel\MainBundle\Listener\Exception\ExceptionListener
+
+# Avoid connection depends on roles
+services:
+    login_success_admin_handler:
+        class:      '%whiteLabel_backoffice.authentication.handler.login_success_handler.class%'
+        arguments:  ['@router', '@security.authorization_checker', '@security.token_storage']
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+
+    access_denied_admin_handler:
+        class:      '%whiteLabel_backoffice.access.handler.access_denied_handler.class%'
+        arguments:  ['@router']
+
+    login_success_handler:
+        class:      '%whiteLabel_main.authentication.handler.login_success_handler.class%'
+        arguments:  ['@router', '@security.authorization_checker']
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+
+    whiteLabel_main.registration_listener:
+        class:      '%whiteLabel_main.authentication.handler.login_listener_handler.class%'
+        arguments:  ['@router', 'event_dispatcher']
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login', method: 'onSecurityInteractiveLogin' }
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  U S E R   S E R V I C E S
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    access_denied_user_handler:
+        class:      whiteLabel\MainBundle\Service\UserService
+        arguments:  ['@doctrine']
+
+    fos_user_registration:
+        class:      whiteLabel\MainBundle\Form\UserType
+        arguments:  ['%fos_user.model.user.class%']
+        tags:
+            - { name: form.type, alias: whitelabel_mainbundle_user }
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  E X C E P T I O N   S E R V I C E
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    exception_listener:
+        class:      '%whiteLabel_main.listener.exception.exception_listener.class%'
+        arguments:  ['@router', '@service_container']
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+            

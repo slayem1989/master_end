@@ -1,0 +1,135 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/layout_core.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    {% image
+    'bundles/whitelabelbackoffice/images/favicon/apple-touch-icon.png'
+    %}
+    <link rel="apple-touch-icon" href="{{ asset_url }}" sizes="180x180">
+    {% endimage %}
+
+    {% image
+    'bundles/whitelabelbackoffice/images/favicon/favicon-32x32.png'
+    'bundles/whitelabelbackoffice/images/favicon/favicon-16x16.png'
+    %}
+    <link rel="icon" href="{{ asset_url }}" type="image/png" sizes="32x32">
+    <link rel="icon" href="{{ asset_url }}" type="image/png" sizes="16x16">
+    {% endimage %}
+
+    {% image
+    'bundles/whitelabelbackoffice/images/favicon/safari-pinned-tab.svg'
+    %}
+    <link rel="mask-icon" href="{{ asset_url }}" color="#5bbad5">
+    {% endimage %}
+
+    {% image
+    'bundles/whitelabelbackoffice/images/favicon/manifest.json'
+    %}
+    <link rel="manifest" href="{{ asset_url }}">
+    {% endimage %}
+
+    <title>
+        {% block title %}
+            Espace Client
+        {% endblock %}
+    </title>
+
+    {% block stylesheets %}
+        {{ include('whiteLabelBackOfficeBundle:Core:stylesheets.html.twig') }}
+    {% endblock %}
+</head>
+<body>
+    {{ render(controller('whiteLabelBackOfficeBundle:Common:layoutHeader')) }}
+
+    {% set currentPath = app.request.attributes.get('_route') %}
+    {% if 'fos_admin_user_security_login' != currentPath %}
+    <div class="nav-right visible-xs">
+        <div class="buttonSidebar" id="btn">
+            <div class="bar top"></div>
+            <div class="bar middle"></div>
+            <div class="bar bottom"></div>
+        </div>
+    </div>
+
+    <nav class="navbar-fixed-top navPadding">
+        <div class="nav-right hidden-xs">
+            <div class="buttonSidebar" id="btn">
+                <div class="bar top"></div>
+                <div class="bar middle"></div>
+                <div class="bar bottom"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mainSidebar">
+    {% endif %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row padding13">
+                    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+
+                    {% block contents %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    {% if 'fos_admin_user_security_login' != currentPath %}
+    </main>
+
+    <div class="sidebar">
+        <ul class="sidebar-list">
+            {#
+            {% if is_granted('ROLE_CONSEILLER') or is_granted('ROLE_INSTRUCTEUR') or is_granted('ROLE_CLIENT') or is_granted('ROLE_AUDITEUR') or is_granted('ROLE_RENOVATEUR') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path("demande_list_all") }}" class="sidebar-anchor">Liste de toutes les demandes (Audit et Travaux)</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_INSTRUCTEUR') or is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path("demande_list_bo") }}" class="sidebar-anchor">Liste des demandes &agrave; instruire</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_CONSEILLER') or is_granted('ROLE_AUDITEUR') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path("demande_devis_list") }}" class="sidebar-anchor">Instruction Technique</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path("dateCP_list") }}" class="sidebar-anchor">Liste des Dates CP</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_INSTRUCTEUR') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path("production_list") }}" class="sidebar-anchor">Liste des productions</a></li>
+                <li class="sidebar-item"><a href="{{ path('titre_list') }}" class="sidebar-anchor">Liste des Titres</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="#" class="sidebar-anchor">&nbsp;</a></li>
+                <li class="sidebar-item"><a href="{{ path("partenaire_list", {'type': 0}) }}" class="sidebar-anchor">Liste des auditeurs</a></li>
+                <li class="sidebar-item"><a href="{{ path("partenaire_list", {'type': 1}) }}" class="sidebar-anchor">Liste des r&eacute;novateurs</a></li>
+                <li class="sidebar-item"><a href="{{ path("structure_list") }}" class="sidebar-anchor">Liste des structures</a></li>
+                <li class="sidebar-item"><a href="{{ path("EPCI_list") }}" class="sidebar-anchor">Liste des EPCI</a></li>
+                <li class="sidebar-item"><a href="{{ path("orientation_list") }}" class="sidebar-anchor">Liste des Orientations H&amp;E</a></li>
+                <li class="sidebar-item"><a href="{{ path("ANAHCritere_list") }}" class="sidebar-anchor">Liste des Crit&egrave;res ANAH</a></li>
+                <li class="sidebar-item"><a href="{{ path("banque_list") }}" class="sidebar-anchor">Liste des Banques</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_CONSEILLER') or is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="#" class="sidebar-anchor">&nbsp;</a></li>
+                <li class="sidebar-item"><a href="{{ path("conseiller_beneficiaire_list") }}" class="sidebar-anchor">Espace Conseiller</a></li>
+            {% endif %}
+	        {% if is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path('admin_list') }}" class="sidebar-anchor">Liste des Utilisateurs</a></li>
+                <li class="sidebar-item"><a href="{{ path('admin_import') }}" class="sidebar-anchor">Import de donn&eacute;es</a></li>
+            {% endif %}
+            #}
+        </ul>
+    </div>
+    {% endif %}
+
+    {#
+    {{ render(controller('whiteLabelBackOfficeBundle:Common:layoutFooter')) }}
+    #}
+
+    {% block javascripts %}
+        {{ include('whiteLabelBackOfficeBundle:Core:javascripts.html.twig') }}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+###################################
+###    FOSUser Custom Routing   ###
+###################################
+fos_admin_user_security_login:
+    path:     /bo_login
+    defaults: { _controller: whiteLabelBackOfficeBundle:Security:login }
+
+fos_admin_user_security_check:
+    path:     /bo_login_check
+    defaults: { _controller: whiteLabelBackOfficeBundle:Security:check }
+    requirements:
+        _method: POST
+
+fos_admin_user_security_logout:
+    path:     /bo_logout
+    defaults: { _controller: whiteLabelBackOfficeBundle:Security:logout }
+
+################################
+###     Homepage Routing     ###
+################################
+bo_homepage:
+    path:     /bo/homepage
+    defaults: { _controller: whiteLabelBackOfficeBundle:Homepage:index }

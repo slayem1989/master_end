@@ -1,0 +1,35 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    url_fo: dev-benef.local
+    url_bo: dev-admin.local
+
+    logout_redirection_fo: /
+    logout_redirection_bo: /
+
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: symfony
+    database_user: root
+    database_password: ~
+    # You should uncomment this if you want to use pdo_sqlite
+    #database_path: '%kernel.root_dir%/../var/data/data.sqlite'
+
+    mailer_address_from: send@example.com
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: ~
+    mailer_password: ~
+    mailer_port: false
+    mailer_encryption: ~
+    mailer_auth_mode: ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+    fos_mailer_address: test@email.email
+    fos_mailer_name: test
+
+    captcha_server_key: unique_key_from_captcha_server
+    captcha_client_key: unique_key_from_captcha_client

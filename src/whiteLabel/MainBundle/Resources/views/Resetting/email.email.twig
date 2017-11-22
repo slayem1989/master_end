@@ -1,0 +1,25 @@
+{# src/whiteLabel/MainBundle/Resources/views/Resetting/email.email.twig #}
+{% block subject %}
+    {{ 'resetting.email.subject'|trans({}, 'FOSUserBundle') }}
+{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+        Bonjour {{ user.username }},
+
+        Pour lancer le processus de réinitialisation du mot de passe de votre compte Chèque Eco-Energie {{ user.email }}, cliquez sur le lien ci-dessous :
+        {{ confirmationUrl }}
+
+        Si ce lien ne fonctionne pas, copiez l'URL, puis collez-la dans une nouvelle fenêtre de navigateur.
+
+        Attention ! Ce lien n'est valable que 1 heure après l'envoi de ce message et à condition que vous n'ayez pas effectué une nouvelle demande de réinitialisation de mot de passe.
+
+        Si vous avez reçu ce message par erreur, il est possible qu'un autre utilisateur ait saisi votre adresse e-mail par inadvertance alors qu'il tentait de réinitialiser un mot de passe.
+
+        L'équipe Chèque Eco-Energie de la Région Normandie.
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+    {{ include('whiteLabelMainBundle:Resetting:email.html.twig') }}
+{% endblock %}

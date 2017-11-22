@@ -1,0 +1,25 @@
+{% block body_html %}
+    <p>Bonjour {{ user.firstname }} {{ user.lastname }},</p>
+
+    <p>Vous venez de créer votre compte sur le site du Chèque Eco-Energie de la Région Normandie et nous vous remercions de l’intérêt que vous portez à ce dispositif d'aide à la rénovation énergétique de votre maison.</p>
+    <p>Pour l’activer et valider votre inscription, cliquez sur ce lien:</p>
+
+    <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a>
+
+    <br><br>
+    <p>Vous pourrez ensuite accéder à votre espace personnel et faire votre demande de Chèque Eco-Energie Normandie.</p>
+
+    <p>Si le lien d’activation ne fonctionne pas, copiez l’URL ci-dessous en entier, collez-la dans la zone d’adresse de votre navigateur internet et validez.</p>
+
+    <p>Attention, après réception de ce mail, vous ne disposez que de 48 heures pour activer votre compte.</p>
+
+    <p>Ce message vous a été envoyé automatiquement, merci de ne pas y répondre.</p>
+
+    <p>Vous en souhaitant bonne réception.</p>
+
+    <p>
+        Bien cordialement,<br>
+        L'équipe Chèque éco-énergie<br>
+        Région Normandie
+    </p>
+{% endblock %}

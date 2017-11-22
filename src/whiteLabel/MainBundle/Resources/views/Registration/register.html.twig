@@ -1,0 +1,88 @@
+{# src/whiteLabel/MainBundle/Resources/views/Registration/register.html.twig #}
+{% extends "whiteLabelMainBundle::layout_core.html.twig" %}
+{% import "whiteLabelMainBundle::Macros/captcha.html.twig" as captcha %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/registration/common.css'
+    'bundles/whitelabelmain/css/registration/register.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+{% block fos_user_content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
+    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+    {{ include('whiteLabelMainBundle:Macros:FOSUser_error.html.twig') }}
+
+    <form action="{{ path("fos_user_registration_register") }}" method="post" id="form_register" class="fos_user_registration_register">
+        <div class="container-form">
+            <h1>Cr&eacute;ation de compte</h1><br>
+
+<form>
+    <div class="form-group">
+        <label for="firstname" class="required">Prénom</label>
+        <input type="text" id="firstname" name="fos_user_registration_form[firstname]" required="required" maxlength="180" />
+    </div>
+
+    <div class="form-group">
+        <label for="lastname" class="required">Nom</label>
+        <input type="text" id="lastname" name="fos_user_registration_form[lastname]" required="required" maxlength="180" />
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="required">{{ 'form.email'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="email" id="email" name="fos_user_registration_form[email]" required="required" maxlength="180" pattern=".{2,}" />
+    </div>
+
+    <div class="form-group">
+        <label for="email_repeat" class="required">Confirmation {{ 'form.email'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="email" id="email_repeat" required="required" maxlength="180" pattern=".{2,}" />
+    </div>
+
+    <div class="form-group hidden">
+        <label for="username" class="required">{{ 'form.username'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="text" id="username" name="fos_user_registration_form[username]" required="required" maxlength="180" pattern=".{2,}" />
+    </div>
+
+    <div id="pswd_info">
+        <p>Le mot de passe doit respecter les r&egrave;gles suivantes:</p>
+        <ul>
+            <li id="pswd_letter" class="invalid">Au moins <strong>une lettre minuscule</strong></li>
+            <li id="pswd_capital" class="invalid">Au moins <strong>une lettre majuscule</strong></li>
+            <li id="pswd_number" class="invalid">Au moins <strong>un chiffre</strong></li>
+            <li id="pswd_length" class="invalid">Au moins <strong>8 caract&egrave;res</strong></li>
+        </ul>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="required">{{ 'form.password'|trans({}, 'FOSUserBundle') }}</label>
+        <p id="result"></p>
+        <input type="password" id="password" name="fos_user_registration_form[plainPassword][first]" required="required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+    </div>
+
+    <div class="form-group">
+        <label for="password_repeat" class="required">{{ 'form.password_confirmation'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="password" id="password_repeat" name="fos_user_registration_form[plainPassword][second]" required="required" />
+    </div>
+
+    {{form_widget(form._token)}}
+
+    <div class="form-group">
+    {{ captcha.recaptcha(recaptcha_client_key) }}
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-warning" name="_submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
+    </div>
+</form>
+
+        </div>
+    </form>
+
+</div>
+{% endblock %}
+

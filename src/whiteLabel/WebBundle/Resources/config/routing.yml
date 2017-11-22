@@ -1,0 +1,6 @@
+################################
+###     Homepage Routing     ###
+################################
+web_homepage:
+    path:     /
+    defaults: { _controller: whiteLabelWebBundle:Homepage:index }

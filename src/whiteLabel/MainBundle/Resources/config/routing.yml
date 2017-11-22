@@ -1,0 +1,82 @@
+################################
+###     FOSUser Routing      ###
+################################
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+
+######################################
+###  FOSUser REGISTRATION Routing  ###
+######################################
+fos_user_registration_register:
+    path:     /registration
+    defaults: { _controller: FOSUserBundle:Registration:register }
+    requirements:
+        _method: GET|POST
+
+fos_user_registration_check_email:
+    path:     /registration/check-email
+    defaults: { _controller: FOSUserBundle:Registration:checkEmail }
+    requirements:
+        _method: GET
+
+fos_user_registration_confirm:
+    path:     /registration/confirm/{token}
+    defaults: { _controller: FOSUserBundle:Registration:confirm }
+    requirements:
+        _method: GET
+
+fos_user_registration_confirmed:
+    path:     /registration/confirmed
+    defaults: { _controller: FOSUserBundle:Registration:confirmed }
+    requirements:
+        _method: GET
+
+######################################
+###   FOSUser RESETTING Routing    ###
+######################################
+fos_user_resetting_request:
+    path:     /resetting/request
+    defaults: { _controller: FOSUserBundle:Resetting:request }
+    requirements:
+        _method: GET
+
+fos_user_resetting_send_email:
+    path:     /resetting/send-email
+    defaults: { _controller: FOSUserBundle:Resetting:sendEmail }
+    requirements:
+        _method: GET|POST
+
+fos_user_resetting_check_email:
+    path:     /resetting/check-email
+    defaults: { _controller: FOSUserBundle:Resetting:checkEmail }
+    requirements:
+        _method: GET
+
+fos_user_resetting_reset:
+    path:     /resetting/{token}
+    defaults: { _controller: FOSUserBundle:Resetting:reset }
+    requirements:
+        _method: GET|POST
+
+################################
+###     Homepage Routing     ###
+################################
+main_homepage:
+    path:     /main/homepage
+    defaults: { _controller: whiteLabelMainBundle:Homepage:index }
