@@ -1,0 +1,139 @@
+<?php
+
+namespace blackLabel\ImportBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Import_canal
+ *
+ * @ORM\Table(name="import_canal")
+ * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_canalRepository")
+ */
+class Import_canal
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="lot_id", type="integer")
+     */
+    private $lot_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nombre_commande", type="integer")
+     */
+    private $nombre_commande;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="somme", type="string", length=255, nullable=true)
+     */
+    private $somme;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="moyenne", type="string", length=255, nullable=true)
+     */
+    private $moyenne;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="max", type="string", length=255, nullable=true)
+     */
+    private $max;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="min", type="string", length=255, nullable=true)
+     */
+    private $min;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ecart_type", type="string", length=255, nullable=true)
+     */
+    private $ecart_type;
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Import_canal
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set lotId
+     *
+     * @param integer $lotId
+     *
+     * @return Import_canal
+     */
+    public function setLotId($lotId)
+    {
+        $this->lot_id = $lotId;
+
+        return $this;
+    }
+
+    /**
+     * Get lotId
+     *
+     * @return integer
+     */
+    public function getLotId()
+    {
+        return $this->lot_id;
+    }
+}

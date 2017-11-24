@@ -84,42 +84,10 @@
 
     <div class="sidebar">
         <ul class="sidebar-list">
-            {#
-            {% if is_granted('ROLE_CONSEILLER') or is_granted('ROLE_INSTRUCTEUR') or is_granted('ROLE_CLIENT') or is_granted('ROLE_AUDITEUR') or is_granted('ROLE_RENOVATEUR') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path("demande_list_all") }}" class="sidebar-anchor">Liste de toutes les demandes (Audit et Travaux)</a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="sidebar-item"><a href="{{ path('import_homepage') }}" class="sidebar-anchor">Import Homepage</a></li>
+                <li class="sidebar-item"><a href="{{ path('import_form') }}" class="sidebar-anchor">Import de donn&eacute;es</a></li>
             {% endif %}
-            {% if is_granted('ROLE_INSTRUCTEUR') or is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path("demande_list_bo") }}" class="sidebar-anchor">Liste des demandes &agrave; instruire</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_CONSEILLER') or is_granted('ROLE_AUDITEUR') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path("demande_devis_list") }}" class="sidebar-anchor">Instruction Technique</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path("dateCP_list") }}" class="sidebar-anchor">Liste des Dates CP</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_INSTRUCTEUR') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path("production_list") }}" class="sidebar-anchor">Liste des productions</a></li>
-                <li class="sidebar-item"><a href="{{ path('titre_list') }}" class="sidebar-anchor">Liste des Titres</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="#" class="sidebar-anchor">&nbsp;</a></li>
-                <li class="sidebar-item"><a href="{{ path("partenaire_list", {'type': 0}) }}" class="sidebar-anchor">Liste des auditeurs</a></li>
-                <li class="sidebar-item"><a href="{{ path("partenaire_list", {'type': 1}) }}" class="sidebar-anchor">Liste des r&eacute;novateurs</a></li>
-                <li class="sidebar-item"><a href="{{ path("structure_list") }}" class="sidebar-anchor">Liste des structures</a></li>
-                <li class="sidebar-item"><a href="{{ path("EPCI_list") }}" class="sidebar-anchor">Liste des EPCI</a></li>
-                <li class="sidebar-item"><a href="{{ path("orientation_list") }}" class="sidebar-anchor">Liste des Orientations H&amp;E</a></li>
-                <li class="sidebar-item"><a href="{{ path("ANAHCritere_list") }}" class="sidebar-anchor">Liste des Crit&egrave;res ANAH</a></li>
-                <li class="sidebar-item"><a href="{{ path("banque_list") }}" class="sidebar-anchor">Liste des Banques</a></li>
-            {% endif %}
-            {% if is_granted('ROLE_CONSEILLER') or is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="#" class="sidebar-anchor">&nbsp;</a></li>
-                <li class="sidebar-item"><a href="{{ path("conseiller_beneficiaire_list") }}" class="sidebar-anchor">Espace Conseiller</a></li>
-            {% endif %}
-	        {% if is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path('admin_list') }}" class="sidebar-anchor">Liste des Utilisateurs</a></li>
-                <li class="sidebar-item"><a href="{{ path('admin_import') }}" class="sidebar-anchor">Import de donn&eacute;es</a></li>
-            {% endif %}
-            #}
         </ul>
     </div>
     {% endif %}

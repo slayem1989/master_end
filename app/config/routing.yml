@@ -1,6 +1,13 @@
-################################
-###     Bundles Routing      ###
-################################
+###########################################
+###     BlackLabel Bundles Routing      ###
+###########################################
+black_label_generic:
+    resource: "@blackLabelGenericBundle/Resources/config/routing.yml"
+    prefix:   /
+
+###########################################
+###     WhiteLabel Bundles Routing      ###
+###########################################
 white_label_web:
     resource: "@whiteLabelWebBundle/Resources/config/routing.yml"
     prefix:   /

@@ -1,0 +1,7 @@
+services:
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  I M P O R T   S E R V I C E S
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    black_label.service.import:
+        class: blackLabel\ImportBundle\Service\ImportService
+        arguments: ['@doctrine', '@service_container']

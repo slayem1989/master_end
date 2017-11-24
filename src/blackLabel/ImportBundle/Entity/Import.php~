@@ -1,0 +1,105 @@
+<?php
+
+namespace blackLabel\ImportBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Import
+ *
+ * @ORM\Table(name="import")
+ * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\ImportRepository")
+ * @ORM\HasLifecycleCallbacks
+ */
+class Import
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_creation", type="datetime")
+     */
+    private $dateCreation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="auteur_creation", type="string", length=255)
+     */
+    private $auteurCreation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_modif", type="datetime")
+     */
+    private $dateModif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="auteur_modif", type="string", length=255)
+     */
+    private $auteurModif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client", type="string", length=100)
+     */
+    private $client;
+
+    /**
+     * @ORM\Column(name="file_url", type="string", length=255, nullable=true)
+     */
+    private $file_url;
+
+    /**
+     * @ORM\Column(name="file_alt", type="string", length=255, nullable=true)
+     */
+    private $file_alt;
+
+    /**
+     * @Assert\File(maxSize="20480k", mimeTypes={ "text/csv", "application/csv", "text/plain" })
+     */
+    private $file;
+
+    private $tempFilename;
+
+
+
+    /**
+     * Import constructor.
+     */
+    public function __construct()
+    {
+        $this->dateCreation = new \Datetime();
+        $this->dateModif = new \Datetime();
+
+        $this->auteurCreation = $_SESSION['login']->getUsername();
+        $this->auteurModif = $_SESSION['login']->getUsername();
+    }
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+

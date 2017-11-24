@@ -1,0 +1,60 @@
+<?php
+
+namespace blackLabel\GenericBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Log
+ *
+ * @ORM\MappedSuperclass()
+ */
+class Log
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_creation", type="datetime")
+     */
+    private $dateCreation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="auteur_creation", type="string", length=255)
+     */
+    private $auteurCreation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_modif", type="datetime")
+     */
+    private $dateModif;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="auteur_modif", type="string", length=255)
+     */
+    private $auteurModif;
+
+
+
+    /**
+     * Log constructor.
+     */
+    public function __construct()
+    {
+        $this->dateCreation = new \Datetime();
+        $this->dateModif = new \Datetime();
+
+        $this->auteurCreation = $_SESSION['login']->getUsername();
+        $this->auteurModif = $_SESSION['login']->getUsername();
+    }
+
+
+
+
+}
+

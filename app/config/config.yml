@@ -75,7 +75,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: "%kernel.debug%"
-    bundles:        ['whiteLabelWebBundle', 'whiteLabelMainBundle', 'whiteLabelBackOfficeBundle', 'whiteLabelFrontOfficeBundle']
+    bundles:        ['whiteLabelWebBundle', 'whiteLabelMainBundle', 'whiteLabelBackOfficeBundle', 'whiteLabelFrontOfficeBundle', 'blackLabelImportBundle']
     filters:
         lessphp:
             file:               "%kernel.root_dir%/../vendor/oyejorge/less.php/lessc.inc.php"

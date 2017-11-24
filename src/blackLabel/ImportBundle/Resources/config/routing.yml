@@ -1,0 +1,13 @@
+################################
+###     Homepage Routing     ###
+################################
+import_homepage:
+    path:     /import/homepage
+    defaults: { _controller: blackLabelImportBundle:Homepage:index }
+
+################################
+###     Functions Routing    ###
+################################
+import_form:
+    path:     /import/form
+    defaults: { _controller: blackLabelImportBundle:Import:import }

@@ -1,3 +1,9 @@
+###########################################
+###     BlackLabel Bundles Routing      ###
+###########################################
+black_label_import:
+    resource: "@blackLabelImportBundle/Resources/config/routing.yml"
+
 ###################################
 ###    FOSUser Custom Routing   ###
 ###################################
