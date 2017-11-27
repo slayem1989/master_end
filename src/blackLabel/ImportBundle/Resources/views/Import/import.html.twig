@@ -4,7 +4,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
-    'bundles/whitelabelbackoffice/css/core/form.css'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
     'bundles/blacklabelimport/css/import/import.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-{{ include('blackLabelImportBundle:Import:inc/form_import/file.html.twig') }}
+{{ include('blackLabelImportBundle:Import:inc/form/file.html.twig') }}
 
 </div>
 {% endblock %}
@@ -27,7 +27,7 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-    'bundles/blacklabelimport/js/*.js'
+    'bundles/blacklabelimport/js/import/*.js'
     %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}

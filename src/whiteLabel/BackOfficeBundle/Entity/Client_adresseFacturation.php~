@@ -1,0 +1,77 @@
+<?php
+
+namespace whiteLabel\BackOfficeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Client_adresseFacturation
+ *
+ * @ORM\Table(name="client_adresse_facturation")
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\Client_adresseFacturationRepository")
+ */
+class Client_adresseFacturation
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="destinataire", type="string", length=255)
+     */
+    private $destinataire;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="complement1", type="string", length=255, nullable=true)
+     */
+    private $complement1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="complement2", type="string", length=255, nullable=true)
+     */
+    private $complement2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code_postal", type="string", length=20)
+     */
+    private $codePostal;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", length=255)
+     */
+    private $ville;
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

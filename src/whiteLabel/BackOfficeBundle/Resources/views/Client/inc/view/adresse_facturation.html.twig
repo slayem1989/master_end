@@ -1,0 +1,38 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Client/inc/view/adresse_facturation.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-adresseFacturation">
+    <fieldset>
+        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Adresse de facturation</legend>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Destinataire :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ client.clientAdresseFacturation.destinataire }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Compl&eacute;ment 1 :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ client.clientAdresseFacturation.complement1 }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Compl&eacute;ment 2 :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ client.clientAdresseFacturation.complement2 }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Adresse :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ client.clientAdresseFacturation.adresse }}<br>
+                {{ client.clientAdresseFacturation.codePostal ~ ', ' ~ client.clientAdresseFacturation.ville }}
+            </div>
+        </div>
+
+    </fieldset>
+
+    <hr class="bloc-limit">
+</div>

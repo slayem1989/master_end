@@ -1,6 +1,4 @@
 {# src/whiteLabel/MainBundle/Resources/views/Macros/FOSUser_error.html.twig #}
-
-{# Popup lors des erreurs du reset password ou del a création de compte #}
 {% if form is defined %}
     {% if form_errors is defined %}
         {% set error_email = form_errors(form.email) %}

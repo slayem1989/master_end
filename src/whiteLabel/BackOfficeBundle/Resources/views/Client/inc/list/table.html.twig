@@ -1,0 +1,46 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Client/inc/list/table.html.twig #}
+<table cellspacing="0" id="table_client" class="table table-striped table-bordered big_table">
+    <thead>
+        <tr>
+            <th class="breakWord col0">Nom</th>
+            <th class="breakWord col1">Interlocuteur</th>
+            <th class="breakWord col2">Adresse Facturation</th>
+            <th class="breakWord col3">Adresse Note de D&eacute;bit</th>
+            <th class="breakWord col4">Banque</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% if list is not empty %}
+        {% for item in list %}
+        <tr>
+            <td>
+                <a href="{{ path('client_read', {'clientId': item.id}) }}">
+                    {{ item.clientInformation.nom }}
+                </a>
+            </td>
+            <td>
+                {{ item.clientInformation.interlocuteur }}
+            </td>
+            <td>
+                {{ item.clientAdresseFacturation.destinataire }}
+            </td>
+            <td>
+                {{ item.clientAdresseNoteDebit.destinataire }}
+            </td>
+            <td>
+                <ul class="paddingLeft10">
+                {% for element in item.banque %}
+                    <li>{{ element.nom }}</li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th colspan="5" class="text-center">Aucun Client enregistr&eacute;.</th>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

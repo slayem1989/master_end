@@ -1,0 +1,80 @@
+<?php
+
+namespace whiteLabel\BackOfficeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Client_information
+ *
+ * @ORM\Table(name="client_information")
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\Client_informationRepository")
+ * @ORM\HasLifecycleCallbacks
+ */
+class Client_information
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="interlocuteur", type="string", length=255)
+     */
+    private $interlocuteur;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="titre_dispositif", type="string", length=255)
+     */
+    private $titreDispositif;
+
+    /**
+     * @ORM\Column(name="logo_url", type="string", length=255, nullable=true)
+     */
+    private $logo_url;
+
+    /**
+     * @ORM\Column(name="logo_alt", type="string", length=255, nullable=true)
+     */
+    private $logo_alt;
+
+    /**
+     * @Assert\File(
+     *     maxSize="5120k",
+     *     mimeTypes={ "image/jpg","image/jpeg","image/png" },
+     *     mimeTypesMessage = "Format du fichier invalide. Les formats suivants sont acceptés: .jpg, .jpeg, .png"
+     * )
+     */
+    private $logo;
+
+    private $tempFilename;
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

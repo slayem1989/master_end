@@ -1,0 +1,43 @@
+/*******************************************
+            BLOC BANQUE
+*******************************************/
+#bloc-banque {
+    text-align: right;
+}
+
+#bloc-banque .form-group, #bloc-banque .form-horizontal {
+    margin-left: 0;
+}
+
+#bloc-banque #button_addBanque {
+    margin-right: 30px;
+}
+
+#bloc-banque .wrapper_deleteBanque {
+    margin-top: 5px;
+    margin-right: 0;
+    width: 30px;
+    position: absolute;
+    right: 0;
+}
+
+
+
+.wrapper_banque:not(:first-child) {
+    margin-top: 50px;
+    vertical-align: middle;
+}
+
+.wrapper_banque {
+    margin-bottom: 15px;
+}
+
+.client_banque label {
+    padding-right: 20px;
+}
+
+.client_banque input[type=text] {
+    width: 66.66666667%;
+    margin-bottom: 10px;
+    padding-left: 15px;
+}

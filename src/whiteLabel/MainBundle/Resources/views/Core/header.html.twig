@@ -1,0 +1,74 @@
+{# src/whiteLabel/MainBundle/Resources/views/Core/header.html.twig #}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+
+        <header>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 header-container">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div id="bloc_logo">
+                        {% if 'fo' == title %}
+                            {% set pathRedirect = 'fos_user_security_login' %}
+                        {% elseif 'bo' == title %}
+                            {% set pathRedirect = 'fos_admin_user_security_login' %}
+                        {% endif %}
+
+                        <a href="{{ path(pathRedirect) }}">
+                            {% image
+                            'bundles/whitelabelmain/images/logo/logo_Total.png'
+                            %}
+                            <img src="{{ asset_url }}" alt="logo" class="header-logo" />
+                            {% endimage %}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 bloc_admin_menu text-center">
+                    <div class="main_title">
+                        {% if 'fo' == title %}
+                            {% image
+                            'bundles/whitelabelmain/images/logo/logo_espace.png'
+                            %}
+                            <img src="{{ asset_url }}" alt="logo" class="header-logo-espace" />
+                            {% endimage %}
+                        {% elseif 'bo' == title %}
+                            <span class="letter" data-letter="E">E</span>
+                            <span class="letter" data-letter="S">S</span>
+                            <span class="letter" data-letter="P">P</span>
+                            <span class="letter" data-letter="A">A</span>
+                            <span class="letter" data-letter="C">C</span>
+                            <span class="letter" data-letter="E">E</span>
+                            <span class="letter" data-letter="&nbsp;">&nbsp;</span>
+                            <span class="letter" data-letter="&nbsp;">&nbsp;</span>
+                            <span class="letter" data-letter="C">C</span>
+                            <span class="letter" data-letter="L">L</span>
+                            <span class="letter" data-letter="I">I</span>
+                            <span class="letter" data-letter="E">E</span>
+                            <span class="letter" data-letter="N">N</span>
+                            <span class="letter" data-letter="T">T</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if app.user.roles is defined %}
+                {% if 'ROLE_MEMBER' in app.user.roles and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {# if app.user.username is defined #}
+                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 header-login">
+                    Bonjour <span class="bold"> {{ app.user.username }} &nbsp;</span>
+                    &nbsp;
+                    <a href="{{ path('fos_user_security_logout') }}"
+                       class="btn btn-warning btn-sm"
+                       role="button"
+                       data-toggle="tooltip" data-placement="bottom"
+                       data-container="body"
+                       title="Se déconnecter"
+                    >
+                        <i class="glyphicon glyphicon-log-out"></i>
+                    </a>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </header>
+
+    </div>
+</nav>

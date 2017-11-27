@@ -1,0 +1,28 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Client/inc/view/banque.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-banque">
+    <fieldset>
+        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Banque</legend>
+
+        {% if client.banque is empty %}
+            <p class="text-center bold">Aucune banque cr&eacute;&eacute;e.</p>
+        {% else %}
+            {% set i = 1 %}
+            {% for item in client.banque %}
+                <div class="row">
+                    <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Banque {{ i }}:</label>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <ul class="noMmargin noPadding noPuce">
+                            <li>{{ item.nom }}</li>
+                            <li>{{ item.rib }}</li>
+                            <li>{{ item.iban }}</li>
+                            <li>{{ item.bic }}</li>
+                            <li>{{ item.titulaire }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% set i = i+ 1 %}
+            {% endfor %}
+        {% endif %}
+
+    </fieldset>
+</div>

@@ -4,7 +4,6 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
-    'bundles/whitelabelfrontoffice/css/core/form.css'
     'bundles/whitelabelfrontoffice/css/homepage/index.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />

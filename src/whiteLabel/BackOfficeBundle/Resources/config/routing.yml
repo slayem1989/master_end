@@ -22,8 +22,49 @@ fos_admin_user_security_logout:
     defaults: { _controller: whiteLabelBackOfficeBundle:Security:logout }
 
 ################################
+###       Upload Routing     ###
+################################
+upload_read:
+    path:     /document/read/{uploadId}/{typeFile}/{extension}/{typeAppel}
+    defaults: { _controller: blackLabelGenericBundle:Upload:read }
+    requirements:
+        uploadId: \d+
+        typeFile: \d+
+        extension: jpeg|jpg|png|
+        typeAppel: \d+
+
+################################
 ###     Homepage Routing     ###
 ################################
 bo_homepage:
     path:     /bo/homepage
     defaults: { _controller: whiteLabelBackOfficeBundle:Homepage:index }
+
+################################
+###      Client Routing      ###
+################################
+client_list:
+    path:     /client/list
+    defaults: { _controller: whiteLabelBackOfficeBundle:Client:list }
+
+client_create:
+    path:     /client/create
+    defaults: { _controller: whiteLabelBackOfficeBundle:Client:create }
+
+client_read:
+    path:     /client/read/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Client:read }
+    requirements:
+        clientId: \d+
+
+client_update:
+    path:     /client/update/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Client:update }
+    requirements:
+        clientId: \d+
+
+client_delete:
+    path:     /client/delete/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Client:delete }
+    requirements:
+        clientId: \d+

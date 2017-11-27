@@ -5,7 +5,6 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
-    'bundles/whitelabelmain/css/resetting/common.css'
     'bundles/whitelabelmain/css/resetting/request.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
@@ -46,4 +45,3 @@
     </form>
 </div>
 {% endblock %}
-

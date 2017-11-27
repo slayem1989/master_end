@@ -1,5 +1,4 @@
 {# src/whiteLabel/BackOfficeBundle/Resources/views/layout_core.html.twig #}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +43,7 @@
     {% endblock %}
 </head>
 <body>
-    {{ render(controller('whiteLabelBackOfficeBundle:Common:layoutHeader')) }}
+    {{ render(controller('whiteLabelBackOfficeBundle:Core:layoutHeader')) }}
 
     {% set currentPath = app.request.attributes.get('_route') %}
     {% if 'fos_admin_user_security_login' != currentPath %}
@@ -85,15 +84,15 @@
     <div class="sidebar">
         <ul class="sidebar-list">
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path('import_homepage') }}" class="sidebar-anchor">Import Homepage</a></li>
                 <li class="sidebar-item"><a href="{{ path('import_form') }}" class="sidebar-anchor">Import de donn&eacute;es</a></li>
+                <li class="sidebar-item"><a href="{{ path('client_list') }}" class="sidebar-anchor">Client</a></li>
             {% endif %}
         </ul>
     </div>
     {% endif %}
 
     {#
-    {{ render(controller('whiteLabelBackOfficeBundle:Common:layoutFooter')) }}
+    {{ render(controller('whiteLabelBackOfficeBundle:Core:layoutFooter')) }}
     #}
 
     {% block javascripts %}

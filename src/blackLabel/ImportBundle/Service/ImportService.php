@@ -60,6 +60,7 @@ class ImportService
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject($lotFile);
 
         /*
+         * Autre Méthode
         $inputFileType = PHPExcel_IOFactory::identify($lotFile);
         $objReader = PHPExcel_IOFactory::createReader($inputFileType);
         $phpExcelObject = $objReader->load($lotFile);
@@ -68,7 +69,7 @@ class ImportService
         $allSheet = $phpExcelObject->getAllSheets();
         foreach ($allSheet as $sheet) {
             /* //////////////////////////////////////////////////////////
-                                    GET CELL DATA
+                                GET CELL DATA
             /////////////////////////////////////////////////////////// */
             $valueAllData = $this->getDataBySheet($sheet);
 
@@ -90,7 +91,6 @@ class ImportService
             $formatValueCanal[] = number_format(floatval($valueCanal[3]["U"]),2);
             $formatValueCanal[] = number_format(floatval($valueCanal[4]["U"]),2);
             $formatValueCanal[] = number_format(floatval($valueCanal[5]["U"]),2);
-            dump($formatValueCanal);
 
             $objectCanal = new Import_canal();
             $objectCanal->setTitle($sheet->getTitle());
@@ -145,11 +145,11 @@ class ImportService
                 $objectCommande->setOnglet($row["X"]);
 
                 $EM->persist($objectCommande);
-                dump($objectCommande);
             }
             $EM->flush();
 
             /*
+             * Autre Méthode mais ne calcule pas les formules
             $highestRow = $sheet->getHighestRow();
             $highestDataColumn = $sheet->getHighestColumn();
 
@@ -210,10 +210,7 @@ class ImportService
             }
             $EM->flush();
             */
-
-            dump('-----------------------------------------');
         }
-        die;
     }
 
     /**
