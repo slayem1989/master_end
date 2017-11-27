@@ -24,7 +24,7 @@ class Client_banqueType extends AbstractType
         $builder
             ->add('nom',        TextType::class,    array(
                                                         'required'      => false,
-                                                        'label'         => 'Banque',
+                                                        'label'         => 'Nom',
                                                         'label_attr'    => array(
                                                             'class' => 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'
                                                         ),

@@ -10,11 +10,12 @@
 }
 
 #bloc-banque #button_addBanque {
+    margin-top: -6px;
     margin-right: 30px;
 }
 
 #bloc-banque .wrapper_deleteBanque {
-    margin-top: 5px;
+    margin-top: 0px;
     margin-right: 0;
     width: 30px;
     position: absolute;

@@ -20,6 +20,35 @@ $(document).ready(function() {
         $container.children('div').children('label').addClass('hidden');
         $container.children('div').addClass('wrapper_banque').children('div').addClass('client_banque');
 
+        var elt_banque = document.querySelectorAll('.client_banque');
+        $.each(elt_banque, function () {
+            // Nom
+            $(this).children('div:nth-child(1)').children('label').addClass('required');
+            $(this).children('div:nth-child(1)').children('input').attr('required', true);
+
+            // RIB
+            $(this).children('div:nth-child(2)').children('label').addClass('required');
+            $(this).children('div:nth-child(2)').children('input').attr('required', true);
+
+            // IBAN
+            $(this).children('div:nth-child(3)').children('label').addClass('required');
+            $(this).children('div:nth-child(3)').children('input').attr('required', true);
+
+            // BIC
+            $(this).children('div:nth-child(4)').children('label').addClass('required');
+            $(this).children('div:nth-child(4)').children('input').attr('required', true);
+
+            // Titulaire
+            $(this).children('div:nth-child(5)').children('label').addClass('required');
+            $(this).children('div:nth-child(5)').children('input').attr('required', true);
+        });
+
+        var elt_iban_init = document.querySelectorAll('.control_iban');
+        controlIBAN(elt_iban_init);
+        $('.control_iban').on('onchange blur keyup load', function () {
+            controlIBAN(elt_iban_init);
+        });
+
         e.preventDefault();
         return false;
     });
@@ -83,12 +112,6 @@ $(document).ready(function() {
 
         // On ajoute le prototype modifié à la fin de la balise <div>
         $container.append($prototype);
-
-        var elt_iban_init = document.querySelectorAll('.control_iban');
-        controlIBAN(elt_iban_init);
-        $('.control_iban').on('onchange blur keyup load', function () {
-            controlIBAN(elt_iban_init);
-        });
 
         index++;
     }
@@ -183,5 +206,29 @@ $(document).ready(function() {
     controlIBAN(elt_iban_init);
     $('.control_iban').on('onchange blur keyup load', function () {
         controlIBAN(elt_iban_init);
+    });
+
+    // On passe les champs en Requis au chargement de la page
+    var elt_banque = document.querySelectorAll('.client_banque');
+    $.each(elt_banque, function () {
+        // Nom
+        $(this).children('div:nth-child(1)').children('label').addClass('required');
+        $(this).children('div:nth-child(1)').children('input').attr('required', true);
+
+        // RIB
+        $(this).children('div:nth-child(2)').children('label').addClass('required');
+        $(this).children('div:nth-child(2)').children('input').attr('required', true);
+
+        // IBAN
+        $(this).children('div:nth-child(3)').children('label').addClass('required');
+        $(this).children('div:nth-child(3)').children('input').attr('required', true);
+
+        // BIC
+        $(this).children('div:nth-child(4)').children('label').addClass('required');
+        $(this).children('div:nth-child(4)').children('input').attr('required', true);
+
+        // Titulaire
+        $(this).children('div:nth-child(5)').children('label').addClass('required');
+        $(this).children('div:nth-child(5)').children('input').attr('required', true);
     });
 });
