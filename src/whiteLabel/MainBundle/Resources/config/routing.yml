@@ -80,3 +80,32 @@ fos_user_resetting_reset:
 main_homepage:
     path:     /main/homepage
     defaults: { _controller: whiteLabelMainBundle:Homepage:index }
+
+################################
+###       User Routing       ###
+################################
+user_list:
+    path:     /user/list
+    defaults: { _controller: whiteLabelMainBundle:User:list }
+
+user_create:
+    path:     /user/create
+    defaults: { _controller: whiteLabelMainBundle:User:create }
+
+user_read:
+    path:     /user/read/{userId}
+    defaults: { _controller: whiteLabelMainBundle:User:read }
+    requirements:
+        userId: \d+
+
+user_update:
+    path:     /user/update/{userId}
+    defaults: { _controller: whiteLabelMainBundle:User:update }
+    requirements:
+        userId: \d+
+
+user_delete:
+    path:     /user/delete/{userId}
+    defaults: { _controller: whiteLabelMainBundle:User:delete }
+    requirements:
+        userId: \d+

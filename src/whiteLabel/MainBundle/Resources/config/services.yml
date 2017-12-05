@@ -32,9 +32,9 @@ services:
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #  U S E R   S E R V I C E S
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    access_denied_user_handler:
+    white_label.service.user:
         class:      whiteLabel\MainBundle\Service\UserService
-        arguments:  ['@doctrine']
+        arguments:  ['@doctrine', '@mailer', '@twig', '@router', '@service_container', '@security.role_hierarchy']
 
     fos_user_registration:
         class:      whiteLabel\MainBundle\Form\UserType
@@ -43,7 +43,7 @@ services:
             - { name: form.type, alias: whitelabel_mainbundle_user }
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  E X C E P T I O N   S E R V I C E
+    #  E X C E P T I O N   S E R V I C E S
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     exception_listener:
         class:      '%whiteLabel_main.listener.exception.exception_listener.class%'

@@ -1,0 +1,37 @@
+{# src/whiteLabel/MainBundle/Resources/views/User/inc/view/identification.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-identification">
+    <fieldset>
+        <legend><span class="legend-icon"></span>&nbsp;Identification</legend>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Identifiant :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ user.username }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Pr&eacute;nom :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ user.firstname ? user.firstname : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Nom :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ user.lastname ? user.lastname : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Email :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ user.email }}
+            </div>
+        </div>
+
+    </fieldset>
+
+    <hr class="bloc-limit">
+</div>

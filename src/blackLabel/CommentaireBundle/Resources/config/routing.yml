@@ -1,0 +1,11 @@
+################################
+###     Homepage Routing     ###
+################################
+commentnaire_homepage:
+    path:     /commentaire/homepage
+    defaults: { _controller: blackLabelCommentaireBundle:Homepage:index }
+
+################################
+###     Function Routing     ###
+################################
+

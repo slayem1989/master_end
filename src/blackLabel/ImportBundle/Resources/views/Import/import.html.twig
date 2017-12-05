@@ -1,7 +1,7 @@
 {# src/blackLabel/ImportBundle/Resources/views/Import/import.html.twig #}
 {% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelbackoffice/css/core/form/*.css'
@@ -11,12 +11,11 @@
     {% endstylesheets %}
 {% endblock %}
 
-{% block contents %}
-<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 hidden" id="content-wrapper">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div id="container-title">
-            <h2>Importer des donn&eacute;es</h2>
-        </div>
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
+        <h2>Importer des donn&eacute;es</h2>
+        {% include 'whiteLabelBackOfficeBundle:Lot:inc/back.html.twig' with {'clientId': clientId} %}
     </div>
 
 {{ include('blackLabelImportBundle:Import:inc/form/file.html.twig') }}
@@ -24,7 +23,7 @@
 </div>
 {% endblock %}
 
-{% block javascripts %}
+{% block javascript %}
     {{ parent() }}
     {% javascripts
     'bundles/blacklabelimport/js/import/*.js'

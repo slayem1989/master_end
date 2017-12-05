@@ -10,4 +10,26 @@ namespace whiteLabel\BackOfficeBundle\Repository;
  */
 class Client_banqueRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $clientId
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findByClient($clientId)
+    {
+        $query = $this
+            ->createQueryBuilder('cl')
+            ->select('cl')
+            ->join('cl.client', 'client_')
+            ->addSelect('client_')
+        ;
+
+        $query = $query
+            ->where('client_.id = :clientId')
+            ->setParameters(array(
+                'clientId' => $clientId
+            ))
+        ;
+
+        return $query;
+    }
 }

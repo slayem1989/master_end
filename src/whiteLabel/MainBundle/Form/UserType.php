@@ -40,21 +40,17 @@ class UserType extends BaseType
                                                             )
                                                         ))
             ->add('roles',      ChoiceType::class,      array(
-                                                            'required' => false,
-                                                            'property_path'=> 'enabled',
+                                                            'required'      => true,
+                                                            'property_path' => 'enabled',
                                                             'empty_data'    => null,
                                                             'multiple'      => false,
                                                             'placeholder'   => 'Choisir un profil',
                                                             'choices' => array(
-                                                                'Administrateur' => 'ROLE_ADMIN',
-                                                                'Auditeur'       => 'ROLE_AUDITEUR',
-                                                                'Bénéficiaire'   => 'ROLE_MEMBER',
-                                                                'Client'         => 'ROLE_CLIENT',
-                                                                'Conseiller'     => 'ROLE_CONSEILLER',
-                                                                'Instructeur'    => 'ROLE_INSTRUCTEUR',
-                                                                'Rénovateur'     => 'ROLE_RENOVATEUR'
+                                                                'Administrateur'    => 'ROLE_ADMIN',
+                                                                'Coordinateur'      => 'ROLE_COORDINATEUR',
+                                                                'Gestionnaire'      => 'ROLE_GESTIONNAIRE'
                                                             ),
-                                                            'data'    => $this->traitChoices[0]
+                                                            'data'          => $this->traitChoices[0]
                                                         ))
             ->add('valider',    SubmitType::class)
         ;

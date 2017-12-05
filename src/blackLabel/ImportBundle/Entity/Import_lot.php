@@ -4,9 +4,11 @@ namespace blackLabel\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use blackLabel\GenericBundle\Entity\Log;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use blackLabel\GenericBundle\Entity\Log;
+use whiteLabel\BackOfficeBundle\Entity\Statut;
 
 /**
  * Import_lot
@@ -27,11 +29,32 @@ class Import_lot extends Log
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="client", type="string", length=100)
+     * @ORM\Column(name="numero", type="integer", nullable=true)
      */
-    private $client;
+    private $numero;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut_id", type="integer")
+     */
+    private $statut_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="client_id", type="integer")
+     */
+    private $client_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="banque_id", type="integer")
+     */
+    private $banque_id;
 
     /**
      * @ORM\Column(name="file_url", type="string", length=255)
@@ -53,6 +76,18 @@ class Import_lot extends Log
 
 
     /**
+     * Import_lot constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->statut_id = Statut::STATUS_1;
+    }
+
+
+
+    /**
      * Get id
      *
      * @return int
@@ -63,27 +98,99 @@ class Import_lot extends Log
     }
 
     /**
-     * Set client
+     * Set numero
      *
-     * @param string $client
+     * @param integer $numero
      *
      * @return Import_lot
      */
-    public function setClient($client)
+    public function setNumero($numero)
     {
-        $this->client = $client;
+        $this->numero = $numero;
 
         return $this;
     }
 
     /**
-     * Get client
+     * Get numero
      *
-     * @return string
+     * @return integer
      */
-    public function getClient()
+    public function getNumero()
     {
-        return $this->client;
+        return $this->numero;
+    }
+
+    /**
+     * Set statutId
+     *
+     * @param integer $statutId
+     *
+     * @return Import_lot
+     */
+    public function setStatutId($statutId)
+    {
+        $this->statut_id = $statutId;
+
+        return $this;
+    }
+
+    /**
+     * Get statutId
+     *
+     * @return integer
+     */
+    public function getStatutId()
+    {
+        return $this->statut_id;
+    }
+
+    /**
+     * Set clientId
+     *
+     * @param integer $clientId
+     *
+     * @return Import_lot
+     */
+    public function setClientId($clientId)
+    {
+        $this->client_id = $clientId;
+
+        return $this;
+    }
+
+    /**
+     * Get clientId
+     *
+     * @return integer
+     */
+    public function getClientId()
+    {
+        return $this->client_id;
+    }
+
+    /**
+     * Set banqueId
+     *
+     * @param integer $banqueId
+     *
+     * @return Import_lot
+     */
+    public function setBanqueId($banqueId)
+    {
+        $this->banque_id = $banqueId;
+
+        return $this;
+    }
+
+    /**
+     * Get banqueId
+     *
+     * @return integer
+     */
+    public function getBanqueId()
+    {
+        return $this->banque_id;
     }
 
     /**
@@ -197,9 +304,8 @@ class Import_lot extends Log
         }
 
         // Si on avait un ancien fichier, on le supprime
-        $clientKey = explode(' | ', $this->getClient());
         if (null !== $this->tempFilename) {
-            $oldFile = $this->file_getUploadRootDir() . '/' . $this->id . '_' . $clientKey[1] . '.' . $this->tempFilename;
+            $oldFile = $this->file_getUploadRootDir() . '/' . $this->id . '_import.' . $this->tempFilename;
             if (file_exists($oldFile)) {
                 unlink($oldFile);
             }
@@ -208,7 +314,7 @@ class Import_lot extends Log
         // On déplace le fichier envoyé dans le répertoire de notre choix
         $this->file->move(
             $this->file_getUploadRootDir(), // Le répertoire de destination
-            $this->id . '_' . $clientKey[1] . '.' . $this->file_url   // Le nom du fichier à créer, ici « id.extension »
+            $this->id . '_import.' . $this->file_url   // Le nom du fichier à créer, ici « id.extension »
         );
     }
 
@@ -218,10 +324,8 @@ class Import_lot extends Log
     public function file_preRemoveUpload()
     {
         // On sauvegarde temporairement le nom du fichier, car il dépend de l'id
-        $clientKey = explode(' | ', $this->getClient());
-        $this->tempFilename = $this->file_getUploadRootDir() . '/' . $this->id . '_' . $clientKey[1] . '.' . $this->file_url;
+        $this->tempFilename = $this->file_getUploadRootDir() . '/' . $this->id . '_import.' . $this->file_url;
     }
-
 
     /**
      * @ORM\PostRemove()
@@ -258,7 +362,6 @@ class Import_lot extends Log
      */
     public function file_getWebPath()
     {
-        $clientKey = explode(' | ', $this->getClient());
-        return $this->file_getUploadDir() . '/' . $this->getId() . '_' . $clientKey[1] . '.'.$this->getFileUrl();
+        return $this->file_getUploadDir() . '/' . $this->getId() . '_import.'.$this->getFileUrl();
     }
 }

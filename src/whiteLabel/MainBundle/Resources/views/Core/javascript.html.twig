@@ -1,0 +1,13 @@
+{# src/whiteLabel/MainBundle/Resources/views/Core/javascript.html.twig #}
+{% block javascript %}
+    {% javascripts filter='jsqueeze'
+    'js/jquery.min.js'
+    'js/jquery_ui.min.js'
+    'js/bootstrap.js'
+    'bundles/whitelabelmain/js/core/basic/*.js'
+    'bundles/whitelabelmain/js/core/nav/*.js'
+    'https://www.google.com/recaptcha/api.js?hl=fr'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

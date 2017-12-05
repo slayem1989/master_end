@@ -1,25 +1,37 @@
 {# src/blackLabel/ImportBundle/Resources/views/Import/inc/form/file.html.twig #}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-form">
     <fieldset>
-        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;A compl&eacute;ter</legend>
+        <legend><span class="legend-icon"></span>&nbsp;A compl&eacute;ter</legend>
 
 {{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'form_importData'}}) }}
 
 {{ form_errors(form) }}
 
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 wrapper_error">{{ form_errors(form.client) }}</div>
-<div class="form-group">
-    {{ form_label(form.client, "Client", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.client_id) }}</div>
+<div class="form-group hidden">
+    {{ form_label(form.client_id, "Client", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 custom-select">
-        {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        {{ form_widget(form.client_id, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
 
-<ul id="custom-control_import" class="list_error"></ul>
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 wrapper_error">{{ form_errors(form.file) }}</div>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.banque_id) }}</div>
+<div class="form-group">
+    {{ form_label(form.banque_id, "Nom de la banque", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 custom-select">
+        {{ form_widget(form.banque_id, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">
+    {{ form_errors(form.file) }}
+    <ul id="file-error"></ul>
+</div>
 <div class="form-group">
     {{ form_label(form.file, "Fichier de données:", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
@@ -28,7 +40,7 @@
     </div>
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-submit">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="container_submit">
     <div class="form-group">
         {{ form_widget(form.valider, {'attr': {'class': 'col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xs-offset-0 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 btn btn-success'}}) }}
     </div>

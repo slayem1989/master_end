@@ -1,59 +1,30 @@
 {# src/whiteLabel/FrontOfficeBundle/Resources/views/Core/header.html.twig #}
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-
         <header>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 header-container">
-                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
-                    <div id="bloc_logo">
-                        <a href="{{ path('fo_homepage') }}">
-                            {% image
-                            'bundles/whitelabelfrontoffice/images/logo/logo_Total.png'
-                            %}
-                            <img src="{{ asset_url }}" alt="logo" class="header-logo" />
-                            {% endimage %}
-                        </a>
-                    </div>
-                </div>
 
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 bloc_admin_menu text-center">
-                    <div class="main_title">
-                        {% image
-                        'bundles/whitelabelfrontoffice/images/logo/logo_espace.png'
-                        %}
-                        <img src="{{ asset_url }}" alt="logo" class="header-logo-espace" />
-                        {% endimage %}
-                    </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" id="header_logo">
+                <a href="{{ path('fo_homepage') }}">
+                    {% image
+                    'bundles/whitelabelfrontoffice/images/logo/up.jpg'
+                    %}
+                    <img src="{{ asset_url }}" alt="logo up" id="header_image_logo" />
+                    {% endimage %}
+                </a>
+            </div>
 
-                {% if app.user.roles is defined %}
-                {% if 'ROLE_MEMBER' in app.user.roles and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {# if app.user.username is defined #}
-                    {% block admin_menu %}
-                        {# include('whiteLabelFrontOfficeBundle:Core:menu.html.twig', {'path': path}) #}
-                    {% endblock %}
-                {% endif %}
-                {% endif %}
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
+                {% image
+                'bundles/whitelabelfrontoffice/images/logo/logo_espace.png'
+                %}
+                <img src="{{ asset_url }}" alt="logo client" id="header_image_logo_client" />
+                {% endimage %}
+            </div>
 
-                </div>
-
-                {% if app.user.roles is defined %}
-                {% if 'ROLE_MEMBER' in app.user.roles and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {# if app.user.username is defined #}
-                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 header-login">
-                    Bonjour
-                    <span class="bold">
-                        {#
-                        <a href="{{ path('fos_user_profile_show') }}"
-                           class="no-underline"
-                           data-toggle="tooltip"
-                           data-placement="bottom"
-                           data-container="body"
-                           title="Voir son profil"
-                        >{{ app.user.username }}
-                        </a>
-                        #}
-                        {{ app.user.username }}
-                    </span>
+            {% if app.user.roles is defined %}
+            {% if 'ROLE_MEMBER' in app.user.roles and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
+                    <span class="textBold">{{ app.user.username }}</span>
                     &nbsp;
                     <a href="{{ path('fos_user_security_logout') }}"
                        class="btn btn-warning btn-xs"
@@ -66,10 +37,9 @@
                         <i class="glyphicon glyphicon-log-out"></i>
                     </a>
                 </div>
-                {% endif %}
-                {% endif %}
-            </div>
-        </header>
+            {% endif %}
+            {% endif %}
 
+        </header>
     </div>
 </nav>

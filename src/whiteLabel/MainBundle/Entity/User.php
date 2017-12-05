@@ -88,26 +88,26 @@ class User extends BaseUser
     protected $groups;
 
 
-    
+
     /**
-     * Constructor
+     * User constructor.
      */
     public function __construct()
     {
         parent::__construct();
         $this->groups = new ArrayCollection();
-        $this->roles = array('ROLE_MEMBER');
 
         $this->dateCreation = new \Datetime();
         $this->dateModif    = new \Datetime();
         $this->dateInactif  = new \Datetime();
 
-        if (array_key_exists('login', $_SESSION) && $_SESSION['login']) {
+        if ($_SESSION && array_key_exists('login', $_SESSION) && $_SESSION['login']) {
             $this->auteurCreation = $_SESSION['login']->getUsername();
             $this->auteurModif    = $_SESSION['login']->getUsername();
         } else {
-            $this->auteurCreation = "Bénéficiaire";
-            $this->auteurModif    = "Bénéficiaire";
+            $this->roles = array('ROLE_MEMBER');
+            $this->auteurCreation = "BY REGISTRATION FORM";
+            $this->auteurModif    = "BY REGISTRATION FORM";
         }
     }
 

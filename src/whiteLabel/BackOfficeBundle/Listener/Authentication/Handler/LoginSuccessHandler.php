@@ -54,7 +54,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
             in_array('ROLE_SUPER_ADMIN', $rolesTab, true)
         ) {
             // S'il s'agit d'un admin ou d'un super admin on le redirige vers le backoffice
-            $response = new RedirectResponse($this->router->generate('bo_homepage'));
+            $response = new RedirectResponse($this->router->generate('bo_dashboard'));
         } elseif (in_array('ROLE_MEMBER', $rolesTab, true)) {
             // sinon, s'il s'agit d'un membre on le redirige vers le frontoffice
             $request->getSession()->getFlashBag()->add(

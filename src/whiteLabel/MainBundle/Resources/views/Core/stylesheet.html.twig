@@ -1,0 +1,9 @@
+{# src/whiteLabel/MainBundle/Resources/views/Core/stylesheet.html.twig #}
+{% block stylesheet %}
+    {% stylesheets filter='cssrewrite, ?scssphp'
+    'css/bootstrap.css'
+    'bundles/whitelabelmain/css/core/basic/*.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}

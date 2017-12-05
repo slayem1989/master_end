@@ -1,0 +1,23 @@
+{# src/whiteLabel/MainBundle/Resources/views/User/inc/view/profil.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-profil">
+    <fieldset>
+        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Profil</legend>
+
+        {% set roleArray = {
+        'ROLE_SUPER_ADMIN': 'Super Administrateur',
+        'ROLE_ADMIN': 'Administrateur',
+        'ROLE_COORDINATEUR': 'Coordinateur',
+        'ROLE_GESTIONNAIRE': 'Gestionnaire',
+        'ROLE_MEMBER': 'Bénéficiaire',
+        '': '-'
+        } %}
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">R&ocirc;le :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ roleArray[user.roles[0]] }}
+            </div>
+        </div>
+
+    </fieldset>
+</div>

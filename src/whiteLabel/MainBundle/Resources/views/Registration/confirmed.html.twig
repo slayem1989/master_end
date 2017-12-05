@@ -1,9 +1,10 @@
 {# src/whiteLabel/MainBundle/Resources/views/Registration/confirmed.html.twig #}
 {% extends "whiteLabelMainBundle::layout_core.html.twig" %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/core/form/*.css'
     'bundles/whitelabelmain/css/registration/confirmed.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
@@ -12,21 +13,17 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 {% block fos_user_content %}
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="container-title">
-        <h2>Cr&eacute;ation de compte</h2>
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 hidden" id="mainWrapper">
+
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-2 marginBottom20 accueilStyleBloc" id="bloc_text">
+        <h2 class="UPColor textUnderline textCenter marginBottom20">Cr&eacute;ation de compte</h2>
+
+        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+
+        <div class="col-xs-12 col-sm-12 textCenter" id="container_submit">
+            <a href="{{ path('web_homepage') }}" class="btn btn-warning">Retour &agrave; l'accueil</a>
+        </div>
     </div>
 
-    {#
-    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
-    #}
-
-    <p class="text-center">{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
-
-    <br><br>
-
-    <div class="col-xs-12 col-sm-12 container-submit">
-        <a href="{{ path('web_homepage') }}" class="btn btn-warning">Retour &agrave; l'accueil</a>
-    </div>
 </div>
 {% endblock %}

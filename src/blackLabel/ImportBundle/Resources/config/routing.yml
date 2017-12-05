@@ -6,8 +6,10 @@ import_homepage:
     defaults: { _controller: blackLabelImportBundle:Homepage:index }
 
 ################################
-###     Functions Routing    ###
+###     Function Routing     ###
 ################################
 import_form:
-    path:     /import/form
+    path:     /import/form/{clientId}
     defaults: { _controller: blackLabelImportBundle:Import:import }
+    requirements:
+        clientId: \d+

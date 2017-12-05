@@ -1,58 +1,57 @@
+/*******************************************
+                BLOC NAVBAR
+*******************************************/
 .navbar {
-    background: #EFEFEF !important;
-    min-height: 30px !important;
+    background: #efefef !important;
+    height: 60px;
+    min-height: 60px !important;
 }
-
+.navbar::after {
+    border-bottom: 3px solid #ff8500;
+    content: '';
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
 .navbar-default {
     border: 0 !important;
 }
-
-header, .header-container {
-    height: 50px;
+header {
+    height: 60px;
     width: 100%;
-}
-
-.header-container::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    border-bottom: 3px solid #e9661f;
-}
-
-#bloc_logo {
-    position: absolute;
-    width: 230px;
     z-index: 2;
 }
-.header-logo {
+
+/*******************************************
+                BLOC LOGO
+*******************************************/
+#header_logo {
+    z-index: 3;
+}
+#header_logo #header_image_logo {
+    height: 80px;
     margin: 0 15px;
-    width: 120px;
+    width: 100px;
 }
 
-.header-login {
-    padding: 12px 10px 10px 10px;
-    text-align: right;
-    z-index: 2;
+/*******************************************
+                BLOC CLIENT
+*******************************************/
+#header_client {
+    z-index: 3;
+}
+#header_client #header_image_logo_client {
+    height: 50px;
+    margin: 5px 15px 0 15px;
 }
 
-header a.no-underline {
-    color: #000;
-}
-
-
-
-div.main_title{
-    width: 100%;
-    margin: 5px auto 0;
-    height: 0;
-    max-height: 0;
-    text-align: center;
-    cursor: default;
-}
-.header-logo-espace {
-    width: 280px;
+/*******************************************
+                BLOC LOGIN
+*******************************************/
+#header_login {
+    padding: 20px 10px 10px 10px;
+    z-index: 3;
 }

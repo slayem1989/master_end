@@ -1,0 +1,45 @@
+{# src/whiteLabel/MainBundle/Resources/views/User/list.html.twig #}
+{% extends "whiteLabelMainBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/core/list/*.css'
+    'bundles/whitelabelmain/css/user/list.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block fos_user_content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 paddingBottom15 hidden accueilStyleBloc" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginBottom40 noPadding" id="bloc_title">
+        <h2>Liste des Utilisateurs</h2>
+        <a href="{{ path('user_create') }}"
+           class="btn btn-primary btn-xs container_action"
+           id="action_create"
+           role="button"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           data-container="body"
+           title="Créer un nouvel utilisateur"
+        >
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+    </div>
+
+{{ include('whiteLabelMainBundle:User:inc/list/table.html.twig') }}
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/whitelabelmain/js/user/list/*.js'
+    'bundles/whitelabelmain/js/core/list/jquery_datatable.js'
+    'bundles/whitelabelmain/js/core/list/bootstrap_datatable.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

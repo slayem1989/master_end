@@ -5,3 +5,12 @@ services:
     black_label.service.import:
         class: blackLabel\ImportBundle\Service\ImportService
         arguments: ['@doctrine', '@service_container']
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  F O R M S   E N T I T Y   M A N A G E R
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    entityManager.formType.import:
+        class: blackLabel\ImportBundle\Form\Import_lotType
+        tags:
+            - { name: form.type, alias: form_em }
+        arguments: ['@doctrine']

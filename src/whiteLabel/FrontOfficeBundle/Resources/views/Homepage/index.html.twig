@@ -1,7 +1,7 @@
 {# src/whiteLabel/FrontOfficeBundle/Resources/views/Homepage/index.html.twig #}
 {% extends "whiteLabelFrontOfficeBundle::layout_core.html.twig" %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelfrontoffice/css/homepage/index.css'
@@ -10,8 +10,8 @@
     {% endstylesheets %}
 {% endblock %}
 
-{% block contents %}
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
     <h2>FO DASHBOARD</h2>
 </div>
 {% endblock %}

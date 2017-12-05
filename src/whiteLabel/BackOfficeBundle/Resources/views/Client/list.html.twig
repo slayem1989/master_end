@@ -1,7 +1,7 @@
 {# src/whiteLabel/BackOfficeBundle/Resources/views/Client/list.html.twig #}
-{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+{% extends "whiteLabelBackOfficeBundle::layout_accueil.html.twig" %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelbackoffice/css/core/list/*.css'
@@ -11,23 +11,21 @@
     {% endstylesheets %}
 {% endblock %}
 
-{% block contents %}
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 hidden" id="content-wrapper">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginBottom40 noPadding">
-        <div id="container-title">
-            <h2>Liste des Clients</h2>
-            <a href="{{ path('client_create') }}"
-               class="btn btn-primary btn-xs"
-               id="button_create"
-               role="button"
-               data-toggle="tooltip"
-               data-placement="bottom"
-               data-container="body"
-               title="Créer un nouveau Client"
-            >
-                <i class="glyphicon glyphicon-plus"></i>
-            </a>
-        </div>
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 paddingBottom15 hidden accueilStyleBloc" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginBottom40 noPadding" id="bloc_title">
+        <h2>Liste des Clients</h2>
+        <a href="{{ path('client_create') }}"
+           class="btn btn-primary btn-xs container_action"
+           id="action_create"
+           role="button"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           data-container="body"
+           title="Créer un nouveau Client"
+        >
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
     </div>
 
 {{ include('whiteLabelBackOfficeBundle:Client:inc/list/table.html.twig') }}
@@ -35,7 +33,7 @@
 </div>
 {% endblock %}
 
-{% block javascripts %}
+{% block javascript %}
     {{ parent() }}
     {% javascripts
     'bundles/whitelabelbackoffice/js/client/list/*.js'

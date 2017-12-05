@@ -1,0 +1,17 @@
+/*******************************************
+            BLOC TABLE
+*******************************************/
+.col0 { width: 5% }
+.col1 { width: 15px }
+.col2 { width: 10% }
+.col3 { width: 9px }
+.col4 { width: 10% }
+.col5 { width: 20% }
+.col6 { width: 10% }
+.col7 { width: 10% }
+.col8 { width: 7% }
+
+th[class="with_search"] input {
+    width: 100%;
+    font-size: 11px;
+}

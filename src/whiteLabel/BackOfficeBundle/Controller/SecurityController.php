@@ -24,7 +24,7 @@ class SecurityController extends BaseSecurityController
     public function loginAction(Request $request)
     {
         if (array_key_exists('login', $_SESSION) && $_SESSION['login']) {
-            $url = $this->generateUrl('bo_homepage');
+            $url = $this->generateUrl('bo_dashboard');
             $response = new RedirectResponse($url);
             return $response;
         }

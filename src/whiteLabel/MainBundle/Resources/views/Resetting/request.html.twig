@@ -2,9 +2,10 @@
 {% extends "whiteLabelMainBundle::layout_core.html.twig" %}
 {% import "whiteLabelMainBundle::Macros/captcha.html.twig" as captcha %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/core/form/*.css'
     'bundles/whitelabelmain/css/resetting/request.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
@@ -12,21 +13,21 @@
 {% endblock %}
 
 {% block fos_user_content %}
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="container-title">
-        <h2>R&eacute;initialisation du mot de passe</h2>
-    </div>
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 hidden" id="mainWrapper">
 
-    <p>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-2 marginBottom20 accueilStyleBloc" id="bloc_text">
+    <h2 class="UPColor textUnderline textCenter marginBottom20">R&eacute;initialisation du mot de passe</h2>
+
+    <p class="marginBottom20">
         Vous avez oubli&eacute; votre mot de passe ? Pas de panique !
         Indiquez-nous votre {{ string }} et nous vous renverrons un nouveau mot de passe par email.
         Pensez &agrave; regarder dans votre dossier Spam si vous ne voyez pas arriver notre email.
     </p>
+</div>
 
-    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+<form action="{{ path("fos_user_resetting_send_email") }}" method="post">
+    <div class="accueilStyleBloc" id="bloc_form">
 
-    <form action="{{ path("fos_user_resetting_send_email") }}" method="post">
-    <div class="container-form">
         <form class="fos_user_resetting_request">
             <div class="form-group">
                 <label for="username" class="required">{{ string|capitalize }}</label>
@@ -37,11 +38,13 @@
             {{ captcha.recaptcha(recaptcha_client_key) }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="container_submit">
                 <input type="submit" class="btn btn-warning" id="_submit" name="_submit" value="{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}" />
             </div>
         </form>
+
     </div>
-    </form>
+</form>
+
 </div>
 {% endblock %}

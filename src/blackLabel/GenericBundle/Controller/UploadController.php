@@ -14,21 +14,21 @@ class UploadController extends Controller
 {
     /**
      * @param $uploadId
-     * @param $typeFile
+     * @param $fileKey
      * @param $extension
-     * @param $typeAppel
+     * @param $folderKey
      * @return BinaryFileResponse
      */
-    public function readAction($uploadId, $typeFile, $extension, $typeAppel)
+    public function readAction($uploadId, $fileKey, $extension, $folderKey)
     {
-        switch ($typeAppel) {
+        switch ($folderKey) {
             case 0: $folder = 'client/logo/';
                 break;
             default: $folder = '';
                 break;
         }
 
-        switch ($typeFile) {
+        switch ($fileKey) {
             case 0: $type = '_logo.';
                 break;
             default: $type = '';

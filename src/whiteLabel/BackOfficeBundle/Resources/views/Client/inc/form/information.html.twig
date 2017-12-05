@@ -1,10 +1,10 @@
 {# src/whiteLabel/BackOfficeBundle/Resources/views/Client/inc/form/information.html.twig #}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-information">
     <fieldset>
-        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Information</legend>
+        <legend><span class="legend-icon"></span>&nbsp;Information</legend>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 wrapper_error">{{ form_errors(form.client_information.nom) }}</div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.client_information.nom) }}</div>
         <div class="form-group">
             {{ form_label(form.client_information.nom, "Nom", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 wrapper_error">{{ form_errors(form.client_information.interlocuteur) }}</div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.client_information.interlocuteur) }}</div>
         <div class="form-group">
             {{ form_label(form.client_information.interlocuteur, "Interlocuteur", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
@@ -24,7 +24,7 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 wrapper_error">{{ form_errors(form.client_information.titreDispositif) }}</div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.client_information.titreDispositif) }}</div>
         <div class="form-group">
             {{ form_label(form.client_information.titreDispositif, "Titre Dispositif", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
@@ -33,8 +33,11 @@
             </div>
         </div>
 
-        <ul id="control_logo" class="list_error"></ul>
-        {{ form_errors(form.client_information.logo) }}
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">
+            {{ form_errors(form.client_information.logo) }}
+            <ul id="file-error"></ul>
+        </div>
         <div class="form-group">
             {{ form_label(form.client_information.logo, "Logo", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
@@ -47,7 +50,7 @@
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-4 col-lg-offset-4">
             <p>
                 {% if client and client.clientInformation and client.clientInformation.logoUrl %}
-                <a href="{{ path('upload_read', {'uploadId': client.clientInformation.id, 'typeFile': 0, 'extension': client.clientInformation.logoUrl, 'typeAppel': 0}) }}" target="_blank">
+                <a href="{{ path('upload_read', {'uploadId': client.clientInformation.id, 'fileKey': 0, 'extension': client.clientInformation.logoUrl, 'folderKey': 0}) }}" target="_blank">
                     Voir le fichier
                 </a>
                 {% endif %}

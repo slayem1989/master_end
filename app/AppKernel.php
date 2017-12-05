@@ -23,8 +23,10 @@ class AppKernel extends Kernel
             new whiteLabel\FrontOfficeBundle\whiteLabelFrontOfficeBundle(),
             new blackLabel\ImportBundle\blackLabelImportBundle(),
             new blackLabel\GenericBundle\blackLabelGenericBundle(),
+            new blackLabel\HistoriqueBundle\blackLabelHistoriqueBundle(),
+            new blackLabel\CommentaireBundle\blackLabelCommentaireBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new Liuggio\ExcelBundle\LiuggioExcelBundle()
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

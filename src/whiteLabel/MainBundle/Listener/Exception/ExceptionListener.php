@@ -78,7 +78,7 @@ class ExceptionListener
 
         $session->getFlashBag()->add('danger', $message);
         if ($this->container->getParameter('url_bo') == $nomDomaine_current) {
-            $url = $this->router->generate('bo_homepage');
+            $url = $this->router->generate('bo_dashboard');
         } elseif ($this->container->getParameter('url_fo') == $nomDomaine_current) {
             $url = $this->router->generate('fo_homepage');
         } else {

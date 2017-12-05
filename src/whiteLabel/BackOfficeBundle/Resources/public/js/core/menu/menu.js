@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     function toggleSidebar() {
         $(".buttonSidebar").toggleClass("active");
         $(".mainSidebar").toggleClass("move-to-left");
@@ -15,5 +14,4 @@ $(document).ready(function() {
             toggleSidebar();
         }
     });
-
 });

@@ -1,8 +1,17 @@
 ###########################################
 ###     BlackLabel Bundles Routing      ###
 ###########################################
+black_label_generic:
+    resource: "@blackLabelGenericBundle/Resources/config/routing.yml"
+
 black_label_import:
     resource: "@blackLabelImportBundle/Resources/config/routing.yml"
+
+black_label_historique:
+    resource: "@blackLabelHistoriqueBundle/Resources/config/routing.yml"
+
+black_label_commentaire:
+    resource: "@blackLabelCommentaireBundle/Resources/config/routing.yml"
 
 ###################################
 ###    FOSUser Custom Routing   ###
@@ -22,23 +31,11 @@ fos_admin_user_security_logout:
     defaults: { _controller: whiteLabelBackOfficeBundle:Security:logout }
 
 ################################
-###       Upload Routing     ###
+###     Dashboard Routing    ###
 ################################
-upload_read:
-    path:     /document/read/{uploadId}/{typeFile}/{extension}/{typeAppel}
-    defaults: { _controller: blackLabelGenericBundle:Upload:read }
-    requirements:
-        uploadId: \d+
-        typeFile: \d+
-        extension: jpeg|jpg|png|
-        typeAppel: \d+
-
-################################
-###     Homepage Routing     ###
-################################
-bo_homepage:
-    path:     /bo/homepage
-    defaults: { _controller: whiteLabelBackOfficeBundle:Homepage:index }
+bo_dashboard:
+    path:     /bo/dashboard
+    defaults: { _controller: whiteLabelBackOfficeBundle:Dashboard:index }
 
 ################################
 ###      Client Routing      ###
@@ -68,3 +65,28 @@ client_delete:
     defaults: { _controller: whiteLabelBackOfficeBundle:Client:delete }
     requirements:
         clientId: \d+
+
+################################
+###     Homepage Routing     ###
+################################
+bo_homepage:
+    path:     /bo/homepage/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Homepage:index }
+    requirements:
+        clientId: \d+
+
+################################
+###       Lot Routing        ###
+################################
+lot_list:
+    path:     /lot/list/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Lot:list }
+    requirements:
+        clientId: \d+
+
+lot_update:
+    path:     /lot/update/{clientId}/{lotId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Lot:update }
+    requirements:
+        clientId: \d+
+        lotId: \d+

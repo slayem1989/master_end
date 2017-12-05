@@ -1,0 +1,74 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Core/header_accueil.html.twig #}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <header class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            {% if app.user.roles is defined %}
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" id="header_logo">
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% if 'bo_dashboard' != app.request.attributes.get('_route') %}
+                    <a href="{{ path('bo_dashboard') }}"
+                       class="btn btn-primary btn-xs"
+                       role="button"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Accueil"
+                    >
+                        <i class="glyphicon glyphicon-home"></i>
+                    </a>
+                    &nbsp;
+                    {% endif %}
+
+                    <a href="{{ path('user_list') }}"
+                       class="btn btn-primary btn-xs"
+                       role="button"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Liste des utilisateurs"
+                    >
+                        <i class="glyphicon glyphicon-user"></i>
+                    </a>
+                    &nbsp;
+                    <a href="{{ path('client_list') }}"
+                       class="btn btn-primary btn-xs"
+                       role="button"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Liste des clients"
+                    >
+                        <i class="glyphicon glyphicon-briefcase"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
+
+            </div>
+
+            {% if ('ROLE_SUPER_ADMIN' in app.user.roles
+            or 'ROLE_ADMIN' in app.user.roles
+            or 'ROLE_COORDINATEUR' in app.user.roles
+            or 'ROLE_GESTIONNAIRE' in app.user.roles
+            ) and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
+                <a href="{{ path('fos_admin_user_security_logout') }}"
+                   class="btn btn-warning btn-xs"
+                   role="button"
+                   data-toggle="tooltip" data-placement="bottom"
+                   data-container="body"
+                   title="Se déconnecter"
+                >
+                    <span class="bold">{{ app.user.username }}</span>
+                    &nbsp;
+                    <i class="glyphicon glyphicon-log-out"></i>
+                </a>
+            </div>
+            {% endif %}
+            {% endif %}
+
+        </header>
+    </div>
+</nav>

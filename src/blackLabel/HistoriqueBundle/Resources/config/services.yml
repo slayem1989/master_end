@@ -1,0 +1,7 @@
+services:
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  H I S T O R I Q U E
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    black_label.service.historique:
+        class: blackLabel\HistoriqueBundle\Service\HistoriqueService
+        arguments: ['@doctrine', '@service_container']

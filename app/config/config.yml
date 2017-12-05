@@ -37,6 +37,9 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        kernelProjectDir: "%kernel.project_dir%"
+        kernelRootDir: "%kernel.root_dir%"
 
 # Doctrine Configuration
 doctrine:
@@ -75,7 +78,15 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: "%kernel.debug%"
-    bundles:        ['whiteLabelWebBundle', 'whiteLabelMainBundle', 'whiteLabelBackOfficeBundle', 'whiteLabelFrontOfficeBundle', 'blackLabelImportBundle']
+    bundles:
+        - 'whiteLabelWebBundle'
+        - 'whiteLabelMainBundle'
+        - 'whiteLabelBackOfficeBundle'
+        - 'whiteLabelFrontOfficeBundle'
+        - 'blackLabelGenericBundle'
+        - 'blackLabelHistoriqueBundle'
+        - 'blackLabelCommentaireBundle'
+        - 'blackLabelImportBundle'
     filters:
         lessphp:
             file:               "%kernel.root_dir%/../vendor/oyejorge/less.php/lessc.inc.php"

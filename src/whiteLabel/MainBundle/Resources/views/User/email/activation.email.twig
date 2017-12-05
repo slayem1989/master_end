@@ -1,0 +1,15 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Partenaire/email/activation.email.twig #}
+{% block body_text %}
+    {% autoescape false %}
+        Bonjour,
+
+        Pour lancer le processus d'activation de votre compte {{ type }} "{{ username }}", cliquez sur le lien ci-dessous :
+        {{ confirmationUrl }}
+
+        Si ce lien ne fonctionne pas, copiez l'URL, puis collez-la dans une nouvelle fenêtre de navigateur.
+
+        Attention ! Ce lien n'est valable que 48 heures après l'envoi de ce message.
+
+        L'équipe Chèque Eco-Energie de la Région Normandie.
+    {% endautoescape %}
+{% endblock %}

@@ -1,3 +1,36 @@
+/*******************************************
+            SURCHARGE HEADER.CSS
+*******************************************/
+html, body {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../../images/background/bg2.jpeg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #fff;
+    background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+}
+@media only screen and (max-width: 767px) {
+    body#page_error {
+        background-image: url("../../images/background/bg2.jpeg");
+    }
+}
+.navbar {
+    background: transparent !important;
+}
+.navbar::after {
+    border-bottom: 0;
+}
+#header_logo {
+    padding: 20px 10px 10px 10px;
+}
+
+/*******************************************
+            BLOC TABLE
+*******************************************/
 .col0 {}
 .col1 {width:100px;}
 .col2 {width:200px;}

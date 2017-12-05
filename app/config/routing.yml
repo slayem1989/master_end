@@ -1,3 +1,11 @@
+black_label_commentaire:
+    resource: "@blackLabelCommentaireBundle/Resources/config/routing.yml"
+    prefix:   /
+
+black_label_historique:
+    resource: "@blackLabelHistoriqueBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ###########################################
 ###     BlackLabel Bundles Routing      ###
 ###########################################

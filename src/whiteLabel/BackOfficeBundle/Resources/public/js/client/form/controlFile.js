@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var messageLogo     = $("#control_logo");
+    var messageLogo     = $("#file-error");
 
     var idBoutonValider = $("#whitelabel_backofficebundle_client__valider");
     var fileExtension   = ["image/jpg", "image/jpeg", "image/png"];
@@ -21,7 +21,7 @@ $(document).ready(function() {
         message.empty();
         var normalSize = '5242880';
         if (file.size > normalSize) {
-            message.append('<li>Le fichier ' + file.name + ' est trop volumineux (' + formatFileSize(file) + '). Sa taille ne doit pas dépasser 5.12 MB. </li>').css('color', 'red');
+            message.append('<li>Le fichier ' + file.name + ' est trop volumineux (' + formatFileSize(file) + '). Sa taille ne doit pas dépasser 5 MB. </li>').css('color', 'red');
             errorFlag = true;
         }
 

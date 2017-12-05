@@ -1,0 +1,55 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Lot/inc/modal/commentaire.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="bloc-commentaire">
+
+    {% set form_commentaire = list_commentaireForm[item.lotId] ? list_commentaireForm[item.lotId] : null %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc bloc-commentaireForm">
+        <fieldset>
+            <legend><span class="legend-icon"></span>&nbsp;Cr&eacute;er un commentaire</legend>
+
+{% if form_commentaire is not null %}
+    {{ form_start(form_commentaire, {'attr': {'class': 'form-horizontal', 'id': 'form_addCommentaire'}}) }}
+    {{ form_errors(form_commentaire) }}
+
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form_commentaire.content) }}</div>
+    <div class="form-group" id="form-group_content">
+        {{ form_label(form_commentaire.content, "Contenu :", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-3 col-lg-3 control-label'}}) }}
+
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            {{ form_widget(form_commentaire.content, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc marginTop20">
+        <div class="form-group">
+            {{ form_widget(form_commentaire.enregistrer, {'attr': {'class': 'col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xs-offset-0 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 btn btn-xs btn-success'}}) }}
+        </div>
+    </div>
+
+    {{ form_rest(form_commentaire) }}
+    {{ form_end(form_commentaire) }}
+{% endif %}
+
+        </fieldset>
+    </div>
+
+    {% set data_commentaire = list_commentaireData[item.lotId] ? list_commentaireData[item.lotId] : null %}
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc bloc-commentaireList">
+        <fieldset>
+            <legend><span class="legend-icon"></span>&nbsp;Liste des commentaires ({{ data_commentaire|length }})</legend>
+
+{% if data_commentaire is not empty %}
+    {% for row in data_commentaire %}
+        <p class="textBold">Le {{ row.dateCreation|date('d/m/Y H:i:s') }} par {{ row.auteurCreation }}:</p>
+        <p>{{ row.content|nl2br }}</p>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p class="textCenter textBold">Aucun commentaire.</p>
+{% endif %}
+
+        </fieldset>
+    </div>
+
+</div>
+&nbsp;

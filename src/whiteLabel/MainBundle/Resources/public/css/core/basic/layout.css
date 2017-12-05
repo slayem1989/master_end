@@ -1,44 +1,116 @@
-html,
-body {
-    font-family: Arial, Calibri, sans-serif;
-    font-size: 13px;
+html, body {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../../../images/background/bg2.jpeg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #fff;
+    background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    font-family: Arial, Calibri, sans-serif !important;
+    font-size: 13px !important;
+    height: 100%;
+    margin: 0;
     min-width: 800px;
+    padding: 0;
 }
-body { padding-top: 60px; }
+@media only screen and (max-width: 767px) {
+    body#page_error {
+        background-image: url("../../../images/background/bg2.jpeg");
+    }
+}
+body {
+    padding-top: 60px;
+}
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 
-.bold { font-weight: bold; }
-.italic { font-style: italic;font-size: 12px; }
+.textUnderline { text-decoration: underline; }
+.textLeft { text-align: left !important; }
+.textCenter { text-align: center; }
+.textRight { text-align: right; }
+
+.hidden { display: none; }
+
+.textBold { font-weight: bold; }
+.textItalic { font-style: italic;font-size: 12px; }
 .clear { clear: both; }
-.text-center { text-align: center; }
+.noPuce { list-style-type: none; }
 
-.marginTop50 { margin-top: 50px; }
+.lineHeight30 { line-height: 30px;}
+.modalBackdrop { background-color: rgba(0, 0, 0, 0.3); }
+.marginBottom7 { margin-bottom: 7px; }
+.marginBottom10 { margin-bottom: 10px; }
+.marginBottom17 { margin-bottom: 17px; }
+.marginBottom20 { margin-bottom: 20px; }
+.marginBottom40 { margin-bottom: 40px; }
+.marginBottom400 { margin-bottom: 400px; }
+.marginLeft10 { margin-left: 10px; }
+.marginTop7 { margin-top: 7px; }
+.marginTop10 { margin-top: 10px; }
+.marginTop20 { margin-top: 20px; }
+.marginTop70 { margin-top: 70px; }
+.noMargin { margin: 0 !important; }
+.noPadding { padding: 0 !important; }
+.padding13 { padding: 13px; }
+.paddingBottom10 { padding-bottom: 10px; }
+.paddingBottom15 { padding-bottom: 15px; }
+.paddingLeft10 { padding-left: 10px; }
 
-form button { text-align: right; }
-legend { font-size: 16px;margin-top: 6px; }
 a:focus, a:hover, a.no-underline { outline: 0;text-decoration: none; }
-.popover{ max-width: none;width: 600px; }
 
-#notification, .notification { margin-bottom: 10px;font-weight: bold; }
-.required:after { content: " *";color: #D20A28; }
-
-
-
-.bloc-content { padding: 15px; }
-.text-xs-center { text-align: center; }
-.g-recaptcha { display: inline-block; }
-
-
-
-#container-title {
-    padding: 5px;
-    max-width: 100%;
-    width: 100% !important;
-    background-color: #F7F7F7;
-    margin: 10px auto 30px;
-    border-radius: 2px;
+/*******************************************
+                ACCUEIL STYLE
+*******************************************/
+.accueilStyleBloc {
+    background-color: rgba(247,247,247, 0.8);
+    border-radius: 5px;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    font-size: 12px;
-    color: #C9302C;
-    text-align: center;
 }
+
+/*******************************************
+            BLOC TITLE STYLE
+*******************************************/
+#bloc_title { border-bottom: 1px solid #77b636; }
+#bloc_title h2 { font-size: 19px;margin-bottom: 0;padding-right: 35px; }
+
+/*******************************************
+            BUTTON ACTION STYLE
+*******************************************/
+.container_action { position: absolute;right: 0;margin-top: -25px; }
+#action_back { margin-right: 0; }
+#action_create { margin-right: 0; }
+#action_update { margin-right: 28px; }
+
+/*******************************************
+                TABLE STYLE
+*******************************************/
+.big_table { table-layout: fixed;width: 100% !important; }
+.small_table { min-width: 100% !important; }
+.table thead { font-size: 0.85em !important; }
+.table tbody { font-size: 0.95em !important; }
+.table .breakWord { overflow: hidden;text-overflow: ellipsis; }
+.dataTables_wrapper div:nth-child(3) { margin-top: 15px; }
+
+/*******************************************
+                UP STYLE
+*******************************************/
+.UPColor { color:#F89406; }
+
+
+
+
+
+
+.fontSize9 { font-size: 0.95em; }
+
+#notification, .notification { margin-bottom: 10px;font-weight: bold; }
+
+.text-xs-center { text-align: center; }
+.g-recaptcha { display: inline-block; }

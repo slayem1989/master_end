@@ -49,8 +49,13 @@ class Log
         $this->dateCreation = new \Datetime();
         $this->dateModif = new \Datetime();
 
-        $this->auteurCreation = $_SESSION['login']->getUsername();
-        $this->auteurModif = $_SESSION['login']->getUsername();
+        if ($_SESSION && array_key_exists('login', $_SESSION) && $_SESSION['login']) {
+            $this->auteurCreation = $_SESSION['login']->getUsername();
+            $this->auteurModif = $_SESSION['login']->getUsername();
+        } else {
+            $this->auteurCreation = "ADMIN";
+            $this->auteurModif    = "ADMIN";
+        }
     }
 
 

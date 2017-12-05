@@ -12,6 +12,8 @@ use whiteLabel\BackOfficeBundle\Form\Client_Type;
 /**
  * Class ClientController
  * @package whiteLabel\BackOfficeBundle\Controller
+ *
+ * @Security("has_role('ROLE_ADMIN')")
  */
 class ClientController extends Controller
 {

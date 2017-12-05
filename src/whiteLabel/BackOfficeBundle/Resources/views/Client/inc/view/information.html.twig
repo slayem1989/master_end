@@ -1,7 +1,7 @@
 {# src/whiteLabel/BackOfficeBundle/Resources/views/Client/inc/view/information.html.twig #}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-information">
     <fieldset>
-        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Information</legend>
+        <legend><span class="legend-icon"></span>&nbsp;Information</legend>
 
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Nom :</label>
@@ -20,7 +20,7 @@
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Titre Dispositif :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ client.clientInformation.titreDispositif }}
+                {{ client.clientInformation.titreDispositif ? client.clientInformation.titreDispositif : '-' }}
             </div>
         </div>
 
@@ -28,7 +28,7 @@
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Logo :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                 {% if client and client.clientInformation and client.clientInformation.logoUrl %}
-                    <a href="{{ path('upload_read', {'uploadId': client.clientInformation.id, 'typeFile': 0, 'extension': client.clientInformation.logoUrl, 'typeAppel': 0}) }}" target="_blank">
+                    <a href="{{ path('upload_read', {'uploadId': client.clientInformation.id, 'fileKey': 0, 'extension': client.clientInformation.logoUrl, 'folderKey': 0}) }}" target="_blank">
                         Voir le fichier
                     </a>
                 {% else %}

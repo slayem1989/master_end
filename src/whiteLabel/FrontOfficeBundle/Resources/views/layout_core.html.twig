@@ -38,33 +38,24 @@
         {% endblock %}
     </title>
 
-    {% block stylesheets %}
-        {{ include('whiteLabelFrontOfficeBundle:Core:stylesheets.html.twig') }}
+    {% block stylesheet %}
+        {{ include('whiteLabelFrontOfficeBundle:Core:stylesheet.html.twig') }}
     {% endblock %}
 </head>
 <body>
     {{ render(controller('whiteLabelFrontOfficeBundle:Core:layoutHeader')) }}
 
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc-content">
-                    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+    <div class="container-fluid">
+        <div class="row padding13">
+            {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+            {% block content %}
 
-                    {% block contents %}
-
-                    {% endblock %}
-                </div>
-            </div>
+            {% endblock %}
         </div>
     </div>
 
-    {#
-    {{ render(controller('whiteLabelFrontOfficeBundle:Core:layoutFooter')) }}
-    #}
-
-    {% block javascripts %}
-        {{ include('whiteLabelFrontOfficeBundle:Core:javascripts.html.twig') }}
+    {% block javascript %}
+        {{ include('whiteLabelFrontOfficeBundle:Core:javascript.html.twig') }}
     {% endblock %}
 </body>
 </html>

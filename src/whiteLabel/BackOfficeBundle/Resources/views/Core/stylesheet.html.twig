@@ -1,0 +1,10 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Core/stylesheet.html.twig #}
+{% block stylesheet %}
+    {% stylesheets filter='cssrewrite, ?scssphp'
+    'css/bootstrap.css'
+    'bundles/whitelabelbackoffice/css/core/basic/*.css'
+    'bundles/whitelabelbackoffice/css/core/menu/*.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}

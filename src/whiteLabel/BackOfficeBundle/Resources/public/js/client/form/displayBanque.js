@@ -145,11 +145,6 @@ $(document).ready(function() {
     /* *************************************************
                         FUNCTION
     ************************************************* */
-    function toUpperCase() {
-        var x = document.getElementById("whitelabel_backofficebundle_partenaire__partenaire_optionAuditeur_iban");
-        x.value = x.value.toUpperCase();
-    }
-
     function mod97(string) {
         var checksum = string.slice(0, 2),
             fragment;

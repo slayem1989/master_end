@@ -1,99 +1,69 @@
-body {
-    background:
-            linear-gradient(
-                    rgba(0, 0, 0, 0.2),
-                    rgba(0, 0, 0, 0.2)
-            ),
-            url("../../images/background/login2.jpg")
-;
+/*******************************************
+            SURCHARGE HEADER.CSS
+*******************************************/
+html, body {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../../images/background/bg2.jpeg");
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-color: #FFF;
+    background-color: #fff;
     background-size: cover;
     -ms-background-size: cover;
     -o-background-size: cover;
     -moz-background-size: cover;
     -webkit-background-size: cover;
-    color: #000;
-    font-family: Calibri, sans-serif;
 }
-
 @media only screen and (max-width: 767px) {
     body#page_error {
-        background-image: url("../../images/background/login2.jpg");
+        background-image: url("../../images/background/bg2.jpeg");
     }
 }
-
-
-
 .navbar {
-    background-color: rgba(247,247,247, 0.7) !important;
+    background: transparent !important;
 }
-.container-login {
-    padding: 10px 30px;
+.navbar::after {
+    border-bottom: 0;
+}
+
+/*******************************************
+                BLOC CONTENT
+*******************************************/
+#bloc_form {
+    font-size: 12px;
+    margin: auto;
     max-width: 350px;
+    padding: 0 30px;
     width: 100% !important;
-    /*background-color: #F7F7F7;*/
-    background-color: rgba(247,247,247, 0.7);
-    margin: 30px auto;
-    border-radius: 5px;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    font-size: 12px;
 }
-.container-login h1 {
-    text-align: center;
-    font-size: 1.8em;
+
+
+
+#bloc_form label.control-label {
+    line-height: 30px;
 }
-.container-login input[type=text], input[type=password] {
-    height: 44px;
-    font-size: 14px;
-    width: 100%;
+#bloc_form input[type=text], input[type=password] {
     margin-bottom: 10px;
-    -webkit-appearance: none;
-    background: #fff;
-    border: 1px solid #d9d9d9;
-    border-top: 1px solid #c0c0c0;
-    /* border-radius: 2px; */
-    padding: 0 8px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-}
-.container-login input[type=text]:hover, input[type=password]:hover {
-    border: 1px solid #b9b9b9;
-    border-top: 1px solid #a0a0a0;
-    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-}
-.container-login .container-checkbox {
-    text-align: right;
-}
-.container-login input[type=checkbox] {
-    vertical-align: bottom;
-}
-.container-login input[type=checkbox] + label {
-    line-height: 0;
-}
-.container-login input[type=submit] {
-    width: 100%;
-    display: block;
-    margin-bottom: 10px;
-    position: relative;
 }
 
 
 
-.container-login .container-help{
-    font-size: 12px;
-    text-align: right;
+#bloc_form .container_submit {
+    padding-right: 0;
 }
-.container-login .container-help a {
+
+
+
+#bloc_form #container_help {
+    color: #222;
+    font-size: 11px;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+#bloc_form #container_help a {
     color: #222;
     display: inline-block;
     font-weight: 400;
-    opacity: 0.6;
+    opacity: 1;
     text-decoration: none;
     transition: opacity ease 0.5s;
 }

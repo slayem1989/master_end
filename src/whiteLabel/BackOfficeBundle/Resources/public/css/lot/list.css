@@ -1,0 +1,68 @@
+.col0 { width:10px; }
+.col1 { width:100px; }
+.col2 { width:40px; }
+.col3 { width:11%; }
+.col4 { width:9%; }
+.col5 { width:11%; }
+.col6 { width:9%; }
+.col7 { width:11%; }
+.col8 { width:60px; }
+.col9 { width:150px; }
+.col10 { width:30px; }
+
+/*******************************************
+                MODAL STYLE
+*******************************************/
+div.modal_commentaire {
+    padding-top: 100px !important;
+}
+div.modal_commentaire .modal-dialog {
+    overflow-y: initial !important;
+    width: 85%;
+}
+div.modal_commentaire .modal-header legend {
+    border: 0 !important;
+    color: #77b636 !important;
+}
+div.modal_commentaire .modal-body {
+    padding-top: 0 !important;
+}
+
+#bloc-commentaire {
+    align-items: stretch;
+    display: flex;
+    justify-content: space-around;
+}
+.bloc-commentaireForm {
+    border-right: 1px solid #e5e5e5;
+    width: 100%;
+}
+.bloc-commentaireList {
+    display: block;
+    max-height: 350px !important;
+    overflow-y: auto;
+    width: 100%;
+}
+/*******************************************
+                BLOC FORM
+*******************************************/
+.bloc-commentaireForm .form-group, .bloc-commentaireForm textarea {
+    width: 100% !important;
+}
+
+.bloc-commentaireForm #form-group_content {
+    margin-top: -15px;
+}
+
+.bloc-commentaireForm textarea {
+    font-size: 12px !important;
+}
+
+/*******************************************
+                BLOC DATA
+*******************************************/
+.bloc-commentaireList hr {
+    border-top: 1px dashed #ddd;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}

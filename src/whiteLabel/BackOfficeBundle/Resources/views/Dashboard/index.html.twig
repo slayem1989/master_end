@@ -1,0 +1,35 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Dashboard/index.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_accueil.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/dashboard/index.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 hidden" id="mainWrapper">
+
+{% if list is not empty %}
+<div id="row-client">
+    {% for item in list  %}
+    <div class="item-element">
+        <div class="item-cell">
+            <a href="{{ path('lot_list', {'clientId': item.id}) }}">
+                <img src="{{ path('upload_read', {'uploadId': item.id, 'fileKey': 0, 'extension': item.clientInformation.logoUrl, 'folderKey': 0}) }}" alt="thumbnail" />
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div id="row-noClient">
+    <h1 class="UPColor textCenter">Aucun Client enregistr&eacute;.</h1>
+</div>
+{% endif %}
+
+</div>
+{% endblock %}

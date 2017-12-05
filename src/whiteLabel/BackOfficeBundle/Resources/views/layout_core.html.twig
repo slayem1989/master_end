@@ -34,16 +34,16 @@
 
     <title>
         {% block title %}
-            Espace Client
+            Espace Priv&eacute;
         {% endblock %}
     </title>
 
-    {% block stylesheets %}
-        {{ include('whiteLabelBackOfficeBundle:Core:stylesheets.html.twig') }}
+    {% block stylesheet %}
+        {{ include('whiteLabelBackOfficeBundle:Core:stylesheet.html.twig') }}
     {% endblock %}
 </head>
 <body>
-    {{ render(controller('whiteLabelBackOfficeBundle:Core:layoutHeader')) }}
+    {{ render(controller('whiteLabelBackOfficeBundle:Core:layoutHeader', {'_route_params': app.request.get('_route_params')})) }}
 
     {% set currentPath = app.request.attributes.get('_route') %}
     {% if 'fos_admin_user_security_login' != currentPath %}
@@ -67,36 +67,32 @@
 
     <main class="mainSidebar">
     {% endif %}
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row padding13">
-                    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
 
-                    {% block contents %}
+        <div class="container-fluid">
+            <div class="row padding13">
+                {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+                {% block content %}
 
-                    {% endblock %}
-                </div>
+                {% endblock %}
             </div>
         </div>
+
     {% if 'fos_admin_user_security_login' != currentPath %}
     </main>
 
     <div class="sidebar">
         <ul class="sidebar-list">
+            {% set clientId = app.request.get('_route_params')['clientId'] %}
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path('import_form') }}" class="sidebar-anchor">Import de donn&eacute;es</a></li>
-                <li class="sidebar-item"><a href="{{ path('client_list') }}" class="sidebar-anchor">Client</a></li>
+                <li class="sidebar-item"><a href="{{ path('lot_list', {'clientId': clientId}) }}" class="sidebar-anchor">Suivi de lots</a></li>
             {% endif %}
+            <li class="sidebar-item"><a href="{{ path('bo_dashboard') }}" class="sidebar-anchor">Retour à la liste des clients</a></li>
         </ul>
     </div>
     {% endif %}
 
-    {#
-    {{ render(controller('whiteLabelBackOfficeBundle:Core:layoutFooter')) }}
-    #}
-
-    {% block javascripts %}
-        {{ include('whiteLabelBackOfficeBundle:Core:javascripts.html.twig') }}
+    {% block javascript %}
+        {{ include('whiteLabelBackOfficeBundle:Core:javascript.html.twig') }}
     {% endblock %}
 </body>
 </html>

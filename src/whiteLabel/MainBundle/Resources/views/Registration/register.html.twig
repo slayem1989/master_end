@@ -2,9 +2,10 @@
 {% extends "whiteLabelMainBundle::layout_core.html.twig" %}
 {% import "whiteLabelMainBundle::Macros/captcha.html.twig" as captcha %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelmain/css/core/form/*.css'
     'bundles/whitelabelmain/css/registration/register.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
@@ -13,13 +14,11 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 {% block fos_user_content %}
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
-    {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
-    {{ include('whiteLabelMainBundle:Macros:FOSUser_error.html.twig') }}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 hidden" id="mainWrapper">
 
     <form action="{{ path("fos_user_registration_register") }}" method="post" id="form_register" class="fos_user_registration_register">
-        <div class="container-form">
-            <h1>Cr&eacute;ation de compte</h1><br>
+        <div class="accueilStyleBloc" id="bloc_form">
+            <h2 class="UPColor textUnderline textCenter marginBottom20">Cr&eacute;ation de compte</h2>
 
 <form>
     <div class="form-group">
@@ -47,7 +46,7 @@
         <input type="text" id="username" name="fos_user_registration_form[username]" required="required" maxlength="180" pattern=".{2,}" />
     </div>
 
-    <div id="pswd_info">
+    <div class="marginTop20" id="pswd_info">
         <p>Le mot de passe doit respecter les r&egrave;gles suivantes:</p>
         <ul>
             <li id="pswd_letter" class="invalid">Au moins <strong>une lettre minuscule</strong></li>
@@ -70,11 +69,11 @@
 
     {{form_widget(form._token)}}
 
-    <div class="form-group">
+    <div class="form-group marginTop20">
     {{ captcha.recaptcha(recaptcha_client_key) }}
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="container_submit">
         <input type="submit" class="btn btn-warning" name="_submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>
 </form>
@@ -83,4 +82,13 @@
     </form>
 
 </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/whitelabelmain/js/FOS/*.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
 {% endblock %}

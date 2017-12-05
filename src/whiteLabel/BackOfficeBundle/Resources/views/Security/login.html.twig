@@ -1,45 +1,46 @@
 {# src/whiteLabel/BackOfficeBundle/Resources/views/Security/login.html.twig #}
-{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+{% extends "whiteLabelBackOfficeBundle::layout_accueil.html.twig" %}
 
-{% block stylesheets %}
+{% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
     'bundles/whitelabelbackoffice/css/security/login.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 
-{% block contents %}
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 hidden" id="content-wrapper">
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
     <form action="{{ path("fos_admin_user_security_check") }}" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-        <div class="container-login">
-            <h1>Espace Priv&eacute;</h1><br>
+        <div class="accueilStyleBloc" id="bloc_form">
+            <h2 class="UPColor textUnderline textCenter marginBottom20">Espace Priv&eacute;</h2>
 
 <form>
     <div class="form-group">
-        <label for="username">Identifiant</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Identifiant" />
+        <label for="username" class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label required">Identifiant</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Identifiant" class="col-xs-12 col-sm-12 col-md-7 col-lg-7" />
     </div>
 
     <div class="form-group">
-        <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-        <input type="password" id="password" name="_password" required="required" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" />
+        <label for="password" class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label required">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="password" id="password" name="_password" required="required" placeholder="{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}" class="col-xs-12 col-sm-12 col-md-7 col-lg-7" />
     </div>
 
-    <div class="form-group container-checkbox">
+    <div class="form-group textRight" id="container_checkbox">
         <input type="checkbox" id="remember_me" name="_remember_me" value="on"/>
         <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
     </div>
 
-    <div class="form-group">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xs-offset-0 col-sm-offset-0 col-md-offset-5 col-lg-offset-5 form-group container_submit">
         <input type="submit" class="btn btn-warning" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>
 </form>
 
-            <div class="container-help">
+            <div class="textRight" id="container_help">
                 <a href="{{ path('fos_user_resetting_request') }}">Mot de passe oubli&eacute;?</a>
             </div>
         </div>

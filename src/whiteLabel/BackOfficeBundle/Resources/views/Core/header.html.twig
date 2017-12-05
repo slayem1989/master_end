@@ -1,68 +1,49 @@
 {# src/whiteLabel/BackOfficeBundle/Resources/views/Core/header.html.twig #}
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
+        <header class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-        <header>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 header-container">
-                <div class="hidden-xs col-sm-3 col-md-3 col-lg-3">
-                    <div id="bloc_logo">
-                        <a href="{{ path('bo_homepage') }}">
-                            {% image
-                            'bundles/whitelabelbackoffice/images/logo/logo_Total.png'
-                            %}
-                            <img src="{{ asset_url }}" alt="logo" class="header-logo" />
-                            {% endimage %}
-                        </a>
-                    </div>
-                </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" id="header_logo">
+                <a href="{{ path('bo_dashboard') }}">
+                    {% image
+                        'bundles/whitelabelbackoffice/images/logo/up.jpg'
+                    %}
+                    <img src="{{ asset_url }}" alt="logo up" id="header_image_logo" />
+                    {% endimage %}
+                </a>
+            </div>
 
-                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-6 bloc_admin_menu text-center">
-                    <div class="main_title">
-                        <span class="letter" data-letter="E">E</span>
-                        <span class="letter" data-letter="S">S</span>
-                        <span class="letter" data-letter="P">P</span>
-                        <span class="letter" data-letter="A">A</span>
-                        <span class="letter" data-letter="C">C</span>
-                        <span class="letter" data-letter="E">E</span>
-                        <span class="letter" data-letter="&nbsp;">&nbsp;</span>
-                        <span class="letter" data-letter="&nbsp;">&nbsp;</span>
-                        <span class="letter" data-letter="C">C</span>
-                        <span class="letter" data-letter="L">L</span>
-                        <span class="letter" data-letter="I">I</span>
-                        <span class="letter" data-letter="E">E</span>
-                        <span class="letter" data-letter="N">N</span>
-                        <span class="letter" data-letter="T">T</span>
-                    </div>
-                </div>
-
-                {% if app.user.roles is defined %}
-                {% if ('ROLE_SUPER_ADMIN' in app.user.roles
-                or 'ROLE_ADMIN' in app.user.roles
-                or 'ROLE_CLIENT' in app.user.roles
-                or 'ROLE_AUDITEUR' in app.user.roles
-                or 'ROLE_RENOVATEUR' in app.user.roles
-                or 'ROLE_INSTRUCTEUR' in app.user.roles
-                or 'ROLE_CONSEILLER' in app.user.roles
-                )
-                and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {# if app.user.username is defined #}
-                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 header-login">
-                    Bonjour <span class="bold"> {{ app.user.username }} &nbsp;</span>
-                    &nbsp;
-                    <a href="{{ path('fos_admin_user_security_logout') }}"
-                       class="btn btn-warning btn-xs"
-                       role="button"
-                       data-toggle="tooltip" data-placement="bottom"
-                       data-container="body"
-                       title="Se déconnecter"
-                    >
-                        <i class="glyphicon glyphicon-log-out"></i>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
+                {% if app.request.attributes.get('_route_params')['clientId'] %}
+                    {% set clientId = app.request.attributes.get('_route_params')['clientId'] %}
+                    <a href="{{ path('lot_list', {'clientId': clientId}) }}">
+                        <img src="{{ path('upload_read', {'uploadId': clientId, 'fileKey': 0, 'extension': clientLogoUrl, 'folderKey': 0}) }}" alt="logo client" id="header_image_logo_client" />
                     </a>
-                </div>
-                {% endif %}
                 {% endif %}
             </div>
-        </header>
 
+            {% if app.user.roles is defined %}
+                {% if ('ROLE_SUPER_ADMIN' in app.user.roles
+                or 'ROLE_ADMIN' in app.user.roles
+                or 'ROLE_COORDINATEUR' in app.user.roles
+                or 'ROLE_GESTIONNAIRE' in app.user.roles
+            ) and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
+                <span class="textBold">{{ app.user.username }}</span>
+                &nbsp;
+                <a href="{{ path('fos_admin_user_security_logout') }}"
+                   class="btn btn-warning btn-xs"
+                   role="button"
+                   data-toggle="tooltip" data-placement="bottom"
+                   data-container="body"
+                   title="Se déconnecter"
+                >
+                    <i class="glyphicon glyphicon-log-out"></i>
+                </a>
+            </div>
+            {% endif %}
+            {% endif %}
+
+        </header>
     </div>
 </nav>

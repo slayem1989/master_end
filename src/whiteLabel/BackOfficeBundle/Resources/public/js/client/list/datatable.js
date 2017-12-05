@@ -5,6 +5,6 @@ $(document).ready(function() {
         },
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, 100]],
         "pageLength": 25,
-        "order": [[ 1, "asc" ]]
+        "order": [[ 0, "asc" ]]
     });
 } );

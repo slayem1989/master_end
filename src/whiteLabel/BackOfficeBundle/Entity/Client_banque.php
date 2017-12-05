@@ -65,6 +65,14 @@ class Client_banque
     private $client;
 
 
+    /**
+     * @return string
+     */
+    public function __toString() {
+        return (string)$this->id;
+    }
+
+
 
     /**
      * Get id

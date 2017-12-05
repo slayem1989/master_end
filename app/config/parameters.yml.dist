@@ -33,5 +33,3 @@ parameters:
 
     captcha_server_key: unique_key_from_captcha_server
     captcha_client_key: unique_key_from_captcha_client
-
-    client_total: '0 | client0'

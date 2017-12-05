@@ -1,0 +1,33 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Lot/update.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
+    'bundles/whitelabelbackoffice/css/lot/update.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop50 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
+        <h2>Mise &agrave; jour du lot n°{{ lot.numero }}</h2>
+        {{ include('whiteLabelBackOfficeBundle:Lot:inc/back.html.twig') }}
+    </div>
+
+
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/whitelabelbackoffice/js/lot/form/*.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

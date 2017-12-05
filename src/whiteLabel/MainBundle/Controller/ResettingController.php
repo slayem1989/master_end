@@ -30,13 +30,14 @@ class ResettingController extends BaseResettingController
     public function requestAction()
     {
         if (array_key_exists('login', $_SESSION) && $_SESSION['login']) {
-            $url = $this->generateUrl('fo_homepage');
+            $url = $this->generateUrl('bo_dashboard');
             $response = new RedirectResponse($url);
             return $response;
         }
 
         $recaptcha_client_key = $this->getParameter('captcha_client_key');
 
+        /*
         $nomDomaine_current = $_SERVER["SERVER_NAME"];
         $nomDomaine_fo = $this->getParameter('url_fo');
         $nomDomaine_bo = $this->getParameter('url_bo');
@@ -48,6 +49,9 @@ class ResettingController extends BaseResettingController
         } else {
             $var = 'adresse email';
         }
+        */
+
+        $var = 'adresse email';
 
         return $this->render('@FOSUser/Resetting/request.html.twig', array(
             'recaptcha_client_key'  => $recaptcha_client_key,
@@ -186,7 +190,9 @@ class ResettingController extends BaseResettingController
     /**
      * @param Request $request
      * @param string $token
-     * @return Response
+     * @return null|RedirectResponse|Response
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function resetAction(Request $request, $token)
     {
@@ -231,7 +237,7 @@ class ResettingController extends BaseResettingController
                 'Le lien a expiré.'
             );
 
-            return new RedirectResponse($this->container->get('router')->generate('fos_user_security_login'));
+            return new RedirectResponse($this->container->get('router')->generate('fos_admin_user_security_login'));
         }
 
         $event = new GetResponseUserEvent($user, $request);
@@ -264,6 +270,7 @@ class ResettingController extends BaseResettingController
                     'Le mot de passe a été réinitialisé avec succès.'
                 );
 
+                /*
                 $nomDomaine_current = $_SERVER["SERVER_NAME"];
                 $nomDomaine_fo = $this->getParameter('url_fo');
                 $nomDomaine_bo = $this->getParameter('url_bo');
@@ -275,6 +282,7 @@ class ResettingController extends BaseResettingController
                 } else {
                     $url = $this->generateUrl('fos_user_security_login');
                 }
+                */
 
                 /*
                 $rolesTab = $user->getRoles();
@@ -297,7 +305,7 @@ class ResettingController extends BaseResettingController
 
                 //$url = $this->generateUrl('fos_user_profile_show');
 
-                $response = new RedirectResponse($url);
+                $response = new RedirectResponse($this->generateUrl('fos_admin_user_security_login'));
             }
 
             /*

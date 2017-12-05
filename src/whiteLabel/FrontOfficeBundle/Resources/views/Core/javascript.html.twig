@@ -1,0 +1,12 @@
+{# src/whiteLabel/FrontOfficeBundle/Resources/views/Core/javascript.html.twig #}
+{% block javascript %}
+    {% javascripts filter='jsqueeze'
+    'js/jquery.min.js'
+    'js/jquery_ui.min.js'
+    'js/bootstrap.js'
+    'bundles/whitelabelfrontoffice/js/core/basic/*.js'
+    'bundles/whitelabelfrontoffice/js/core/nav/*.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

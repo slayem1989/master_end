@@ -9,7 +9,7 @@ use PHPExcel_IOFactory;
 use PHPExcel_Cell;
 use PHPExcel_Shared_Date;
 
-use blackLabel\ImportBundle\Entity\Import_commande;
+use blackLabel\ImportBundle\Entity\Import_prime;
 use blackLabel\ImportBundle\Entity\Import_canal;
 
 /**
@@ -44,19 +44,21 @@ class ImportService
 
 
 
+    /* *******************************************************************
+     * *******************************************************************
+                            F I N D / S E A R C H
+     * *******************************************************************
+     * ***************************************************************** */
+
     /**
      * @param $importId
-     * @param $client
+     * @param $fileUrl
      */
-    public function persistXLSX($importId, $client)
+    public function persistXLSX($importId, $fileUrl)
     {
         $EM = $this->doctrine->getManager();
-        $clientKey = explode(' | ', $client);
 
-        $repo_import = $EM->getRepository('blackLabelImportBundle:Import_lot');
-        $lotObject = $repo_import->find($importId);
-        $lotFile = $this->container->getParameter('kernel.project_dir')."/data/import/".$importId."_".$clientKey[1].".".$lotObject->getFileUrl();
-
+        $lotFile = $this->container->getParameter('kernel.project_dir')."/data/import/".$importId."_import.".$fileUrl;
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject($lotFile);
 
         /*
@@ -67,6 +69,7 @@ class ImportService
         */
 
         $allSheet = $phpExcelObject->getAllSheets();
+        $this->updateNumeroLot($allSheet[0]->getTitle(), $importId);
         foreach ($allSheet as $sheet) {
             /* //////////////////////////////////////////////////////////
                                 GET CELL DATA
@@ -117,7 +120,7 @@ class ImportService
                 if ($row["S"]) $row["S"] = filter_var($row["S"],FILTER_SANITIZE_EMAIL);
                 if ($row["U"]) $row["U"] = number_format(floatval($row["U"]),2);
 
-                $objectCommande = new Import_commande();
+                $objectCommande = new Import_prime();
                 $objectCommande->setCanalId($objectCanal->getId());
                 $objectCommande->setType($row["A"]);
                 $objectCommande->setDate($row["B"]);
@@ -213,6 +216,13 @@ class ImportService
         }
     }
 
+
+    /* *******************************************************************
+     * *******************************************************************
+                            F U N C T I O N S
+     * *******************************************************************
+     * ***************************************************************** */
+
     /**
      * @param $sheet
      * @return array
@@ -237,5 +247,26 @@ class ImportService
         }
 
         return $array;
+    }
+
+    /**
+     * @param $title
+     * @param $importId
+     */
+    private function updateNumeroLot($title, $importId)
+    {
+        $EM = $this->doctrine->getManager();
+        $numeroLot = filter_var($title, FILTER_SANITIZE_NUMBER_INT);
+
+        $query = "
+            UPDATE import_lot
+            SET numero = " . $numeroLot . "
+            WHERE id = " . $importId
+        ;
+
+        $stmt = $EM
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
     }
 }

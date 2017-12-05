@@ -1,0 +1,16 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Admin/email/activation.html #}
+{% block body_html %}
+    <p>Bonjour,</p>
+
+    <p>Pour lancer le processus d'activation de votre compte <b>{{ type }} "{{ username }}"</b>, cliquez sur le lien ci-dessous :</p>
+    <br>
+
+    <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a>
+
+    <br><br>
+    <p>Si ce lien ne fonctionne pas, copiez l'URL, puis collez-la dans une nouvelle fenêtre de navigateur.</p>
+
+    <p>Attention ! Ce lien n'est valable que 48 heures après l'envoi de ce message.</p>
+
+    <p>L'équipe Chèque Eco-Energie de la Région Normandie.</p>
+{% endblock %}

@@ -33,35 +33,28 @@
 
     <title>
         {% block title %}
-            Espace Visiteur
+            Espace de connexion
         {% endblock %}
     </title>
 
-    {% block stylesheets %}
-        {{ include('whiteLabelMainBundle:Core:stylesheets.html.twig') }}
+    {% block stylesheet %}
+        {{ include('whiteLabelMainBundle:Core:stylesheet.html.twig') }}
     {% endblock %}
 </head>
 <body>
     {{ render(controller('whiteLabelMainBundle:Core:layoutHeader')) }}
 
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc-content">
-                    {% block fos_user_content %}
+    <div class="container-fluid">
+        <div class="row padding13">
+            {{ include('whiteLabelMainBundle:Macros:error.html.twig') }}
+            {% block fos_user_content %}
 
-                    {% endblock %}
-                </div>
-            </div>
+            {% endblock %}
         </div>
     </div>
 
-    {#
-    {{ render(controller('whiteLabelMainBundle:Core:layoutFooter')) }}
-    #}
-
-    {% block javascripts %}
-        {{ include('whiteLabelMainBundle:Core:javascripts.html.twig') }}
+    {% block javascript %}
+        {{ include('whiteLabelMainBundle:Core:javascript.html.twig') }}
     {% endblock %}
 </body>
 </html>

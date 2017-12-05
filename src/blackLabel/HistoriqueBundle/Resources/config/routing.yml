@@ -1,0 +1,16 @@
+################################
+###     Homepage Routing     ###
+################################
+historique_homepage:
+    path:     /historique/homepage
+    defaults: { _controller: blackLabelHistoriqueBundle:Homepage:index }
+
+################################
+###     Function Routing     ###
+################################
+historique_list:
+    path:     /historique/list/{clientId}/{lotId}
+    defaults: { _controller: blackLabelHistoriqueBundle:Historique:list }
+    requirements:
+        clientId: \d+
+        lotId: \d+

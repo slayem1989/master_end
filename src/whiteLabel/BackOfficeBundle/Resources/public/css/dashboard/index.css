@@ -1,0 +1,78 @@
+/*******************************************
+            SURCHARGE HEADER.CSS
+*******************************************/
+html, body {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../../images/background/bg2.jpeg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #fff;
+    background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+}
+@media only screen and (max-width: 767px) {
+    body#page_error {
+        background-image: url("../../images/background/bg2.jpeg");
+    }
+}
+.navbar {
+    background: transparent !important;
+}
+.navbar::after {
+    border-bottom: 0;
+}
+#header_logo {
+    padding: 20px 10px 10px 10px;
+}
+
+/*******************************************
+                BLOC CONTENT
+*******************************************/
+#row-noClient {
+    margin-top: 18%;
+}
+#row-client {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin-top: 9%;
+}
+
+.item-element {
+    align-items: stretch;
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 20%;
+    justify-content: center;
+    padding: 0.5rem;
+    margin-bottom: 30px;
+}
+.item-element:before {
+    content: '';
+    display: table;
+}
+.item-element img {
+    background: #fff !important;
+    border: 2px solid #a1a1a1;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    display: inline-block;
+    height: 140px;
+    margin: auto;
+    opacity: 0.7;
+    width: 140px;
+}
+.item-element img:hover {
+    opacity: 1;
+}
+
+.item-cell {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}

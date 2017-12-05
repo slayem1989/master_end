@@ -10,4 +10,43 @@ namespace blackLabel\ImportBundle\Repository;
  */
 class Import_lotRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $clientId
+     * @return array
+     */
+    public function findByClient($clientId)
+    {
+        $EM = $this->getEntityManager('EM_MYSQL');
+
+        $query = "
+            SELECT  il.id AS lotId,
+                    il.numero AS lotNumero,
+                    il.file_alt AS lotFilename,
+                    il.date_creation AS lotDateIntegration,
+                    s.slug AS lotStatut,
+                    cb.nom AS banqueNom,
+                    COUNT(CASE WHEN ip.type = 'LC' THEN ip.type ELSE NULL END) AS countLC,
+                    SUM(CASE WHEN ip.type = 'LC' THEN ip.montant_aide ELSE NULL END) AS montantLC,
+                    COUNT(CASE WHEN ip.type = 'Autre' THEN ip.type ELSE NULL END) AS countAutre,
+                    SUM(CASE WHEN ip.type = 'Autre' THEN ip.montant_aide ELSE NULL END) AS montantAutre,
+                    SUM(ip.montant_aide) AS montantTotal
+            FROM import_lot il
+                INNER JOIN client_ c ON c.id = il.client_id
+                INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN import_prime ip ON ip.canal_id = ic.id
+                INNER JOIN client_banque cb ON cb.id = il.banque_id
+                INNER JOIN statut s ON s.id = il.statut_id
+            WHERE il.client_id = " . $clientId . "
+                AND ic.title LIKE '%ecap%'
+            GROUP BY il.id
+            ORDER BY il.id DESC;
+        ";
+
+        $stmt = $EM
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }

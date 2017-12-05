@@ -1,0 +1,81 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Lot/inc/list/table.html.twig #}
+<table cellspacing="0" id="table_lot" class="table table-striped table-bordered big_table">
+    <thead>
+        <tr>
+            <th class="breakWord col0">N°</th>
+            <th class="breakWord col1">Nom du fichier</th>
+            <th class="breakWord col2">Date d'int&eacute;gration</th>
+            <th class="breakWord col3">Montant total</th>
+            <th class="breakWord col4">Nombre LC</th>
+            <th class="breakWord col5">Montant LC</th>
+            <th class="breakWord col6">Nombre virement</th>
+            <th class="breakWord col7">Montant virement</th>
+            <th class="breakWord col8">Banque</th>
+            <th class="breakWord col9">Statut</th>
+            <th class="breakWord col10">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% if list is not empty %}
+        {% for item in list %}
+        <tr>
+            <td>
+                <a href="{{ path('lot_update', {'clientId': clientId, 'lotId': item.lotId}) }}" title="link">
+                {{ item.lotNumero }}
+                </a>
+            </td>
+            <td class="breakWord">{{ item.lotFilename }}</td>
+            <td class="textCenter">{{ item.lotDateIntegration|date('d/m/Y') }}</td>
+            <td>{{ item.montantTotal|number_format(2, '.', ',') }} €</td>
+            <td>{{ item.countLC }}</td>
+            <td>{{ item.montantLC|number_format(2, '.', ',') }} €</td>
+            <td>{{ item.countAutre }}</td>
+            <td>{{ item.montantAutre|number_format(2, '.', ',') }} €</td>
+            <td class="breakWord">{{ item.banqueNom }}</td>
+            <td>{{ item.lotStatut }}</td>
+
+            <td>
+                <a href="{{ path('historique_list', {'clientId': clientId, 'lotId': item.lotId}) }}"
+                   class="btn btn-primary btn-xs"
+                   role="button"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Afficher l'historique du lot"
+                >
+                    <i class="glyphicon glyphicon-time"></i>
+                </a>
+
+                <button type="button"
+                        class="btn btn-primary btn-xs"
+                        data-toggle="modal"
+                        data-target="#modal_commentaire_{{ item.lotId }}"
+                >
+                    <i class="glyphicon glyphicon-comment"></i>
+                </button>
+
+                {# Modal Commentaire #}
+                <div class="modal fade modalBackdrop modal_commentaire" id="modal_commentaire_{{ item.lotId }}" tabindex="-1" role="dialog" data-backdrop="false">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <legend class="modal-title textCenter"><span class="legend-icon"></span>&nbsp;Lot n°{{ item.lotId }}</legend>
+                            </div>
+                            <div class="modal-body">
+                                {% include 'whiteLabelBackOfficeBundle:Lot:inc/commentaire/modal.html.twig' with {'item': item} %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th colspan="11" class="textCenter">Aucun Lot enregistr&eacute;.</th>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

@@ -1,0 +1,77 @@
+<?php
+
+namespace blackLabel\HistoriqueBundle\Service;
+
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+
+use blackLabel\HistoriqueBundle\Entity\Historique;
+
+/**
+ * Class HistoriqueService
+ * @package blackLabel\HistoriqueBundle\Service
+ */
+class HistoriqueService
+{
+    /**
+     * @var null
+     */
+    private $EM = null;
+
+    /**
+     * @var Container
+     */
+    private $container;
+
+
+
+    /**
+     * HistoriqueService constructor.
+     * @param $doctrine
+     * @param Container $container
+     */
+    public function __construct($doctrine, Container $container)
+    {
+        $this->EM = $doctrine->getManager();
+        $this->container = $container;
+    }
+
+
+
+    /* *******************************************************************
+     * *******************************************************************
+                            F I N D / S E A R C H
+     * *******************************************************************
+     * ***************************************************************** */
+    /**
+     * @param $lotId
+     * @param $action
+     * @param $content
+     * @param $statutId
+     */
+    public function save(
+        $lotId,
+        $action,
+        $content,
+        $statutId
+    ) {
+        $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut');
+        $statutSlug = $repo_statut->findSlugByStatut($statutId);
+
+        $historique = new Historique();
+        $historique->setLotId($lotId);
+        $historique->setAction($action);
+        $historique->setContent($content);
+        $historique->setStatutId($statutId);
+        $historique->setStatutSlug($statutSlug);
+
+        $this->EM->persist($historique);
+        $this->EM->flush();
+    }
+
+
+    /* *******************************************************************
+     * *******************************************************************
+                            F U N C T I O N S
+     * *******************************************************************
+     * ***************************************************************** */
+}
