@@ -152,6 +152,9 @@ class UserService
         if ($userObject) {
             $isExisted = true;
 
+            $userObject->setDateModif(new \Datetime());
+            $userObject->setAuteurModif($_SESSION['login']->getUsername());
+
             $userObject->setUsername(trim($username));
             $userObject->setFirstname(trim($firstName));
             $userObject->setLastname(trim($lastName));

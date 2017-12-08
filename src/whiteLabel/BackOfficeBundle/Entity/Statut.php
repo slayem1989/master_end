@@ -48,11 +48,12 @@ class Statut
     const STATUS_2 = 2;
     const STATUS_3 = 3;
     const STATUS_4 = 4;
+    const STATUS_44 = 44;
     const STATUS_5 = 5;
+    const STATUS_55 = 55;
     const STATUS_6 = 6;
     const STATUS_7 = 7;
     const STATUS_8 = 8;
-    const STATUS_9 = 9;
 
 
 

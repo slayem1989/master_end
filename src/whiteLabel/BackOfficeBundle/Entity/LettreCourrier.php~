@@ -1,0 +1,168 @@
+<?php
+
+namespace whiteLabel\BackOfficeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use blackLabel\GenericBundle\Entity\Log;
+
+/**
+ * LettreCourrier
+ *
+ * @ORM\Table(name="lettre_courrier", indexes={
+ *      @ORM\Index(name="client_idx", columns={"client_id"})
+ * })
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\LettreCourrierRepository")
+ */
+class LettreCourrier extends Log
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="client_id", type="integer")
+     */
+    private $clientId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_modele", type="string", length=255)
+     */
+    private $nomModele;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_beneficiaire", type="string", length=255)
+     */
+    private $typeBeneficiaire;
+
+    /**
+     * @ORM\Column(name="file_content", type="text")
+     */
+    private $file_content;
+
+    /**
+     * @ORM\Column(name="file_url", type="string", length=255)
+     */
+    private $file_url;
+
+    /**
+     * @ORM\Column(name="file_alt", type="string", length=255)
+     */
+    private $file_alt;
+
+    /**
+     * @Assert\File(
+     *     maxSize="5120k",
+     *     mimeTypes={ "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+     * )
+     */
+    private $file;
+
+    private $tempFilename;
+
+
+
+    /**
+     * LettreCourrier constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set clientId
+     *
+     * @param integer $clientId
+     *
+     * @return LettreCourrier
+     */
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
+
+        return $this;
+    }
+
+    /**
+     * Get clientId
+     *
+     * @return integer
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * Set nomModele
+     *
+     * @param string $nomModele
+     *
+     * @return LettreCourrier
+     */
+    public function setNomModele($nomModele)
+    {
+        $this->nomModele = $nomModele;
+
+        return $this;
+    }
+
+    /**
+     * Get nomModele
+     *
+     * @return string
+     */
+    public function getNomModele()
+    {
+        return $this->nomModele;
+    }
+
+    /**
+     * Set typeBeneficiaire
+     *
+     * @param string $typeBeneficiaire
+     *
+     * @return LettreCourrier
+     */
+    public function setTypeBeneficiaire($typeBeneficiaire)
+    {
+        $this->typeBeneficiaire = $typeBeneficiaire;
+
+        return $this;
+    }
+
+    /**
+     * Get typeBeneficiaire
+     *
+     * @return string
+     */
+    public function getTypeBeneficiaire()
+    {
+        return $this->typeBeneficiaire;
+    }
+}

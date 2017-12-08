@@ -42,7 +42,7 @@ class ImportController extends Controller
             $importService = $this->get('black_label.service.import');
             $importService->persistXLSX(
                 $lot->getId(),
-                $lot->getFileUrl()
+                $lot->file_getWebPath()
             );
 
             /* //////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ class ImportController extends Controller
 
             $request->getSession()->getFlashBag()->add(
                 'success',
-                'L\'import s\'est déroulé avec succès.'
+                'L\'import du Lot ' . $lot->getNumero()  . ' s\'est déroulé avec succès.'
             );
 
             return $this->redirectToRoute('lot_list', array(

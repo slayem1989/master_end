@@ -1,0 +1,97 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Lot/inc/form/step.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc noPadding" id="bloc-step">
+
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7" id="bloc_crumbs">
+        {% set arrayStep = [0, 0, 0, 0, 0, 0, 0, 0] %}
+        {% if 1 == lot.lotStatutId %} {% set arrayStep = ['', 'step_current', 0, 0, 0, 0, 0, 0] %} {% endif %}
+        {% if 2 == lot.lotStatutId %} {% set arrayStep = ['', 0, 'step_current', 0, 0, 0, 0, 0] %} {% endif %}
+        {% if 3 == lot.lotStatutId %} {% set arrayStep = ['', 0, 0, 'step_current', 0, 0, 0, 0] %} {% endif %}
+        {% if 4 == lot.lotStatutId %} {% set arrayStep = ['', 0, 0, 0, 'step_current', 0, 0, 0] %} {% endif %}
+        {% if 5 == lot.lotStatutId %} {% set arrayStep = ['', 0, 0, 0, 0, 'step_current', 0, 0] %} {% endif %}
+        {% if 6 == lot.lotStatutId %} {% set arrayStep = ['', 0, 0, 0, 0, 0, 'step_current', 0] %} {% endif %}
+        {% if 7 == lot.lotStatutId %} {% set arrayStep = ['', 0, 0, 0, 0, 0, 0, 'step_current'] %} {% endif %}
+
+        <div id="crumbs">
+            <ul>
+                <li class="{{ arrayStep[1] }}">
+                    <p>&Eacute;mission de la ND {% if lot.lotDateStatut2 %} le {{ lot.lotDateStatut2|date('d/m/Y') }} {% endif %}</p>
+                </li>
+                <li class="{{ arrayStep[2] }}">
+                    <p>&Eacute;mission des BAT {% if lot.lotDateStatut3 %} le {{ lot.lotDateStatut3|date('d/m/Y') }} {% endif %}</p>
+                </li>
+                <li class="{{ arrayStep[3] }}">
+                    <p>Validation de la ND {% if lot.lotDateStatut4 %} le {{ lot.lotDateStatut4|date('d/m/Y') }} {% endif %}</p>
+                </li>
+                <li class="{{ arrayStep[4] }}">
+                    <p>Validation des BAT {% if lot.lotDateStatut5 %} le {{ lot.lotDateStatut5|date('d/m/Y') }} {% endif %}</p>
+                </li>
+                <li class="{{ arrayStep[5] }}">
+                    <p>R&eacute;ception des fonds {% if lot.lotDateStatut6 %} le {{ lot.lotDateStatut6|date('d/m/Y') }} {% endif %}</p>
+                </li>
+                <li class="{{ arrayStep[6] }}">
+                    <p>&Eacute;dition des LC {% if lot.lotDateStatut7 %} le {{ lot.lotDateStatut7|date('d/m/Y') }} {% endif %}</p>
+                </li>
+                <li class="{{ arrayStep[7] }}">
+                    <p>Exp&eacute;dition des LC / Virement {% if lot.lotDateStatut8 %} le {{ lot.lotDateStatut8|date('d/m/Y') }} {% endif %}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" id="bloc_form">
+        <fieldset>
+            <legend><span class="legend-icon"></span>&nbsp;Je g&egrave;re le lot</legend>
+
+            <p>Le lot {{ lot.lotNumero }} est actuellement au statut: <span class="textBold">{{ lot.lotStatutSlug }}</span>.</p>
+
+            {% if 8 != lot.lotStatutId %}
+            <p class="marginBottom20">En cliquant le bouton Valider, le lot {{ lot.lotNumero }} passera au statut: <span class="textBold">{{ lot.lotStatutSlugNext }}</span>.</p>
+
+            <form action="{{ path('lot_update', {'clientId': clientId, 'lotId': lot.lotId}) }}" method="post" class="form-horizontal">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-error">{{ form_errors(form_validate.date) }}</div>
+                <div class="form-group">
+                    {{ form_label(form_validate.date, "Date", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12 control-label textLeft'}}) }}
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {{ form_widget(form_validate.date, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group textCenter" id="container_submit">
+                    {{ form_widget(form_validate.valider, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-success'}}) }}
+                </div>
+
+                {{ form_rest(form_validate) }}
+            </form>
+
+                {% if 3 == lot.lotStatutId %}
+                <p class="marginTop90 marginBottom20 textCenter">OU</p>
+                <p class="marginBottom20">En cliquant le bouton Refuser, le lot {{ lot.lotNumero }} passera au statut: <span class="textBold">{{ lot.lotStatutSlugDeny4 }}</span>.</p>
+
+                <form action="{{ path('lot_update', {'clientId': clientId, 'lotId': lot.lotId}) }}" method="post" class="form-horizontal">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group textCenter" id="container_submit_deny4">
+                        {{ form_widget(form_deny4.refuser, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-danger'}}) }}
+                    </div>
+
+                    {{ form_rest(form_deny4) }}
+                </form>
+                {% endif %}
+
+                {% if 4 == lot.lotStatutId %}
+                <p class="marginTop90 marginBottom20 textCenter">OU</p>
+                <p class="marginBottom20">En cliquant le bouton Refuser, le lot {{ lot.lotNumero }} passera au statut: <span class="textBold">{{ lot.lotStatutSlugDeny5 }}</span>.</p>
+
+                <form action="{{ path('lot_update', {'clientId': clientId, 'lotId': lot.lotId}) }}" method="post" class="form-horizontal" name="toto">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group textCenter" id="container_submit_deny5">
+                        {{ form_widget(form_deny5.refuser, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-danger'}}) }}
+                    </div>
+
+                    {{ form_rest(form_deny5) }}
+                </form>
+                {% endif %}
+            {% endif %}
+
+        </fieldset>
+    </div>
+
+</div>

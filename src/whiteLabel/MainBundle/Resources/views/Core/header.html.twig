@@ -4,7 +4,7 @@
         <header class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
             {% if app.user.roles is defined %}
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" id="header_logo">
+            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" id="header_logo">
                 {% if is_granted('ROLE_ADMIN') %}
                     {% if 'bo_dashboard' != app.request.attributes.get('_route') %}
                         <a href="{{ path('bo_dashboard') }}"
@@ -44,7 +44,7 @@
                 {% endif %}
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
+            <div class="hidden-xs col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
 
             </div>
 
@@ -53,7 +53,7 @@
                 or 'ROLE_COORDINATEUR' in app.user.roles
                 or 'ROLE_GESTIONNAIRE' in app.user.roles
             ) and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
+            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
                 <a href="{{ path('fos_admin_user_security_logout') }}"
                    class="btn btn-warning btn-xs"
                    role="button"

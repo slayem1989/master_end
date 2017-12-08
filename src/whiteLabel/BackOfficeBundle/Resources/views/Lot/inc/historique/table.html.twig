@@ -2,11 +2,11 @@
 <table cellspacing="0" id="table_historique" class="table table-striped table-bordered big_table">
     <thead>
     <tr>
-        <th class="breakWord col0">Date</th>
-        <th class="breakWord col1">Action</th>
+        <th class="breakWord col0">Id</th>
+        <th class="breakWord col1">Date</th>
         <th class="breakWord col2">Auteur</th>
-        <th class="breakWord col3">&Eacute;tat de la demande</th>
-        <th class="breakWord col4">D&eacute;tail</th>
+        <th class="breakWord col3">Action</th>
+        <th class="breakWord col4">&Eacute;tat de la demande</th>
     </tr>
     </thead>
 
@@ -14,11 +14,11 @@
     {% if list is not empty %}
         {% for item in list %}
         <tr>
-            <td class="textCenter">{{ item.dateCreation|date('d/m/Y') }}</td>
-            <td class="breakWord">{{ item.action }}</td>
+            <td class="breakWord">{{ item.id }}</td>
+            <td class="textCenter">{{ item.dateCreation|date('d/m/Y H:i:s') }}</td>
             <td class="breakWord">{{ item.auteurCreation }}</td>
+            <td class="breakWord">{{ item.action }}</td>
             <td class="breakWord">{{ item.statutSlug }}</td>
-            <td class="breakWord">{{ item.content['blacklabel_importbundle_import_lot']|join(', ') }}</td>
         </tr>
         {% endfor %}
     {% else %}

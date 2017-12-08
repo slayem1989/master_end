@@ -1,0 +1,10 @@
+/*******************************************
+            BLOC FILE
+*******************************************/
+#bloc-file input[type=radio] {
+    vertical-align: bottom;
+}
+
+#whitelabel_backofficebundle_lettrecheque_typeBeneficiaire label {
+    margin: 0 10px 0 5px;
+}

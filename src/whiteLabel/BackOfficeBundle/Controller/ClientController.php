@@ -109,6 +109,9 @@ class ClientController extends Controller
         $form = $this->createForm(Client_Type::class, $client);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $client->setDateModif(new \Datetime());
+            $client->setAuteurModif($_SESSION['login']->getUsername());
+
             $EM->persist($client);
             $EM->flush();
 

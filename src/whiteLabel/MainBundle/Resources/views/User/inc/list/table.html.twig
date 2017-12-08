@@ -53,7 +53,7 @@
                 {% set role = 'Bénéficiaire' %}
             {% endif %}
             <tr>
-                <td class="text-center">{{ item.id }}</td>
+                <td class="textCenter">{{ item.id }}</td>
                 <td>
                     <a href="{{ path('user_read', {'userId': item.id}) }}">
                         {{ item.username }}
@@ -70,7 +70,7 @@
                 <td>{{ statut }}</td>
                 <td>{{ role }}</td>
                 <td>{{ item.lastLogin|date('d/m/Y') }}</td>
-                <td class="text-center">
+                <td class="textCenter">
                     {#
                    {% if 0 == item.enabled %}
                        <a href="{{ path('admin_enabled', {'userId': item.id, 'flag': 1}) }}"

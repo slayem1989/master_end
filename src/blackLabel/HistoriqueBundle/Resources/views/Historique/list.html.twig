@@ -8,14 +8,14 @@
     'bundles/whitelabelbackoffice/css/lot/historique.css'
     'bundles/blacklabelhistorique/css/historique/list.css'
     %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginBottom40 noPadding" id="bloc_title">
-        <h2>Historique du lot n°{{ lotId }}</h2>
+        <h2>Consulter l'historique d'un lot: {{ lotNumero }}</h2>
         {{ include('whiteLabelBackOfficeBundle:Lot:inc/back.html.twig') }}
     </div>
 
@@ -31,6 +31,6 @@
     'bundles/blacklabelhistorique/js/core/list/jquery_datatable.js'
     'bundles/blacklabelhistorique/js/core/list/bootstrap_datatable.js'
     %}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
 {% endblock %}

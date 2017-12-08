@@ -1,0 +1,87 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Prime/inc/form/information.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-information">
+    <fieldset>
+        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Information</legend>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.telephone) }}</div>
+        <div class="form-group">
+            {{ form_label(form.telephone, "Téléphone", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.email) }}</div>
+        <div class="form-group">
+            {{ form_label(form.email, "Courriel", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.iban) }}</div>
+        <div class="form-group">
+            {{ form_label(form.iban, "IBAN", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.iban, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.montantAide) }}</div>
+        <div class="form-group">
+            {{ form_label(form.montantAide, "Montant de l'aide", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.montantAide, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.numeroAction) }}</div>
+        <div class="form-group">
+            {{ form_label(form.numeroAction, "Numéro d'action", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.numeroAction, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.apporteurAffaire) }}</div>
+        <div class="form-group">
+            {{ form_label(form.apporteurAffaire, "Apporteur d'affaire", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.apporteurAffaire, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.onglet) }}</div>
+        <div class="form-group">
+            {{ form_label(form.onglet, "Nom de l'onglet", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.onglet, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.nomModele) }}</div>
+        <div class="form-group">
+            {{ form_label(form.nomModele, "Modèle", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.nomModele, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+    </fieldset>
+</div>

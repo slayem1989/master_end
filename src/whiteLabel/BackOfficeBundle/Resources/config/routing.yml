@@ -90,3 +90,55 @@ lot_update:
     requirements:
         clientId: \d+
         lotId: \d+
+
+################################
+###       Prime Routing      ###
+################################
+prime_list:
+    path:     /prime/list/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:list }
+    requirements:
+        clientId: \d+
+
+prime_read:
+    path:     /prime/read/{clientId}/{primeId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:read }
+    requirements:
+        clientId: \d+
+        primeId: \d+
+
+prime_update:
+    path:     /prime/update/{clientId}/{primeId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:update }
+    requirements:
+        clientId: \d+
+        primeId: \d+
+
+################################
+###  Lettre Chèque Routing   ###
+################################
+lettreCheque_list:
+    path:     /lettreCheque/list/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:list }
+    requirements:
+        clientId: \d+
+
+lettreCheque_create:
+    path:     /lettreCheque/create/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:create }
+    requirements:
+        clientId: \d+
+
+lettreCheque_read:
+    path:     /lettreCheque/read/{clientId}/{lettreChequeId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:read }
+    requirements:
+        clientId: \d+
+        lettreChequeId: \d+
+
+lettreCheque_update:
+    path:     /lettreCheque/update/{clientId}/{lettreChequeId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:update }
+    requirements:
+        clientId: \d+
+        lettreChequeId: \d+

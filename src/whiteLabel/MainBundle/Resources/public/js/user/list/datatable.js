@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var table = $('#table_user').DataTable( {
+    var table = $('#table_user').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
         },
@@ -7,7 +7,7 @@ $(document).ready(function() {
         "pageLength": 25,
         "order": [[ 0, "desc" ]],
         orderCellsTop: true
-    } );
+    });
     
     // Clear all filter
     $('#clear_search_input').on('click', function () {

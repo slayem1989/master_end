@@ -46,12 +46,12 @@ class Client_information
     private $titreDispositif;
 
     /**
-     * @ORM\Column(name="logo_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="logo_url", type="string", length=255)
      */
     private $logo_url;
 
     /**
-     * @ORM\Column(name="logo_alt", type="string", length=255, nullable=true)
+     * @ORM\Column(name="logo_alt", type="string", length=255)
      */
     private $logo_alt;
 

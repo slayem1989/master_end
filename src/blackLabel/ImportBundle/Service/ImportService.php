@@ -52,20 +52,20 @@ class ImportService
 
     /**
      * @param $importId
-     * @param $fileUrl
+     * @param $fileWebPath
      */
-    public function persistXLSX($importId, $fileUrl)
+    public function persistXLSX($importId, $fileWebPath)
     {
         $EM = $this->doctrine->getManager();
 
-        $lotFile = $this->container->getParameter('kernel.project_dir')."/data/import/".$importId."_import.".$fileUrl;
-        $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject($lotFile);
+        $sourceFile = $this->container->getParameter('kernel.project_dir')."/data/".$fileWebPath;
+        $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject($sourceFile);
 
         /*
          * Autre Méthode
-        $inputFileType = PHPExcel_IOFactory::identify($lotFile);
+        $inputFileType = PHPExcel_IOFactory::identify($sourceFile);
         $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-        $phpExcelObject = $objReader->load($lotFile);
+        $phpExcelObject = $objReader->load($sourceFile);
         */
 
         $allSheet = $phpExcelObject->getAllSheets();
@@ -112,13 +112,27 @@ class ImportService
                                 SET COMMANDE DATA
             /////////////////////////////////////////////////////////// */
             foreach ($valueCommande as $row) {
+                // FORMAT DATA
                 if ($row["B"]) $row["B"] = new \DateTime(date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($row["B"])));
-
                 if ($row["C"]) $row["C"] = (int)$row["C"];
+                if ($row["D"]) $row["D"] = strtoupper($row["D"]);
+                if ($row["E"]) $row["E"] = ucfirst(strtolower($row["E"]));
                 if ($row["F"]) $row["F"] = str_replace('.', '', $row["F"]);
+                if ($row["G"]) $row["G"] = strtoupper($row["G"]);
+                if ($row["H"]) $row["H"] = strtoupper($row["H"]);
+                if ($row["L"]) $row["L"] = strtoupper($row["L"]);
+                if ($row["M"]) $row["M"] = strtoupper($row["M"]);
                 if ($row["R"]) $row["R"] = filter_var($row["R"],FILTER_SANITIZE_NUMBER_INT);
                 if ($row["S"]) $row["S"] = filter_var($row["S"],FILTER_SANITIZE_EMAIL);
                 if ($row["U"]) $row["U"] = number_format(floatval($row["U"]),2);
+
+                $bypass = true;
+                // IMPORT RULES
+                /*
+                if (('LC' != $row["A"]) || ('VIR' != $row["A"])) $bypass = false;
+                if ($row["B"])
+                if ($row["C"])
+                */
 
                 $objectCommande = new Import_prime();
                 $objectCommande->setCanalId($objectCanal->getId());
@@ -148,7 +162,9 @@ class ImportService
                 $objectCommande->setOnglet($row["X"]);
 
                 $EM->persist($objectCommande);
-            }
+
+                //dump(gettype($row['Y']));
+            }//die;
             $EM->flush();
 
             /*

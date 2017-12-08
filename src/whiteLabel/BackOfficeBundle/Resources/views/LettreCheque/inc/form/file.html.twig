@@ -1,0 +1,50 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/LettreCheque/inc/form/file.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-file">
+    <fieldset>
+        <legend><span class="legend-icon"></span>&nbsp;A compl&eacute;ter</legend>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.typeBeneficiaire) }}</div>
+        <div class="form-group">
+            {{ form_label(form.typeBeneficiaire, "Type de bénéficiaire", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.typeBeneficiaire) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.nomModele) }}</div>
+        <div class="form-group">
+            {{ form_label(form.nomModele, "Nom du modèle", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.nomModele, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">
+            {{ form_errors(form.file) }}
+            <ul id="file-error"></ul>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.file, "Nom du fichier", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.file) }}
+            </div>
+        </div>
+
+        {% if lettreCheque and lettreCheque.fileUrl %}
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-4 col-lg-offset-4">
+            <p>
+                <a href="{{ path('upload_read', {'uploadId': lettreCheque.id, 'fileKey': 1, 'extension': lettreCheque.fileUrl, 'folderKey': 1}) }}" target="_blank">
+                    Voir le fichier
+                </a>
+            </p>
+        </div>
+        {% endif %}
+
+    </fieldset>
+</div>

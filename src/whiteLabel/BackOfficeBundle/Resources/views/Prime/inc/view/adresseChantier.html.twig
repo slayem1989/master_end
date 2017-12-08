@@ -1,0 +1,30 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Prime/inc/view/adresseFacturation.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-adresseFacturation">
+    <fieldset>
+        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Adresse de chantier</legend>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Adresse :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.adresseChantier|capitalize }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Compl&eacute;ment :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.complementAdresseChantier ? prime.complementAdresseChantier|capitalize : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Ville :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.codePostalChantier }} {{ prime.villeChantier|upper }}
+            </div>
+        </div>
+
+    </fieldset>
+
+    <hr class="bloc-limit">
+</div>

@@ -9,7 +9,10 @@ use blackLabel\GenericBundle\Entity\Log;
 /**
  * Historique
  *
- * @ORM\Table(name="historique")
+ * @ORM\Table(name="historique", indexes={
+ *      @ORM\Index(name="lot_idx", columns={"lot_id"}),
+ *      @ORM\Index(name="statut_idx", columns={"statut_id"})
+ * })
  * @ORM\Entity(repositoryClass="blackLabel\HistoriqueBundle\Repository\HistoriqueRepository")
  */
 class Historique extends Log
@@ -60,15 +63,16 @@ class Historique extends Log
 
 
 
-    const STATUT_1 = 'Intégration du lot';
-    const STATUT_2 = 'Emission de la ND';
-    const STATUT_3 = 'Validation de la ND';
-    const STATUT_4 = 'Emission des BAT';
-    const STATUT_5 = 'Validation des BAT';
-    const STATUT_6 = 'Versement des fonds';
-    const STATUT_7 = 'Réception des fonds';
-    const STATUT_8 = 'Edition des LC';
-    const STATUT_9 = 'Expédition des LC';
+    const STATUT_1 = 'Intégration d’un nouveau lot de prime';
+    const STATUT_2 = 'Emission de la ND par le groupe Up';
+    const STATUT_3 = 'Emission des BAT par le groupe Up';
+    const STATUT_4 = 'Validation de la ND par TMF';
+    const STATUT_44 = 'Refus de la ND par TMF';
+    const STATUT_5 = 'Validation des BAT par TMF';
+    const STATUT_55 = 'Refus des BAT par TMF';
+    const STATUT_6 = 'Réception des fonds par le groupe Up si solution 1 ou par TMF si solution 2';
+    const STATUT_7 = 'Edition des LC';
+    const STATUT_8 = 'Expédition des LC / Virement';
 
 
 

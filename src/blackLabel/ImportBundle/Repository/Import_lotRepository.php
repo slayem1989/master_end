@@ -27,8 +27,8 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     cb.nom AS banqueNom,
                     COUNT(CASE WHEN ip.type = 'LC' THEN ip.type ELSE NULL END) AS countLC,
                     SUM(CASE WHEN ip.type = 'LC' THEN ip.montant_aide ELSE NULL END) AS montantLC,
-                    COUNT(CASE WHEN ip.type = 'Autre' THEN ip.type ELSE NULL END) AS countAutre,
-                    SUM(CASE WHEN ip.type = 'Autre' THEN ip.montant_aide ELSE NULL END) AS montantAutre,
+                    COUNT(CASE WHEN ip.type = 'VIR' THEN ip.type ELSE NULL END) AS countAutre,
+                    SUM(CASE WHEN ip.type = 'VIR' THEN ip.montant_aide ELSE NULL END) AS montantAutre,
                     SUM(ip.montant_aide) AS montantTotal
             FROM import_lot il
                 INNER JOIN client_ c ON c.id = il.client_id
@@ -39,7 +39,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
             WHERE il.client_id = " . $clientId . "
                 AND ic.title LIKE '%ecap%'
             GROUP BY il.id
-            ORDER BY il.id DESC;
+            ORDER BY il.id DESC
         ";
 
         $stmt = $EM
@@ -48,5 +48,76 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * @param $clientId
+     * @param $lotId
+     * @return mixed
+     */
+    public function findByIdCustom($clientId, $lotId)
+    {
+        $EM = $this->getEntityManager('EM_MYSQL');
+
+        $query = "
+            SELECT  il.id AS lotId,
+                    il.numero AS lotNumero,
+                    il.date_statut_1 AS lotDateStatut1,
+                    il.date_statut_2 AS lotDateStatut2,
+                    il.date_statut_3 AS lotDateStatut3,
+                    il.date_statut_4 AS lotDateStatut4,
+                    il.date_statut_5 AS lotDateStatut5,
+                    il.date_statut_6 AS lotDateStatut6,
+                    il.date_statut_7 AS lotDateStatut7,
+                    il.date_statut_8 AS lotDateStatut8,
+                    il.statut_id AS lotStatutId,
+                    s1.slug AS lotStatutSlug,
+                    s2.slug AS lotStatutSlugNext,
+                    s3.slug AS lotStatutSlugDeny4,
+                    s4.slug AS lotStatutSlugDeny5
+            FROM import_lot il
+                INNER JOIN statut s1 ON s1.id = il.statut_id
+                LEFT JOIN statut s2 ON s2.id = il.statut_id + 1
+                LEFT JOIN statut s3 ON s3.id = il.statut_id - 2
+                LEFT JOIN statut s4 ON s4.id = il.statut_id - 2
+            WHERE il.id = " . $lotId . "
+                AND il.client_id = " . $clientId
+        ;
+
+        $stmt = $EM
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    /**
+     * @param $clientId
+     * @param $primeId
+     * @return mixed
+     */
+    public function findByPrime($clientId, $primeId)
+    {
+        $EM = $this->getEntityManager('EM_MYSQL');
+
+        $query = "
+            SELECT  il.id AS lotId,
+                    il.numero AS lotNumero,
+                    ip.canal_id AS canalId,
+                    ip.id AS primeId
+            FROM import_lot il
+                INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN import_prime ip ON ip.canal_id = ic.id
+            WHERE ip.id = " . $primeId . "
+                AND il.client_id = " . $clientId
+        ;
+
+        $stmt = $EM
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 }

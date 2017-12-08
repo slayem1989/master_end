@@ -13,7 +13,11 @@ use whiteLabel\BackOfficeBundle\Entity\Statut;
 /**
  * Import_lot
  *
- * @ORM\Table(name="import_lot")
+ * @ORM\Table(name="import_lot", indexes={
+ *      @ORM\Index(name="client_idx", columns={"client_id"}),
+ *      @ORM\Index(name="banque_idx", columns={"banque_id"}),
+ *      @ORM\Index(name="statut_idx", columns={"statut_id"})
+ * })
  * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_lotRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -38,13 +42,6 @@ class Import_lot extends Log
     /**
      * @var int
      *
-     * @ORM\Column(name="statut_id", type="integer")
-     */
-    private $statut_id;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="client_id", type="integer")
      */
     private $client_id;
@@ -57,6 +54,83 @@ class Import_lot extends Log
     private $banque_id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="statut_id", type="integer")
+     */
+    private $statut_id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_1", type="datetime", nullable=true)
+     */
+    private $dateStatut1;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_2", type="datetime", nullable=true)
+     */
+    private $dateStatut2;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_3", type="datetime", nullable=true)
+     */
+    private $dateStatut3;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_4", type="datetime", nullable=true)
+     */
+    private $dateStatut4;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_44", type="datetime", nullable=true)
+     */
+    private $dateStatut44;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_5", type="datetime", nullable=true)
+     */
+    private $dateStatut5;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_55", type="datetime", nullable=true)
+     */
+    private $dateStatut55;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_6", type="datetime", nullable=true)
+     */
+    private $dateStatut6;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_7", type="datetime", nullable=true)
+     */
+    private $dateStatut7;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_8", type="datetime", nullable=true)
+     */
+    private $dateStatut8;
+
+    /**
      * @ORM\Column(name="file_url", type="string", length=255)
      */
     private $file_url;
@@ -67,7 +141,10 @@ class Import_lot extends Log
     private $file_alt;
 
     /**
-     * @Assert\File(maxSize="20480k", mimeTypes={ "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+     * @Assert\File(
+     *     maxSize="20480k",
+     *     mimeTypes={ "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+     * )
      */
     private $file;
 
@@ -83,6 +160,7 @@ class Import_lot extends Log
         parent::__construct();
 
         $this->statut_id = Statut::STATUS_1;
+        $this->dateStatut1 = new \Datetime();
     }
 
 
@@ -119,30 +197,6 @@ class Import_lot extends Log
     public function getNumero()
     {
         return $this->numero;
-    }
-
-    /**
-     * Set statutId
-     *
-     * @param integer $statutId
-     *
-     * @return Import_lot
-     */
-    public function setStatutId($statutId)
-    {
-        $this->statut_id = $statutId;
-
-        return $this;
-    }
-
-    /**
-     * Get statutId
-     *
-     * @return integer
-     */
-    public function getStatutId()
-    {
-        return $this->statut_id;
     }
 
     /**
@@ -191,6 +245,270 @@ class Import_lot extends Log
     public function getBanqueId()
     {
         return $this->banque_id;
+    }
+
+    /**
+     * Set statutId
+     *
+     * @param integer $statutId
+     *
+     * @return Import_lot
+     */
+    public function setStatutId($statutId)
+    {
+        $this->statut_id = $statutId;
+
+        return $this;
+    }
+
+    /**
+     * Get statutId
+     *
+     * @return integer
+     */
+    public function getStatutId()
+    {
+        return $this->statut_id;
+    }
+
+    /**
+     * Set dateStatut1
+     *
+     * @param \DateTime $dateStatut1
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut1($dateStatut1)
+    {
+        $this->dateStatut1 = $dateStatut1;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut1
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut1()
+    {
+        return $this->dateStatut1;
+    }
+
+    /**
+     * Set dateStatut2
+     *
+     * @param \DateTime $dateStatut2
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut2($dateStatut2)
+    {
+        $this->dateStatut2 = $dateStatut2;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut2
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut2()
+    {
+        return $this->dateStatut2;
+    }
+
+    /**
+     * Set dateStatut3
+     *
+     * @param \DateTime $dateStatut3
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut3($dateStatut3)
+    {
+        $this->dateStatut3 = $dateStatut3;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut3
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut3()
+    {
+        return $this->dateStatut3;
+    }
+
+    /**
+     * Set dateStatut4
+     *
+     * @param \DateTime $dateStatut4
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut4($dateStatut4)
+    {
+        $this->dateStatut4 = $dateStatut4;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut4
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut4()
+    {
+        return $this->dateStatut4;
+    }
+
+    /**
+     * Set dateStatut44
+     *
+     * @param \DateTime $dateStatut44
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut44($dateStatut44)
+    {
+        $this->dateStatut44 = $dateStatut44;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut44
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut44()
+    {
+        return $this->dateStatut44;
+    }
+
+    /**
+     * Set dateStatut5
+     *
+     * @param \DateTime $dateStatut5
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut5($dateStatut5)
+    {
+        $this->dateStatut5 = $dateStatut5;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut5
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut5()
+    {
+        return $this->dateStatut5;
+    }
+
+    /**
+     * Set dateStatut55
+     *
+     * @param \DateTime $dateStatut55
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut55($dateStatut55)
+    {
+        $this->dateStatut55 = $dateStatut55;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut55
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut55()
+    {
+        return $this->dateStatut55;
+    }
+
+    /**
+     * Set dateStatut6
+     *
+     * @param \DateTime $dateStatut6
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut6($dateStatut6)
+    {
+        $this->dateStatut6 = $dateStatut6;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut6
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut6()
+    {
+        return $this->dateStatut6;
+    }
+
+    /**
+     * Set dateStatut7
+     *
+     * @param \DateTime $dateStatut7
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut7($dateStatut7)
+    {
+        $this->dateStatut7 = $dateStatut7;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut7
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut7()
+    {
+        return $this->dateStatut7;
+    }
+
+    /**
+     * Set dateStatut8
+     *
+     * @param \DateTime $dateStatut8
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut8($dateStatut8)
+    {
+        $this->dateStatut8 = $dateStatut8;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut8
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut8()
+    {
+        return $this->dateStatut8;
     }
 
     /**

@@ -1,0 +1,10 @@
+/*******************************************
+            BLOC DETAILS
+*******************************************/
+#bloc-detail input[type=radio] {
+    vertical-align: bottom;
+}
+
+#blacklabel_importbundle_import_prime_type label {
+    margin: 0 10px 0 5px;
+}

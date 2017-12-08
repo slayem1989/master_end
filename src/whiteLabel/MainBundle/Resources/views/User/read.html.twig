@@ -1,11 +1,11 @@
-{# src/whiteLabel/MainBundle/Resources/views/User/view.html.twig #}
+{# src/whiteLabel/MainBundle/Resources/views/User/read.html.twig #}
 {% extends "whiteLabelMainBundle::layout_core.html.twig" %}
 
 {% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelmain/css/core/form/*.css'
-    'bundles/whitelabelmain/css/user/view.css'
+    'bundles/whitelabelmain/css/user/read.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}

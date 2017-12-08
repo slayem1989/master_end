@@ -1,1 +1,22 @@
 services:
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  S E R V I C E
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    white_label.service.lot:
+        class: whiteLabel\BackOfficeBundle\Service\LotService
+        arguments: ['@doctrine', '@service_container']
+
+    white_label.service.prime:
+        class: whiteLabel\BackOfficeBundle\Service\PrimeService
+        arguments: ['@doctrine', '@service_container']
+
+    white_label.service.lettreCheque:
+        class: whiteLabel\BackOfficeBundle\Service\LettreChequeService
+        arguments: ['@doctrine', '@service_container']
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  S E C U R I T Y
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    white_label.service.security:
+        class: whiteLabel\BackOfficeBundle\Service\SecurityService
+        arguments: ['@doctrine', '@service_container']

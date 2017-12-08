@@ -1,0 +1,117 @@
+/*******************************************
+                BLOC STEP
+*******************************************/
+#bloc-step {
+    display: flex;
+}
+
+/*******************************************
+                BLOC CRUMBS
+*******************************************/
+#bloc_crumbs {
+}
+
+#crumbs ul { list-style: none; }
+#crumbs ul li {
+    background-color: #77b636;
+    color: #fff;
+    cursor: default;
+    display: block;
+    font-size: 1.3em;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 auto 50px;
+    max-width: 320px;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    width: 320px;
+}
+#crumbs ul li:last-child { margin-bottom: 0; }
+/* Previous step background */
+#crumbs li p { background-color: #77b636; }
+#crumbs li p::before { border-left-color: #77b636 !important;border-right-color: #77b636 !important; }
+#crumbs li p::after { border-top-color: #77b636; }
+
+/* Current step background */
+#crumbs li.step_current p { background-color: #f89406; }
+#crumbs li.step_current p::before { border-left-color: #f89406 !important;border-right-color: #f89406 !important; }
+#crumbs li.step_current p::after { border-top-color: #f89406; }
+
+/* Following step background */
+#crumbs li.step_current ~ li p { background-color: #ebebeb; }
+#crumbs li.step_current ~ li p::before { border-left-color: #ebebeb !important;border-right-color: #ebebeb !important; }
+#crumbs li.step_current ~ li p::after { border-top-color: #ebebeb; }
+
+
+
+/* Arrow */
+#crumbs ul li p:before {
+    content: "";
+    border-left: 160px solid #77b636;
+    border-right: 160px solid #77b636;
+    border-top: 40px solid transparent;
+    position: absolute;
+    left: 0;
+    top: -40px;
+}
+#crumbs ul li p:after {
+    content: "";
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 40px solid #77b636;
+    position: absolute;
+    left: 0;
+    top: 50px;
+}
+#crumbs ul li:first-child p:before { display: none; }
+#crumbs ul li:last-child p:after { display: none; }
+
+
+
+/* Rounded corner */
+#crumbs ul li:first-child, #crumbs ul li:first-child p {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+#crumbs ul li:last-child, #crumbs ul li:last-child p {
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+
+
+/*
+#crumbs ul li p:hover {
+    background: #f89406;
+}
+#crumbs ul li p:hover:before {
+    border-left-color: #f89406;
+    border-right-color: #f89406;
+}
+
+#crumbs ul li p:hover:after {
+    border-top-color: #f89406;
+}
+*/
+
+/*******************************************
+                BLOC FORM
+*******************************************/
+#bloc_form {
+    padding: 0 15px;
+}
+
+#bloc_form fieldset legend {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#bloc_form #container_submit {
+    margin: auto;
+}
+#bloc_form #container_submit_deny4, #bloc_form #container_submit_deny5 {
+    margin: auto;
+    padding: 0;
+}

@@ -4,13 +4,17 @@ namespace blackLabel\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use blackLabel\GenericBundle\Entity\Log;
+
 /**
  * Import_canal
  *
- * @ORM\Table(name="import_canal")
+ * @ORM\Table(name="import_canal", indexes={
+ *      @ORM\Index(name="lot_idx", columns={"lot_id"})
+ * })
  * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_canalRepository")
  */
-class Import_canal
+class Import_canal extends Log
 {
     /**
      * @var int
@@ -24,7 +28,7 @@ class Import_canal
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255, nullable=true)
+     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
@@ -76,6 +80,16 @@ class Import_canal
      * @ORM\Column(name="ecart_type", type="string", length=255, nullable=true)
      */
     private $ecart_type;
+
+
+
+    /**
+     * Import_canal constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
 
 

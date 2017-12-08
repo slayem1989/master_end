@@ -47,22 +47,27 @@ class HistoriqueService
      * @param $action
      * @param $content
      * @param $statutId
+     * @param null $dateForm
      */
     public function save(
         $lotId,
         $action,
         $content,
-        $statutId
+        $statutId,
+        $dateForm = null
     ) {
         $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut');
         $statutSlug = $repo_statut->findSlugByStatut($statutId);
+
+        if ($dateForm) $etatCommande = $statutSlug . ' et indiqué au ' . $dateForm;
+        else $etatCommande = $statutSlug;
 
         $historique = new Historique();
         $historique->setLotId($lotId);
         $historique->setAction($action);
         $historique->setContent($content);
         $historique->setStatutId($statutId);
-        $historique->setStatutSlug($statutSlug);
+        $historique->setStatutSlug($etatCommande);
 
         $this->EM->persist($historique);
         $this->EM->flush();

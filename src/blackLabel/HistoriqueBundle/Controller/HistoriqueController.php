@@ -22,17 +22,23 @@ class HistoriqueController extends Controller
         $EM = $this->getDoctrine()->getManager();
 
         /* /////////////////////////////////////////////////////////////////
+                                GET LOT
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_lot');
+        $lot = $repo->find($lotId);
+
+        /* /////////////////////////////////////////////////////////////////
                                 GET LIST OF HISTORIQUE
         ///////////////////////////////////////////////////////////////// */
-        $repo = $EM->getRepository('blackLabelHistoriqueBundle:Historique');
-        $list = $repo->findBy(array(
+        $repo_historique = $EM->getRepository('blackLabelHistoriqueBundle:Historique');
+        $list = $repo_historique->findBy(array(
             'lot_id' => $lotId
         ));
 
         return $this->render('blackLabelHistoriqueBundle:Historique:list.html.twig', array(
             'list'      => $list,
             'clientId'  => $clientId,
-            'lotId'     => $lotId
+            'lotNumero' => $lot->getNumero()
         ));
     }
 }

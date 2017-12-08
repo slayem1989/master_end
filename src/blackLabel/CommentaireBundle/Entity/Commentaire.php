@@ -10,7 +10,9 @@ use blackLabel\GenericBundle\Entity\Log;
 /**
  * Commentaire
  *
- * @ORM\Table(name="commentaire")
+ * @ORM\Table(name="commentaire", indexes={
+ *      @ORM\Index(name="lot_idx", columns={"lot_id"})
+ * })
  * @ORM\Entity(repositoryClass="blackLabel\CommentaireBundle\Repository\CommentaireRepository")
  */
 class Commentaire extends Log

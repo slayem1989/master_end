@@ -49,11 +49,9 @@
         {% if client and client.clientInformation and client.clientInformation.logoUrl %}
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-4 col-lg-offset-4">
             <p>
-                {% if client and client.clientInformation and client.clientInformation.logoUrl %}
                 <a href="{{ path('upload_read', {'uploadId': client.clientInformation.id, 'fileKey': 0, 'extension': client.clientInformation.logoUrl, 'folderKey': 0}) }}" target="_blank">
                     Voir le fichier
                 </a>
-                {% endif %}
             </p>
         </div>
         {% endif %}

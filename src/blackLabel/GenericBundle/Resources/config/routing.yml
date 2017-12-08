@@ -7,5 +7,5 @@ upload_read:
     requirements:
         uploadId: \d+
         fileKey: \d+
-        extension: jpeg|jpg|png|
+        extension: jpeg|jpg|png|html|pdf|txt
         folderKey: \d+

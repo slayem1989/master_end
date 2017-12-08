@@ -84,7 +84,9 @@
         <ul class="sidebar-list">
             {% set clientId = app.request.get('_route_params')['clientId'] %}
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="sidebar-item"><a href="{{ path('lot_list', {'clientId': clientId}) }}" class="sidebar-anchor">Suivi de lots</a></li>
+                <li class="sidebar-item"><a href="{{ path('lot_list', {'clientId': clientId}) }}" class="sidebar-anchor">Suivi des lots</a></li>
+                <li class="sidebar-item"><a href="{{ path('prime_list', {'clientId': clientId}) }}" class="sidebar-anchor">Suivi des primes</a></li>
+                <li class="sidebar-item"><a href="{{ path('lettreCheque_list', {'clientId': clientId}) }}" class="sidebar-anchor">Lettre Ch&egrave;que</a></li>
             {% endif %}
             <li class="sidebar-item"><a href="{{ path('bo_dashboard') }}" class="sidebar-anchor">Retour à la liste des clients</a></li>
         </ul>

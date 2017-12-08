@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <header>
 
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" id="header_logo">
+            <div class="hidden-xs col-sm-3 col-md-3 col-lg-3" id="header_logo">
                 <a href="{{ path('fo_homepage') }}">
                     {% image
                     'bundles/whitelabelfrontoffice/images/logo/up.jpg'
@@ -13,7 +13,7 @@
                 </a>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 textCenter" id="header_client">
                 {% image
                 'bundles/whitelabelfrontoffice/images/logo/logo_espace.png'
                 %}
@@ -23,7 +23,7 @@
 
             {% if app.user.roles is defined %}
             {% if 'ROLE_MEMBER' in app.user.roles and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 textRight" id="header_login">
                     <span class="textBold">{{ app.user.username }}</span>
                     &nbsp;
                     <a href="{{ path('fos_user_security_logout') }}"

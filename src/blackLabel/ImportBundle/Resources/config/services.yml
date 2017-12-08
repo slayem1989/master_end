@@ -9,8 +9,14 @@ services:
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #  F O R M S   E N T I T Y   M A N A G E R
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    entityManager.formType.import:
+    entityManager.formType.importLot:
         class: blackLabel\ImportBundle\Form\Import_lotType
+        tags:
+            - { name: form.type, alias: form_em }
+        arguments: ['@doctrine']
+
+    entityManager.formType.importPrime:
+        class: blackLabel\ImportBundle\Form\Import_primeType
         tags:
             - { name: form.type, alias: form_em }
         arguments: ['@doctrine']

@@ -1,11 +1,11 @@
-{# src/whiteLabel/BackOfficeBundle/Resources/views/Client/view.html.twig #}
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Client/read.html.twig #}
 {% extends "whiteLabelBackOfficeBundle::layout_accueil.html.twig" %}
 
 {% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelbackoffice/css/core/form/*.css'
-    'bundles/whitelabelbackoffice/css/client/view.css'
+    'bundles/whitelabelbackoffice/css/client/read.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}

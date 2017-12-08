@@ -4,13 +4,17 @@ namespace blackLabel\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use blackLabel\GenericBundle\Entity\Log;
+
 /**
  * Import_prime
  *
- * @ORM\Table(name="import_prime")
+ * @ORM\Table(name="import_prime", indexes={
+ *      @ORM\Index(name="canal_idx", columns={"canal_id"})
+ * })
  * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_primeRepository")
  */
-class Import_prime
+class Import_prime extends Log
 {
     /**
      * @var int
@@ -202,7 +206,17 @@ class Import_prime
      * @ORM\Column(name="nom_modele", type="string", length=255, nullable=true)
      */
     private $nomModele;
-    
+
+
+
+    /**
+     * Import_prime constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
 
 
     /**

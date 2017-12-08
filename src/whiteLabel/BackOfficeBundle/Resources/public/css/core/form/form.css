@@ -66,6 +66,12 @@ input[type=checkbox] + label {
 
 
 
+input[type=file] {
+    width: 100%;
+}
+
+
+
 #container_submit {
     padding: 15px 0;
 }

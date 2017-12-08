@@ -1,0 +1,81 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Prime/inc/view/detail.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-detail">
+    <fieldset>
+        <legend><span class="legend-icon"></span>&nbsp;D&eacute;tails</legend>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Type :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.type|upper }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Date d'int&eacute;gration :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.dateCreation|date('d/m/Y') }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Lot de paiement :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ lot.lotNumero }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Num&eacute;ro de Ch&egrave;que :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.numero }}
+            </div>
+        </div>
+
+        {% if prime.prenom is not empty and prime.nom is not empty %}
+            {% set displayFlag1 = '' %}
+            {% set displayFlag2 = 'hidden' %}
+        {% else %}
+            {% set displayFlag1 = 'hidden' %}
+            {% set displayFlag2 = '' %}
+        {% endif %}
+
+        <div class="row {{ displayFlag1 }}">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Pr&eacute;nom :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.prenom|capitalize }}
+            </div>
+        </div>
+
+        <div class="row {{ displayFlag1 }}">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Nom :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.nom|upper }}
+            </div>
+        </div>
+
+        <div class="row {{ displayFlag2 }}">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">SIREN :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.siren|upper }}
+            </div>
+        </div>
+
+        <div class="row {{ displayFlag2 }}">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">D&eacute;nomination :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.denomination|capitalize }}
+            </div>
+        </div>
+
+        <div class="row {{ displayFlag2 }}">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Repr&eacute;sentant :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.representant|capitalize }}
+            </div>
+        </div>
+
+
+    </fieldset>
+
+    <hr class="bloc-limit">
+</div>

@@ -68,6 +68,12 @@ input[type=checkbox] + label {
 
 
 
+#bloc-file input[type=file] {
+    width: 100%;
+}
+
+
+
 #container_submit {
     padding: 15px 0;
 }

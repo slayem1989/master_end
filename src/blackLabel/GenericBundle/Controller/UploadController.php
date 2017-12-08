@@ -24,6 +24,8 @@ class UploadController extends Controller
         switch ($folderKey) {
             case 0: $folder = 'client/logo/';
                 break;
+            case 1: $folder = 'client/lettreCheque/';
+                break;
             default: $folder = '';
                 break;
         }
@@ -31,9 +33,13 @@ class UploadController extends Controller
         switch ($fileKey) {
             case 0: $type = '_logo.';
                 break;
+            case 1: $type = '_lettre_cheque.';
+                break;
             default: $type = '';
                 break;
         }
+
+        if ('txt' == $extension) $extension = 'pdf';
 
         $path = $this->get('kernel')->getRootDir(). "/../data/" . $folder;
         $file = $path . $uploadId . $type . $extension;

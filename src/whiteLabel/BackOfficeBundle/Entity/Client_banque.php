@@ -24,35 +24,35 @@ class Client_banque
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="rib", type="string", length=255, nullable=true)
+     * @ORM\Column(name="rib", type="string", length=255)
      */
     private $rib;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iban", type="string", length=255, nullable=true)
+     * @ORM\Column(name="iban", type="string", length=255)
      */
     private $iban;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bic", type="string", length=255, nullable=true)
+     * @ORM\Column(name="bic", type="string", length=255)
      */
     private $bic;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="titulaire", type="string", length=255, nullable=true)
+     * @ORM\Column(name="titulaire", type="string", length=255)
      */
     private $titulaire;
 

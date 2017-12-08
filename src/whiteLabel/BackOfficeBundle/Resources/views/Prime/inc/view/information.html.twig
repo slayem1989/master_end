@@ -1,0 +1,64 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Prime/inc/view/information.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-information">
+    <fieldset>
+        <legend class="marginTop20"><span class="legend-icon"></span>&nbsp;Information</legend>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">T&eacute;l&eacute;phone :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.telephone ? prime.telephone : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Courriel :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.email ? prime.email : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">IBAN :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.iban ? prime.iban|upper : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Montant de l'aide :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.montantAide }} €
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Num&eacute;ro d'action :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.numeroAction ? prime.numeroAction|upper : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Apporteur d'affaire :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.apporteurAffaire ? prime.apporteurAffaire|upper : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Onglet :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ prime.onglet ? prime.onglet : '-' }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Mod&egrave;le de Lettre Ch&egrave;que :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {% set nomModele = prime.nomModele|split(' | ') %}
+                {{ nomModele[1] }}
+            </div>
+        </div>
+
+    </fieldset>
+</div>

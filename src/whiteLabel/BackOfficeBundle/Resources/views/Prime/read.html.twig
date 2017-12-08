@@ -1,0 +1,38 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Prime/read.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
+    'bundles/whitelabelbackoffice/css/prime/read.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
+        <h2>Consulter une Prime: {{ prime.numero }}</h2>
+        <a href="{{ path('prime_update', {'clientId': clientId, 'primeId': prime.id}) }}"
+           class="btn btn-warning btn-xs container_action"
+           id="action_update"
+           role="button"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           data-container="body"
+           title="Modifier la Prime"
+        >
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        {{ include('whiteLabelBackOfficeBundle:Prime:inc/back.html.twig') }}
+    </div>
+
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/view/detail.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/view/adresseFacturation.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/view/adresseChantier.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/view/information.html.twig') }}
+
+</div>
+{% endblock %}

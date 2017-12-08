@@ -41,6 +41,7 @@ body {
 .marginTop20 { margin-top: 20px; }
 .marginTop50 { margin-top: 50px; }
 .marginTop70 { margin-top: 70px; }
+.marginTop90 { margin-top: 90px; }
 .noMargin { margin: 0 !important; }
 .noPadding { padding: 0 !important; }
 .padding13 { padding: 13px; }
@@ -87,7 +88,8 @@ a:focus, a:hover, a.no-underline { outline: 0;text-decoration: none; }
 /*******************************************
                 UP STYLE
 *******************************************/
-.UPColor { color:#F89406; }
+.UPBackground { color: #F89406; }
+.UPColor { color: #F89406; }
 
 
 
