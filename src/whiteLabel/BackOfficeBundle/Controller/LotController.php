@@ -11,6 +11,8 @@ use blackLabel\HistoriqueBundle\Entity\Historique;
 use blackLabel\CommentaireBundle\Entity\Commentaire;
 use blackLabel\CommentaireBundle\Form\CommentaireType;
 
+use Spipu\Html2Pdf\Html2Pdf;
+
 /**
  * Class LotController
  * @package whiteLabel\BackOfficeBundle\Controller
@@ -299,5 +301,36 @@ class LotController extends Controller
             'lot'           => $lotData,
             'clientId'      => $clientId
         ));
+    }
+
+    /**
+     * @param $clientId
+     * @param $lotId
+     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
+     */
+    public function exportNoteDebitAction($clientId, $lotId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET LOT
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_lot');
+        $data = $repo->findDataNDByLot($clientId, $lotId);
+
+        /* //////////////////////////////////////////////////////////////////////
+                                GENERATE NOTE DE DEBIT
+         //////////////////////////////////////////////////////////////////// */
+        $tva = $this->getParameter('tva');
+        $template = $this->renderView('whiteLabelBackOfficeBundle:Lot:inc/export/note_debit.html.twig', array(
+            'list_canal'    => $data,
+            'tva'           => $tva
+        ));
+
+        $html2pdf = new Html2Pdf('P', 'A4', 'fr');
+        //$html2pdf->pdf->SetDisplayMode('fullpage');
+        //$html2pdf->setDefaultFont('Arial');
+        $html2pdf->writeHTML($template);
+        $html2pdf->Output($data[0]['lotNumero'] . '_note_debit_' . date('dmY') . '.pdf', 'D');
     }
 }

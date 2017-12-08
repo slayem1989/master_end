@@ -1,0 +1,337 @@
+<style type="text/css">
+    /*******************************************
+                BLOC HEADER
+    *******************************************/
+    .adresse{
+        color: #e9661f;
+        width:50%;
+        text-align:right;
+        font-size: 10px;
+    }
+    .logo{
+        width:50%;
+        text-align:left;
+    }
+    #table-header{
+        width: 100%;
+        font-size: 14px;
+    }
+    #table-header td img{
+        height: 70px;
+    }
+    /*******************************************
+                BLOC SUB HEADER
+    *******************************************/
+    #info-client tr td{
+        width:70%;
+        text-align:left;
+    }
+    #info-lot{
+        width: 100%;
+        font-size: 12px;
+    }
+    #info-lot tr td{
+        width:100%;
+        text-align:left;
+    }
+    #date-reception{
+        width: 50%;
+        font-size: 12px;
+        margin-left:40px
+    }
+    #date-reception tr td{
+        width:100%;
+        text-align:left
+    }
+    #grey-bloc{
+        background-color: #D3D3D3;
+        max-width: 100%;
+        margin-top: 30px;
+    }
+    /*******************************************
+                BLOC MAIN TABLE
+    *******************************************/
+    #main-table {
+        width: 100%;
+        font-family: helvetica;
+        line-height: 5mm;
+        border-collapse: collapse;
+        margin-left:40px
+    }
+    .border th {
+        border: 1px solid #000;
+        color: #000;
+        background: #D3D3D3;
+        padding: 5px;
+        font-weight: normal;
+        font-size: 14px;
+        text-align: center;
+    }
+    .border td {
+        border: 1px solid #000;
+        padding: 5px 10px;
+        text-align: center;
+    }
+    #total-calcul{
+        margin-top: 10px;
+        width: 100%;
+        font-size: 12px;
+    }
+
+    /*******************************************
+                BLOC BANQUE
+    *******************************************/
+    #info-client-banque{
+        width: 50%;
+        font-size: 14px;
+    }
+    .tbanque-width{
+        width: 25%;
+    }
+    /*******************************************
+                BLOC FOOTER
+    *******************************************/
+    .footer{
+        margin-top:20px;
+        max-width:100%;
+    }
+    /*******************************************
+                GENERIC CSS
+    *******************************************/
+    p{
+        font-size: 14px;
+    }
+    .width-50{
+        width: 50%;
+    }
+    .width-70{
+        width: 70%;
+    }
+    .width-30{
+        width: 30%;
+    }
+    .orange-color{
+        color: #e9661f;
+    }
+    .white-color{
+        color: #ffffff;
+    }
+    .text-right{
+        text-align: right;
+    }
+</style>
+
+<page>
+    {# HEADER #}
+    <table id="table-header" cellspacing="10">
+        <tr>
+            <td class="logo">
+                {#
+                <img src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up.jpg') }}" alt="logo" />
+                #}
+            </td>
+            <td class="adresse">
+                01 41 85 05 05
+                <br>
+                27-29 Avenue des Louvresses
+                <br>
+                92230 Gennevilliers
+                <br>
+            </td>
+        </tr>
+    </table>
+
+    {# BLOC SUB HEADER #}
+    {# LOOP FIRST #}
+    {% for item in list_canal %}
+        {% if loop.first %}
+
+            {# INFO CLIENT #}
+            <table id="info-client" cellspacing="10"  style="width: 50%; font-size: 12px;" align="right">
+                <tr>
+                    <td>
+                        <b>{{ item.nomClient }}</b>
+                        <br>{{ item.destinataireCAND }}
+                        <br>{{ item.complementAdresseCAND1 }}
+                        <br>{{ item.adresseCAND }}
+                        <br>{{ item.cpCAND }} {{ item.villeCAND|upper}}
+                        <br>
+                        <br>Gennevilliers, le {{ 'now'|date("d F Y") }}
+                    </td>
+                </tr>
+            </table>
+
+            {# INFO LOT #}
+            <table id="info-lot">
+                <tr>
+                    <td class="orange-color">
+                        NOTE DE DEBIT N° CEE-{{ item.lotNumero }}_TMF
+                    </td>
+                </tr>
+                <tr>
+                    <td class="white-color" bgcolor="#e9661f">
+                        Mission CEE-appel de trésorerie
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        N° dossier : Compte client 11964
+                    </td>
+                </tr>
+            </table>
+
+            <div id="grey-bloc">
+                1 fichier
+            </div>
+
+            <br>
+
+            {# INFO RECEPTION #}
+            <table id="date-reception">
+                <tr>
+                    <td>
+                        Date réception des fichiers: {{ item.lotDateIntegration|date("d/m/Y") }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        LOT {{ item.lotNumero }}_TMF
+                    </td>
+                </tr>
+            </table>
+
+        {% endif %}
+    {% endfor %}
+
+    {# BLOC MAIN TABLE #}
+    <table id="main-table" class="border">
+        <thead>
+        <tr>
+            <th>Nom fichier</th>
+            <th>Total bénéficiaires</th>
+            <th>Total Montant € HT</th>
+        </tr>
+        </thead>
+        <tbody>
+        {# INITIALIZE COUNTER #}
+        {% set totalBeneficiaire = 0 %}
+        {% set totalHt  = 0 %}
+
+        {# FOR LIST NOTE DEBIT #}
+        {% for item in list_canal %}
+
+            <tr>
+                <td>{{ item.lotFilename }}</td>
+                <td>{{ item.Beneficiaire }}</td>
+                <td>{{ item.Montant  }}€</td>
+            </tr>
+
+            {# INCREMENT COUNTER #}
+            {% set totalBeneficiaire = totalBeneficiaire + item.Beneficiaire %}
+
+            {% set totalHt  = totalHt +  item.Montant|number_format(2,'.',',') %}
+
+        {% endfor %}
+
+        <tr>
+            <td>Total</td>
+            <td>{{totalBeneficiaire}}</td>
+            <td>{{totalHt}}€</td>
+        </tr>
+        </tbody>
+    </table>
+
+    {# BLOCK TOTAL HT TTC #}
+
+    {# CALCULATE TVA #}
+    {% set calcul_tva = (totalHt * tva) /100 %}
+    <table id="total-calcul">
+        <tr>
+            <td class="white-color width-70" bgcolor="#e9661f">
+                TOTAL HT
+            </td>
+            <td class="white-color width-30" bgcolor="#e9661f">
+                {{totalHt|number_format(2,'.',',')}} €
+            </td>
+        </tr>
+        <tr>
+            <td class="width-70">
+                TVA à {{tva}}%
+            </td>
+            <td class="width-30 text-right">
+                -&nbsp;&nbsp;€
+            </td>
+        </tr>
+        <tr>
+            <td class="white-color width-70" bgcolor="#e9661f">
+                TOTAL TTC
+            </td>
+            <td class="white-color width-30" bgcolor="#e9661f">
+                {# CALCUL TTC #}
+                {{ (totalHt + calcul_tva)|number_format(2,'.',',') }} €
+            </td>
+        </tr>
+    </table>
+
+    {# Mode REGLEMENT #}
+    <p>Mode de règlement: virement</p>
+
+    {# CLIENT BANQUE #}
+    <p class="orange-color">A compter du 1er Novembre 2017, la provision pour TMF est à virer sur:</p>
+
+    {% for item in list_canal %}
+        {% if loop.first %}
+            <table id="info-client-banque" cellspacing="10">
+                <tbody>
+                <tr>
+                    <td class="tbanque-width">
+                        Banque:
+                    </td>
+                    <td class="tbanque-width">
+                        {{ item.banqueNom|upper }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tbanque-width">
+                        RIB:
+                    </td>
+                    <td class="tbanque-width">
+                        {{ item.banqueRib }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tbanque-width">
+                        IBAN:
+                    </td>
+                    <td class="tbanque-width">
+                        {{ item.banqueIban }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tbanque-width">
+                        BIC:
+                    </td>
+                    <td class="tbanque-width">
+                        {{ item.banqueBic|upper }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tbanque-width">
+                        Titulaire:
+                    </td>
+                    <td class="tbanque-width">
+                        {{ item.banqueTitulaire|upper }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    {% endfor %}
+
+    {# FOOTER IMAGE #}
+    {#
+    <div class="footer">
+        <img src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/footer/up_bas_page.jpg') }}" >
+    </div>
+    #}
+</page>

@@ -120,4 +120,52 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
 
         return $stmt->fetch();
     }
+
+    /**
+     * @param $clientId
+     * @param $lotId
+     * @return array
+     */
+    public function findDataNDByLot($clientId, $lotId)
+    {
+        $EM = $this->getEntityManager('EM_MYSQL');
+
+        $query = "
+            SELECT  il.id AS lotId,
+                    il.numero AS lotNumero,
+                    il.file_alt AS lotFilename,
+                    il.date_creation AS lotDateIntegration,
+                    cb.nom AS banqueNom,
+            	    cb.rib AS banqueRib,
+                    cb.iban AS banqueIban,
+                    cb.bic AS banqueBic,
+                    cb.titulaire AS banqueTitulaire,
+                    ci.nom AS nomClient,
+                    cand.destinataire AS destinataireCAND,
+                    cand.adresse AS adresseCAND,
+                    cand.complement1 AS complementAdresseCAND1,
+                    cand.code_postal AS cpCAND,
+                    cand.ville AS villeCAND,
+                    ic.nombre_commande AS Beneficiaire,
+                    ic.somme AS Montant,
+                    ic.title AS canalTitle,
+                    c.id AS clientId
+            FROM import_lot il
+                INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN client_ c ON c.id = il.client_id
+                INNER JOIN client_information ci ON ci.id = c.client_information_id
+                INNER JOIN client_adresse_note_debit cand ON cand.id = c.client_adresse_note_debit_id
+                INNER JOIN client_banque cb ON cb.id = il.banque_id
+            WHERE il.client_id = " . $clientId . " 
+                AND il.id = " . $lotId . "
+                AND ic.title NOT LIKE '%ecap%'
+        ";
+
+        $stmt = $EM
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }
