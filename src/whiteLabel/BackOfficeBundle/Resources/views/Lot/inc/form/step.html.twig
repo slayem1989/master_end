@@ -13,6 +13,9 @@
 
         <div id="crumbs">
             <ul>
+                <li>
+                    <p>Lot int&eacute;gr&eacute; {% if lot.lotDateStatut1 %} le {{ lot.lotDateStatut1|date('d/m/Y') }} {% endif %}</p>
+                </li>
                 <li class="{{ arrayStep[1] }}">
                     <p>&Eacute;mission de la ND {% if lot.lotDateStatut2 %} le {{ lot.lotDateStatut2|date('d/m/Y') }} {% endif %}</p>
                 </li>

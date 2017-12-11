@@ -17,7 +17,7 @@ class HistoriqueController extends Controller
      * @param $lotId
      * @return Response
      */
-    public function listAction($clientId, $lotId)
+    public function listLotAction($clientId, $lotId)
     {
         $EM = $this->getDoctrine()->getManager();
 
@@ -30,12 +30,12 @@ class HistoriqueController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 GET LIST OF HISTORIQUE
         ///////////////////////////////////////////////////////////////// */
-        $repo_historique = $EM->getRepository('blackLabelHistoriqueBundle:Historique');
+        $repo_historique = $EM->getRepository('blackLabelHistoriqueBundle:Historique_lot');
         $list = $repo_historique->findBy(array(
             'lot_id' => $lotId
         ));
 
-        return $this->render('blackLabelHistoriqueBundle:Historique:list.html.twig', array(
+        return $this->render('blackLabelHistoriqueBundle:Historique:list_lot.html.twig', array(
             'list'      => $list,
             'clientId'  => $clientId,
             'lotNumero' => $lot->getNumero()

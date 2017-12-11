@@ -23,7 +23,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     il.numero AS lotNumero,
                     il.file_alt AS lotFilename,
                     il.date_creation AS lotDateIntegration,
-                    s.slug AS lotStatut,
+                    sl.slug AS lotStatut,
                     cb.nom AS banqueNom,
                     COUNT(CASE WHEN ip.type = 'LC' THEN ip.type ELSE NULL END) AS countLC,
                     SUM(CASE WHEN ip.type = 'LC' THEN ip.montant_aide ELSE NULL END) AS montantLC,
@@ -35,7 +35,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                 INNER JOIN import_canal ic ON ic.lot_id = il.id
                 INNER JOIN import_prime ip ON ip.canal_id = ic.id
                 INNER JOIN client_banque cb ON cb.id = il.banque_id
-                INNER JOIN statut s ON s.id = il.statut_id
+                INNER JOIN statut_lot sl ON sl.id = il.statut_id
             WHERE il.client_id = " . $clientId . "
                 AND ic.title LIKE '%ecap%'
             GROUP BY il.id
@@ -71,15 +71,15 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     il.date_statut_7 AS lotDateStatut7,
                     il.date_statut_8 AS lotDateStatut8,
                     il.statut_id AS lotStatutId,
-                    s1.slug AS lotStatutSlug,
-                    s2.slug AS lotStatutSlugNext,
-                    s3.slug AS lotStatutSlugDeny4,
-                    s4.slug AS lotStatutSlugDeny5
+                    sl1.slug AS lotStatutSlug,
+                    sl2.slug AS lotStatutSlugNext,
+                    sl3.slug AS lotStatutSlugDeny4,
+                    sl4.slug AS lotStatutSlugDeny5
             FROM import_lot il
-                INNER JOIN statut s1 ON s1.id = il.statut_id
-                LEFT JOIN statut s2 ON s2.id = il.statut_id + 1
-                LEFT JOIN statut s3 ON s3.id = il.statut_id - 2
-                LEFT JOIN statut s4 ON s4.id = il.statut_id - 2
+                INNER JOIN statut_lot sl1 ON sl1.id = il.statut_id
+                LEFT JOIN statut_lot sl2 ON sl2.id = il.statut_id + 1
+                LEFT JOIN statut_lot sl3 ON sl3.id = il.statut_id - 2
+                LEFT JOIN statut_lot sl4 ON sl4.id = il.statut_id - 2
             WHERE il.id = " . $lotId . "
                 AND il.client_id = " . $clientId
         ;
@@ -135,19 +135,19 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     il.numero AS lotNumero,
                     il.file_alt AS lotFilename,
                     il.date_creation AS lotDateIntegration,
+                    cb.titulaire AS banqueTitulaire,
                     cb.nom AS banqueNom,
             	    cb.rib AS banqueRib,
                     cb.iban AS banqueIban,
                     cb.bic AS banqueBic,
-                    cb.titulaire AS banqueTitulaire,
-                    ci.nom AS nomClient,
-                    cand.destinataire AS destinataireCAND,
-                    cand.adresse AS adresseCAND,
-                    cand.complement1 AS complementAdresseCAND1,
-                    cand.code_postal AS cpCAND,
-                    cand.ville AS villeCAND,
-                    ic.nombre_commande AS Beneficiaire,
-                    ic.somme AS Montant,
+                    ci.nom AS clientNom,
+                    cand.destinataire AS clientDestinataire,
+                    cand.adresse AS clientAdresse,
+                    cand.complement1 AS clientComplement,
+                    cand.code_postal AS clientCodePostal,
+                    cand.ville AS clientVille,
+                    ic.nombre_commande AS nombreCommande,
+                    ic.somme AS totalMontant,
                     ic.title AS canalTitle,
                     c.id AS clientId
             FROM import_lot il

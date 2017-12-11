@@ -94,6 +94,7 @@ class PrimeController extends Controller
             'clientId' => $clientId
         ));
 
+        $array_lettreCheque = array();
         foreach ($list_lettreCheque as $item) {
             $array_lettreCheque[$item->getNomModele()] = $item->getId() . ' | ' . $item->getNomModele();
         }

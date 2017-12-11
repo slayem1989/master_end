@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-use blackLabel\HistoriqueBundle\Entity\Historique;
-use blackLabel\CommentaireBundle\Entity\Commentaire;
-use blackLabel\CommentaireBundle\Form\CommentaireType;
+use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
+use blackLabel\CommentaireBundle\Entity\Commentaire_lot;
+use blackLabel\CommentaireBundle\Form\Commentaire_lotType;
 
 use Spipu\Html2Pdf\Html2Pdf;
 
@@ -39,7 +39,7 @@ class LotController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 GET COMMENTAIRE
         ///////////////////////////////////////////////////////////////// */
-        $commentaireRepository = $EM->getRepository('blackLabelCommentaireBundle:Commentaire');
+        $commentaireRepository = $EM->getRepository('blackLabelCommentaireBundle:Commentaire_lot');
         $list_commentaireData = array();
         $list_commentaireForm = array();
 
@@ -57,12 +57,12 @@ class LotController extends Controller
                                         GET FORM COMMENTAIRE
                 ///////////////////////////////////////////////////////////////// */
                 $formFactory = $this->get('form.factory');
-                $commentaire = new Commentaire();
+                $commentaire = new Commentaire_lot();
                 $commentaire->setLotId($lotId);
 
                 $formCommentaire = $formFactory->createNamed(
                     'formCommentaire_' . $item['lotId'],
-                    CommentaireType::class,
+                    Commentaire_lotType::class,
                     $commentaire,
                     array('trait_choices' => $formOption)
                 );
@@ -134,9 +134,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(2);
                     $lotObject->setDateStatut2($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_2,
+                        Statut_lot::STATUT_SLUG_2,
                         $_POST,
                         2,
                         $post_dateStatut
@@ -146,9 +146,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(3);
                     $lotObject->setDateStatut3($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_3,
+                        Statut_lot::STATUT_SLUG_3,
                         $_POST,
                         3,
                         $post_dateStatut
@@ -158,9 +158,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(4);
                     $lotObject->setDateStatut4($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_4,
+                        Statut_lot::STATUT_SLUG_4,
                         $_POST,
                         4,
                         $post_dateStatut
@@ -170,9 +170,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(5);
                     $lotObject->setDateStatut5($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_5,
+                        Statut_lot::STATUT_SLUG_5,
                         $_POST,
                         5,
                         $post_dateStatut
@@ -182,9 +182,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(6);
                     $lotObject->setDateStatut6($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_6,
+                        Statut_lot::STATUT_SLUG_6,
                         $_POST,
                         6,
                         $post_dateStatut
@@ -194,9 +194,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(7);
                     $lotObject->setDateStatut7($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_7,
+                        Statut_lot::STATUT_SLUG_7,
                         $_POST,
                         7,
                         $post_dateStatut
@@ -206,9 +206,9 @@ class LotController extends Controller
                     $lotObject->setStatutId(8);
                     $lotObject->setDateStatut8($format_dateStatut);
 
-                    $historiqueService->save(
+                    $historiqueService->saveLot(
                         $lotId,
-                        Historique::STATUT_8,
+                        Statut_lot::STATUT_SLUG_8,
                         $_POST,
                         8,
                         $post_dateStatut
@@ -243,9 +243,9 @@ class LotController extends Controller
                 $EM->persist($lotObject);
                 $EM->flush();
 
-                $historiqueService->save(
+                $historiqueService->saveLot(
                     $lotId,
-                    Historique::STATUT_44 . ' => Prochaine action: ' . Historique::STATUT_2,
+                    Statut_lot::STATUT_SLUG_44 . ' => Prochaine action: ' . Statut_lot::STATUT_SLUG_2,
                     $_POST,
                     44
                 );
@@ -276,9 +276,9 @@ class LotController extends Controller
                 $EM->persist($lotObject);
                 $EM->flush();
 
-                $historiqueService->save(
+                $historiqueService->saveLot(
                     $lotId,
-                    Historique::STATUT_55 . ' => Prochaine action: ' . Historique::STATUT_3,
+                    Statut_lot::STATUT_SLUG_55 . ' => Prochaine action: ' . Statut_lot::STATUT_SLUG_3,
                     $_POST,
                     55
                 );
@@ -324,13 +324,13 @@ class LotController extends Controller
         $tva = $this->getParameter('tva');
         $template = $this->renderView('whiteLabelBackOfficeBundle:Lot:inc/export/note_debit.html.twig', array(
             'list_canal'    => $data,
-            'tva'           => $tva
+            'TVA'           => $tva
         ));
 
         $html2pdf = new Html2Pdf('P', 'A4', 'fr');
         //$html2pdf->pdf->SetDisplayMode('fullpage');
         //$html2pdf->setDefaultFont('Arial');
         $html2pdf->writeHTML($template);
-        $html2pdf->Output($data[0]['lotNumero'] . '_note_debit_' . date('dmY') . '.pdf', 'D');
+        $html2pdf->Output($data[0]['lotNumero'] . '_note_debit_' . date('dmY') . '.pdf');
     }
 }

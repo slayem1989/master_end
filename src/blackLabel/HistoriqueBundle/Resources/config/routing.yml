@@ -10,7 +10,7 @@ historique_homepage:
 ################################
 historique_list:
     path:     /historique/list/{clientId}/{lotId}
-    defaults: { _controller: blackLabelHistoriqueBundle:Historique:list }
+    defaults: { _controller: blackLabelHistoriqueBundle:Historique:listLot }
     requirements:
         clientId: \d+
         lotId: \d+

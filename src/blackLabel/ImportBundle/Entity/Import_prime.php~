@@ -4,13 +4,17 @@ namespace blackLabel\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use blackLabel\GenericBundle\Entity\Log;
+
 /**
  * Import_prime
  *
- * @ORM\Table(name="import_prime")
+ * @ORM\Table(name="import_prime", indexes={
+ *      @ORM\Index(name="canal_idx", columns={"canal_id"})
+ * })
  * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_primeRepository")
  */
-class Import_prime
+class Import_prime extends Log
 {
     /**
      * @var int
@@ -171,7 +175,7 @@ class Import_prime
     /**
      * @var string
      *
-     * @ORM\Column(name="montant_aide", type="string", length=255, nullable=true)
+     * @ORM\Column(name="montant_aide", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $montantAide;
 
@@ -202,7 +206,17 @@ class Import_prime
      * @ORM\Column(name="nom_modele", type="string", length=255, nullable=true)
      */
     private $nomModele;
-    
+
+
+
+    /**
+     * Import_prime constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
 
 
     /**
@@ -717,101 +731,5 @@ class Import_prime
     public function getIban()
     {
         return $this->iban;
-    }
-
-    /**
-     * Set montantAide
-     *
-     * @param string $montantAide
-     *
-     * @return Import_prime
-     */
-    public function setMontantAide($montantAide)
-    {
-        $this->montantAide = $montantAide;
-
-        return $this;
-    }
-
-    /**
-     * Get montantAide
-     *
-     * @return string
-     */
-    public function getMontantAide()
-    {
-        return $this->montantAide;
-    }
-
-    /**
-     * Set numeroAction
-     *
-     * @param string $numeroAction
-     *
-     * @return Import_prime
-     */
-    public function setNumeroAction($numeroAction)
-    {
-        $this->numeroAction = $numeroAction;
-
-        return $this;
-    }
-
-    /**
-     * Get numeroAction
-     *
-     * @return string
-     */
-    public function getNumeroAction()
-    {
-        return $this->numeroAction;
-    }
-
-    /**
-     * Set apporteurAffaire
-     *
-     * @param string $apporteurAffaire
-     *
-     * @return Import_prime
-     */
-    public function setApporteurAffaire($apporteurAffaire)
-    {
-        $this->apporteurAffaire = $apporteurAffaire;
-
-        return $this;
-    }
-
-    /**
-     * Get apporteurAffaire
-     *
-     * @return string
-     */
-    public function getApporteurAffaire()
-    {
-        return $this->apporteurAffaire;
-    }
-
-    /**
-     * Set onglet
-     *
-     * @param string $onglet
-     *
-     * @return Import_prime
-     */
-    public function setOnglet($onglet)
-    {
-        $this->onglet = $onglet;
-
-        return $this;
-    }
-
-    /**
-     * Get onglet
-     *
-     * @return string
-     */
-    public function getOnglet()
-    {
-        return $this->onglet;
     }
 }

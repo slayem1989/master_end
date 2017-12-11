@@ -36,11 +36,11 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
                     ip.telephone AS primeTelephone,
                     ip.email AS primeEmail,
                     ip.onglet AS primeOnglet,
-                    s.slug AS lotStatut
+                    sl.slug AS lotStatut
             FROM import_lot il
                 INNER JOIN import_canal ic ON ic.lot_id = il.id
                 INNER JOIN import_prime ip ON ip.canal_id = ic.id
-                INNER JOIN statut s ON s.id = il.statut_id
+                INNER JOIN statut_lot sl ON sl.id = il.statut_id
             WHERE il.client_id = " . $clientId . "
                 AND ic.title LIKE '%ecap%'
             ORDER BY ip.id DESC

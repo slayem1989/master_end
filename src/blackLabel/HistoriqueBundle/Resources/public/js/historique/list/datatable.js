@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#table_historique').DataTable({
+    $('#table_historique_lot').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
         },

@@ -175,7 +175,7 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="montant_aide", type="string", length=255, nullable=true)
+     * @ORM\Column(name="montant_aide", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $montantAide;
 

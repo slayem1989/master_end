@@ -7,15 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 use blackLabel\GenericBundle\Entity\Log;
 
 /**
- * Historique
+ * Historique_lot
  *
- * @ORM\Table(name="historique", indexes={
+ * @ORM\Table(name="historique_lot", indexes={
  *      @ORM\Index(name="lot_idx", columns={"lot_id"}),
  *      @ORM\Index(name="statut_idx", columns={"statut_id"})
  * })
- * @ORM\Entity(repositoryClass="blackLabel\HistoriqueBundle\Repository\HistoriqueRepository")
+ * @ORM\Entity(repositoryClass="blackLabel\HistoriqueBundle\Repository\Historique_lotRepository")
  */
-class Historique extends Log
+class Historique_lot extends Log
 {
     /**
      * @var int
@@ -63,21 +63,8 @@ class Historique extends Log
 
 
 
-    const STATUT_1 = 'Intégration d’un nouveau lot de prime';
-    const STATUT_2 = 'Emission de la ND par le groupe Up';
-    const STATUT_3 = 'Emission des BAT par le groupe Up';
-    const STATUT_4 = 'Validation de la ND par TMF';
-    const STATUT_44 = 'Refus de la ND par TMF';
-    const STATUT_5 = 'Validation des BAT par TMF';
-    const STATUT_55 = 'Refus des BAT par TMF';
-    const STATUT_6 = 'Réception des fonds par le groupe Up si solution 1 ou par TMF si solution 2';
-    const STATUT_7 = 'Edition des LC';
-    const STATUT_8 = 'Expédition des LC / Virement';
-
-
-
     /**
-     * Historique constructor.
+     * Historique_lot constructor.
      */
     public function __construct()
     {
@@ -101,7 +88,7 @@ class Historique extends Log
      *
      * @param integer $lotId
      *
-     * @return Historique
+     * @return Historique_lot
      */
     public function setLotId($lotId)
     {
@@ -125,7 +112,7 @@ class Historique extends Log
      *
      * @param string $action
      *
-     * @return Historique
+     * @return Historique_lot
      */
     public function setAction($action)
     {
@@ -149,7 +136,7 @@ class Historique extends Log
      *
      * @param array $content
      *
-     * @return Historique
+     * @return Historique_lot
      */
     public function setContent($content)
     {
@@ -173,7 +160,7 @@ class Historique extends Log
      *
      * @param integer $statutId
      *
-     * @return Historique
+     * @return Historique_lot
      */
     public function setStatutId($statutId)
     {
@@ -197,7 +184,7 @@ class Historique extends Log
      *
      * @param string $statutSlug
      *
-     * @return Historique
+     * @return Historique_lot
      */
     public function setStatutSlug($statutSlug)
     {

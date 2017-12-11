@@ -8,14 +8,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use blackLabel\GenericBundle\Entity\Log;
 
 /**
- * Commentaire
+ * Commentaire_lot
  *
- * @ORM\Table(name="commentaire", indexes={
+ * @ORM\Table(name="commentaire_lot", indexes={
  *      @ORM\Index(name="lot_idx", columns={"lot_id"})
  * })
- * @ORM\Entity(repositoryClass="blackLabel\CommentaireBundle\Repository\CommentaireRepository")
+ * @ORM\Entity(repositoryClass="blackLabel\CommentaireBundle\Repository\Commentaire_lotRepository")
  */
-class Commentaire extends Log
+class Commentaire_lot extends Log
 {
     /**
      * @var int
@@ -44,7 +44,7 @@ class Commentaire extends Log
 
 
     /**
-     * Commentaire constructor.
+     * Commentaire_lot constructor.
      */
     public function __construct()
     {
@@ -68,7 +68,7 @@ class Commentaire extends Log
      *
      * @param integer $lotId
      *
-     * @return Commentaire
+     * @return Commentaire_lot
      */
     public function setLotId($lotId)
     {
@@ -92,7 +92,7 @@ class Commentaire extends Log
      *
      * @param string $content
      *
-     * @return Commentaire
+     * @return Commentaire_lot
      */
     public function setContent($content)
     {

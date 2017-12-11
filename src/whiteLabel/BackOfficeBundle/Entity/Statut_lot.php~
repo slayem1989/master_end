@@ -1,0 +1,70 @@
+<?php
+
+namespace whiteLabel\BackOfficeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Statut_lot
+ *
+ * @ORM\Table(name="statut_lot")
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\Statut_lotRepository")
+ */
+class Statut_lot
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="statut", type="integer")
+     */
+    private $statut;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+
+
+    const STATUS_1 = 1;
+    const STATUS_2 = 2;
+    const STATUS_3 = 3;
+    const STATUS_4 = 4;
+    const STATUS_44 = 44;
+    const STATUS_5 = 5;
+    const STATUS_55 = 55;
+    const STATUS_6 = 6;
+    const STATUS_7 = 7;
+    const STATUS_8 = 8;
+    
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+

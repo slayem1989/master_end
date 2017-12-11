@@ -40,8 +40,8 @@
 
 {% if data_commentaire is not empty %}
     {% for row in data_commentaire %}
-        <p class="textBold">Le {{ row.dateCreation|date('d/m/Y H:i:s') }} par {{ row.auteurCreation }}:</p>
-        <p>{{ row.content|nl2br }}</p>
+        <p class="textBold textLeft">Le {{ row.dateCreation|date('d/m/Y H:i:s') }} par {{ row.auteurCreation }}:</p>
+        <p class="textLeft">{{ row.content|nl2br }}</p>
         <hr>
     {% endfor %}
 {% else %}

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use blackLabel\GenericBundle\Entity\Log;
-use whiteLabel\BackOfficeBundle\Entity\Statut;
+use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
 
 /**
  * Import_lot
@@ -159,7 +159,7 @@ class Import_lot extends Log
     {
         parent::__construct();
 
-        $this->statut_id = Statut::STATUS_1;
+        $this->statut_id = Statut_Lot::STATUT_1;
         $this->dateStatut1 = new \Datetime();
     }
 

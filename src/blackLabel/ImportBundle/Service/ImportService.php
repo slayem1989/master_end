@@ -89,11 +89,11 @@ class ImportService
             /////////////////////////////////////////////////////////// */
             $formatValueCanal = array();
             $formatValueCanal[] = (int)$valueCanal[0]["U"];
-            $formatValueCanal[] = number_format(floatval($valueCanal[1]["U"]),2);
-            $formatValueCanal[] = number_format(floatval($valueCanal[2]["U"]),2);
-            $formatValueCanal[] = number_format(floatval($valueCanal[3]["U"]),2);
-            $formatValueCanal[] = number_format(floatval($valueCanal[4]["U"]),2);
-            $formatValueCanal[] = number_format(floatval($valueCanal[5]["U"]),2);
+            $formatValueCanal[] = floatval($valueCanal[1]["U"]);
+            $formatValueCanal[] = floatval($valueCanal[2]["U"]);
+            $formatValueCanal[] = floatval($valueCanal[3]["U"]);
+            $formatValueCanal[] = floatval($valueCanal[4]["U"]);
+            $formatValueCanal[] = floatval($valueCanal[5]["U"]);
 
             $objectCanal = new Import_canal();
             $objectCanal->setTitle($sheet->getTitle());
@@ -124,11 +124,11 @@ class ImportService
                 if ($row["M"]) $row["M"] = strtoupper($row["M"]);
                 if ($row["R"]) $row["R"] = filter_var($row["R"],FILTER_SANITIZE_NUMBER_INT);
                 if ($row["S"]) $row["S"] = filter_var($row["S"],FILTER_SANITIZE_EMAIL);
-                if ($row["U"]) $row["U"] = number_format(floatval($row["U"]),2);
+                if ($row["U"]) $row["U"] = floatval($row["U"]);
 
-                $bypass = true;
                 // IMPORT RULES
                 /*
+                $bypass = true;
                 if (('LC' != $row["A"]) || ('VIR' != $row["A"])) $bypass = false;
                 if ($row["B"])
                 if ($row["C"])
@@ -190,7 +190,7 @@ class ImportService
                         if (5 == $i) $rowData[0][$i] = str_replace('.', '', $rowData[0][$i]);
                         if (17 == $i) $rowData[0][$i] = filter_var($rowData[0][$i],FILTER_SANITIZE_NUMBER_INT);
                         if (18 == $i) $rowData[0][$i] = filter_var($rowData[0][$i],FILTER_SANITIZE_EMAIL);
-                        if (20 == $i) $rowData[0][$i] = number_format(floatval($rowData[0][$i]),2);
+                        if (20 == $i) $rowData[0][$i] = floatval($rowData[0][$i]);
                     } else {
                         $rowData[0][$i] = null;
                     }

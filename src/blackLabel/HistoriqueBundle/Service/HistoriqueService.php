@@ -4,7 +4,7 @@ namespace blackLabel\HistoriqueBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
-use blackLabel\HistoriqueBundle\Entity\Historique;
+use blackLabel\HistoriqueBundle\Entity\Historique_lot;
 
 /**
  * Class HistoriqueService
@@ -49,20 +49,20 @@ class HistoriqueService
      * @param $statutId
      * @param null $dateForm
      */
-    public function save(
+    public function saveLot(
         $lotId,
         $action,
         $content,
         $statutId,
         $dateForm = null
     ) {
-        $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut');
+        $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut_lot');
         $statutSlug = $repo_statut->findSlugByStatut($statutId);
 
         if ($dateForm) $etatCommande = $statutSlug . ' et indiqué au ' . $dateForm;
         else $etatCommande = $statutSlug;
 
-        $historique = new Historique();
+        $historique = new Historique_lot();
         $historique->setLotId($lotId);
         $historique->setAction($action);
         $historique->setContent($content);

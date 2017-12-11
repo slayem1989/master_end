@@ -49,35 +49,35 @@ class Import_canal extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="somme", type="string", length=255, nullable=true)
+     * @ORM\Column(name="somme", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $somme;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="moyenne", type="string", length=255, nullable=true)
+     * @ORM\Column(name="moyenne", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $moyenne;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="max", type="string", length=255, nullable=true)
+     * @ORM\Column(name="max", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $max;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="min", type="string", length=255, nullable=true)
+     * @ORM\Column(name="min", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $min;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ecart_type", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ecart_type", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $ecart_type;
 

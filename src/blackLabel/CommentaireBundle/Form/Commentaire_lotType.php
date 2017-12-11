@@ -10,10 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
- * Class CommentaireType
+ * Class Commentaire_lotType
  * @package blackLabel\CommentaireBundle\Form
  */
-class CommentaireType extends AbstractType
+class Commentaire_lotType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class CommentaireType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => 'blackLabel\CommentaireBundle\Entity\Commentaire',
+            'data_class'    => 'blackLabel\CommentaireBundle\Entity\Commentaire_lot',
             'trait_choices' => null
         ));
     }
@@ -51,6 +51,6 @@ class CommentaireType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'blacklabel_commentairebundle_commentaire';
+        return 'blacklabel_commentairebundle_commentaire_lot';
     }
 }

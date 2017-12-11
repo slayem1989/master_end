@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-use blackLabel\HistoriqueBundle\Entity\Historique;
+use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
 use blackLabel\ImportBundle\Entity\Import_lot;
 use blackLabel\ImportBundle\Form\Import_lotType;
 
@@ -49,9 +49,9 @@ class ImportController extends Controller
                                     PERSIST HISTORIQUE
             /////////////////////////////////////////////////////////// */
             $historiqueService = $this->get('black_label.service.historique');
-            $historiqueService->save(
+            $historiqueService->saveLot(
                 $lot->getId(),
-                Historique::STATUT_1,
+                Statut_lot::STATUT_SLUG_1,
                 $_POST,
                 $lot->getStatutId()
             );
