@@ -14,7 +14,7 @@
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
-        <h2>Consulter une Lettre Ch&egrave;que</h2>
+        <h2>Consulter une Lettre Ch&egrave;que: {{ lettreCheque.nomModele }}</h2>
         <a href="{{ path('lettreCheque_update', {'clientId': clientId, 'lettreChequeId': lettreCheque.id}) }}"
            class="btn btn-warning btn-xs container_action"
            id="action_update"

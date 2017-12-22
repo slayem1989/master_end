@@ -13,6 +13,8 @@ use blackLabel\ImportBundle\Form\Import_lotType;
 /**
  * Class ImportController
  * @package blackLabel\ImportBundle\Controller
+ *
+ * @Security("has_role('ROLE_ADMIN')")
  */
 class ImportController extends Controller
 {
@@ -33,6 +35,8 @@ class ImportController extends Controller
         ));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $lot->setClientId($clientId);
+
             $EM->persist($lot);
             $EM->flush();
 
@@ -40,26 +44,44 @@ class ImportController extends Controller
                                     PERSIST DATA
             /////////////////////////////////////////////////////////// */
             $importService = $this->get('black_label.service.import');
-            $importService->persistXLSX(
+            $persist = $importService->persistXLSX(
                 $lot->getId(),
-                $lot->file_getWebPath()
+                $lot->file_getWebPath(),
+                $lot->getDateCreation()->format('d/m/Y'),
+                $lot->getAuteurCreation()
             );
 
             /* //////////////////////////////////////////////////////////
                                     PERSIST HISTORIQUE
             /////////////////////////////////////////////////////////// */
             $historiqueService = $this->get('black_label.service.historique');
-            $historiqueService->saveLot(
-                $lot->getId(),
-                Statut_lot::STATUT_SLUG_1,
-                $_POST,
-                $lot->getStatutId()
-            );
+            if (true == $persist) {
+                $historiqueService->saveLot(
+                    $lot->getId(),
+                    Statut_lot::STATUT_SLUG_1,
+                    $_POST,
+                    $lot->getStatutId()
+                );
 
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'L\'import du Lot ' . $lot->getNumero()  . ' s\'est déroulé avec succès.'
-            );
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'L\'import du Lot ' . $lot->getNumero()  . ' s\'est déroulé avec succès.'
+                );
+            } else {
+                $importService->updateStatutLot($lot->getId());
+
+                $historiqueService->saveLot(
+                    $lot->getId(),
+                    Statut_lot::STATUT_SLUG_11,
+                    $_POST,
+                    Statut_lot::STATUT_11
+                );
+
+                $request->getSession()->getFlashBag()->add(
+                    'danger',
+                    'L\'import du Lot ne s\'est pas déroulé correctement.'
+                );
+            }
 
             return $this->redirectToRoute('lot_list', array(
                 'clientId' => $clientId

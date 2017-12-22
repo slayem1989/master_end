@@ -59,7 +59,7 @@
             <td>{{ item.lotNumero }}</td>
             <td>
                 <a href="{{ path('prime_read', {'clientId': clientId, 'primeId': item.primeId}) }}" title="link">
-                {{ item.primeNumero }}
+                {{ item.primeNumero ? item.primeNumero : 'En attente' }}
                 </a>
             </td>
             <td class="breakWord">
@@ -78,7 +78,29 @@
             <td class="breakWord">{{ item.lotStatut }}</td>
             <td class="textCenter">{{ item.primeDateIntegration|date('d/m/Y') }}</td>
             <td class="breakWord">{{ item.primeOnglet }}</td>
-            <td></td>
+            <td>
+                <a href="{{ path('prime_update_rib', {'clientId': clientId, 'primeId': item.primeId}) }}"
+                   class="btn btn-primary btn-xs"
+                   role="button"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Modifier le RIB"
+                >
+                    <i class="glyphicon glyphicon-euro"></i>
+                </a>
+
+                <a href="{{ path('prime_update_address', {'clientId': clientId, 'primeId': item.primeId}) }}"
+                   class="btn btn-primary btn-xs"
+                   role="button"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Modifier l'Adresse"
+                >
+                    <i class="glyphicon glyphicon-home"></i>
+                </a>
+            </td>
         </tr>
         {% endfor %}
     {% else %}

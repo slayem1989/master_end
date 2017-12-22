@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -41,15 +40,6 @@ class Import_lotType extends AbstractType
         $this->traitChoices = $options['trait_choices'];
 
         $builder
-            ->add('client_id',  HiddenType::class,  array(
-                                                        'required'  => true,
-                                                        'label'     => 'Nom du client',
-                                                        'attr'      => array(
-                                                            'placeholder'   => 'Entrez le nom du client',
-                                                            'readonly'      => true,
-                                                        ),
-                                                        'data'      => $this->traitChoices[0]
-                                                    ))
             ->add('banque_id',  EntityType::class,  array(
                                                         'required'      => true,
                                                         'placeholder'   => '-- Choisir une banque --',

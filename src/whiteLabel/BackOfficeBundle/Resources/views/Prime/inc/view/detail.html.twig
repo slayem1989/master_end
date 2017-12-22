@@ -13,7 +13,7 @@
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Date d'int&eacute;gration :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ prime.dateCreation|date('d/m/Y') }}
+                {{ prime.date|date('d/m/Y') }}
             </div>
         </div>
 
@@ -25,9 +25,20 @@
         </div>
 
         <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">R&eacute;f&eacute;rence :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {% if 0 == prime.index %}
+                    Non d&eacute;fini
+                {% else %}
+                    {{ prime.index }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Num&eacute;ro de Ch&egrave;que :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ prime.numero }}
+                {{ prime.numero ? prime.numero : 'En attente' }}
             </div>
         </div>
 

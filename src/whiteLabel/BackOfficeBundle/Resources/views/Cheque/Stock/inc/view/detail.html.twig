@@ -1,0 +1,56 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Cheque/Stock/inc/view/detail.html.twig #}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-detail">
+    <fieldset>
+        <legend><span class="legend-icon"></span>&nbsp;D&eacute;tails</legend>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Banque :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.banqueNom }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">R&eacute;f&eacute;rence bo&icirc;te :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.stockReferenceBoite }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Ch&eacute;que d&eacute;but :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.chequeFirst }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Ch&eacute;que fin :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.chequeLast }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Nombre total de ch&egrave;ques :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.chequeCount }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Date r&eacute;ception :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.stockDateReception|date("d/m/Y") }}
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Cr&eacute;&eacute; par :</label>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                {{ stock.auteur_creation }}
+            </div>
+        </div>
+
+    </fieldset>
+</div>

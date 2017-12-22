@@ -1,0 +1,49 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Prime/update_rib.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
+    'bundles/whitelabelbackoffice/css/prime/update.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
+        <h2>Modifier le RIB de la Prime: {{ prime.index }}</h2>
+        {{ include('whiteLabelBackOfficeBundle:Prime:inc/back.html.twig') }}
+    </div>
+
+{{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'form_editPrimeRIB'}}) }}
+
+{{ form_errors(form) }}
+
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/form_rib/detail.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/form_rib/rib.html.twig') }}
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="container_submit">
+    <div class="form-group">
+        {{ form_widget(form.valider, {'attr': {'class': 'col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xs-offset-0 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 btn btn-success'}}) }}
+    </div>
+</div>
+
+{{ form_rest(form) }}
+
+{{ form_end(form) }}
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/whitelabelbackoffice/js/core/form/*.js'
+    'bundles/whitelabelbackoffice/js/prime/form/*.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

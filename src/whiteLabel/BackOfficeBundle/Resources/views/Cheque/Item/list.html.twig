@@ -1,0 +1,34 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Cheque/Item/list.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/list/*.css'
+    'bundles/whitelabelbackoffice/cheque/item/list.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop50 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginBottom40 noPadding" id="bloc_title">
+        <h2>Liste des Ch&egrave;ques</h2>
+    </div>
+
+{{ include('whiteLabelBackOfficeBundle:Cheque:Item/inc/list/table.html.twig') }}
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/whitelabelbackoffice/js/cheque/item/*.js'
+    'bundles/whitelabelbackoffice/js/core/list/jquery_datatable.js'
+    'bundles/whitelabelbackoffice/js/core/list/bootstrap_datatable.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

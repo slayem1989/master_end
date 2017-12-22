@@ -124,7 +124,10 @@
     *******************************************/
     #bloc-footer {
         margin-top: 20px;
-        max-width: 100%;
+        width: 100%;
+    }
+    #bloc-footer img {
+        width: 100%;
     }
 
     /*******************************************
@@ -144,7 +147,7 @@
             <td id="header_logo">
                 &nbsp;
                 {#
-                <img src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up.jpg') }}" alt="logo" />
+                <img src="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up.jpg') }}" alt="logo_header" />
                 #}
             </td>
             <td id="header_adresse" class="UPColor">
@@ -293,7 +296,7 @@
 
     {#
     <table id="bloc-footer">
-        <img src="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/footer/up_bas_page.jpg') }}" />
+        <img src="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up_footer.png') }}" alt="logo_footer" />
     </table>
     #}
 </page>

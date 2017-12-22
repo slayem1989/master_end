@@ -3,14 +3,16 @@
 namespace blackLabel\ImportBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Cell;
 use PHPExcel_Shared_Date;
 
-use blackLabel\ImportBundle\Entity\Import_prime;
+use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
 use blackLabel\ImportBundle\Entity\Import_canal;
+use blackLabel\ImportBundle\Entity\Import_prime;
 
 /**
  * Class ImportService
@@ -22,6 +24,21 @@ class ImportService
      * @var string
      */
     private $doctrine;
+
+    /**
+     * @var string
+     */
+    private $router;
+
+    /**
+     * @var string
+     */
+    private $mailer;
+
+    /**
+     * @var \Twig_Environment
+     */
+    private $environment;
 
     /**
      *
@@ -36,9 +53,17 @@ class ImportService
      * @param $doctrine
      * @param Container $container
      */
-    public function __construct($doctrine, Container $container)
-    {
+    public function __construct(
+        $doctrine,
+        $router,
+        \Swift_Mailer $mailer,
+        \Twig_Environment $environment,
+        Container $container
+    ) {
         $this->doctrine = $doctrine;
+        $this->router = $router;
+        $this->mailer = $mailer;
+        $this->environment = $environment;
         $this->container = $container;
     }
 
@@ -49,12 +74,12 @@ class ImportService
                             F I N D / S E A R C H
      * *******************************************************************
      * ***************************************************************** */
-
     /**
      * @param $importId
      * @param $fileWebPath
+     * @return bool
      */
-    public function persistXLSX($importId, $fileWebPath)
+    public function persistXLSX($importId, $fileWebPath, $dateImport, $auteurImport)
     {
         $EM = $this->doctrine->getManager();
 
@@ -69,31 +94,48 @@ class ImportService
         */
 
         $allSheet = $phpExcelObject->getAllSheets();
-        $this->updateNumeroLot($allSheet[0]->getTitle(), $importId);
+
+        // Update Numero du Lot
+        $numeroLot = filter_var($allSheet[0]->getTitle(), FILTER_SANITIZE_NUMBER_INT);
+        $this->updateNumeroLot($importId, $numeroLot);
+
+        $bypass = true;
         foreach ($allSheet as $sheet) {
             /* //////////////////////////////////////////////////////////
-                                GET CELL DATA
+                                PARSE DATA FILE BY SHEET
             /////////////////////////////////////////////////////////// */
             $valueAllData = $this->getDataBySheet($sheet);
 
-            // Get last 7 rows for Data Canal
+            // Get Data for Canal / Delete last 7 rows
             $valueCanal = array_slice($valueAllData, -7);
             array_splice($valueCanal, -1);
 
-            // Get Data for Commande / Delete 3 first rows + 7 last rows
-            $valueCommande = array_splice($valueAllData, 3);
-            array_splice($valueCommande, -7);
+            // Get Data for Prime / Delete 3 first rows + 7 last rows
+            $valuePrime = array_splice($valueAllData, 3);
+            array_splice($valuePrime, -7);
 
             /* //////////////////////////////////////////////////////////
                                 SET CANAL DATA
             /////////////////////////////////////////////////////////// */
             $formatValueCanal = array();
-            $formatValueCanal[] = (int)$valueCanal[0]["U"];
-            $formatValueCanal[] = floatval($valueCanal[1]["U"]);
-            $formatValueCanal[] = floatval($valueCanal[2]["U"]);
-            $formatValueCanal[] = floatval($valueCanal[3]["U"]);
-            $formatValueCanal[] = floatval($valueCanal[4]["U"]);
-            $formatValueCanal[] = floatval($valueCanal[5]["U"]);
+
+            // TOTAL ROW
+            $formatValueCanal[] = (int)$valueCanal[0]['U'];
+
+            // SOMME
+            $formatValueCanal[] = floatval($valueCanal[1]['U']);
+
+            // MOYENNE
+            $formatValueCanal[] = floatval($valueCanal[2]['U']);
+
+            // MIN
+            $formatValueCanal[] = floatval($valueCanal[3]['U']);
+
+            // MAXI
+            $formatValueCanal[] = floatval($valueCanal[4]['U']);
+
+            // ECARTYPE
+            $formatValueCanal[] = floatval($valueCanal[5]['U']);
 
             $objectCanal = new Import_canal();
             $objectCanal->setTitle($sheet->getTitle());
@@ -109,128 +151,273 @@ class ImportService
             $EM->flush();
 
             /* //////////////////////////////////////////////////////////
-                                SET COMMANDE DATA
+                                SET PRIME DATA
             /////////////////////////////////////////////////////////// */
-            foreach ($valueCommande as $row) {
-                // FORMAT DATA
-                if ($row["B"]) $row["B"] = new \DateTime(date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($row["B"])));
-                if ($row["C"]) $row["C"] = (int)$row["C"];
-                if ($row["D"]) $row["D"] = strtoupper($row["D"]);
-                if ($row["E"]) $row["E"] = ucfirst(strtolower($row["E"]));
-                if ($row["F"]) $row["F"] = str_replace('.', '', $row["F"]);
-                if ($row["G"]) $row["G"] = strtoupper($row["G"]);
-                if ($row["H"]) $row["H"] = strtoupper($row["H"]);
-                if ($row["L"]) $row["L"] = strtoupper($row["L"]);
-                if ($row["M"]) $row["M"] = strtoupper($row["M"]);
-                if ($row["R"]) $row["R"] = filter_var($row["R"],FILTER_SANITIZE_NUMBER_INT);
-                if ($row["S"]) $row["S"] = filter_var($row["S"],FILTER_SANITIZE_EMAIL);
-                if ($row["U"]) $row["U"] = floatval($row["U"]);
+            $i = 3;
+            $arraydoublon = array();
+            foreach ($valuePrime as $row) {
+                // TYPE
+                if ($row['A'] && ('' != $row['A'] || null != $row['A']) && (('LC' == $row['A']) || ('VIR' == $row['A']))) {
+                    $row['A'] = strtoupper($row['A']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne A incorrecte');
+                    $row['A'] = '';
+                }
 
-                // IMPORT RULES
-                /*
-                $bypass = true;
-                if (('LC' != $row["A"]) || ('VIR' != $row["A"])) $bypass = false;
-                if ($row["B"])
-                if ($row["C"])
-                */
+                // DATE
+                if (($row['B'] && ('' != $row['B'] || null != $row['B'])) && true == $this->isValidDate($row['B'])) {
+                    //$row['B'] = new \DateTime(date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($row['B'])));
+                    //$row['B'] = PHPExcel_Shared_Date::ExcelToPHPObject($row['B']);
+                    $row['B'] = new \DateTime(\PHPExcel_Style_NumberFormat::toFormattedString($row['B'], 'Y-m-d'));
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne B incorrecte');
+                    $row['B'] = new \DateTime($this->container->getParameter('date_reference'));
+                }
+
+                // NUMERO
+                if ($row['C'] && ('' != $row['C'] || null != $row['C']) && true == is_int((int)$row['C']) && !array_key_exists((int)$row['C'], $arraydoublon)) {
+                    $row['C'] = (int)$row['C'];
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne C incorrecte');
+                    $row['C'] = 9999999;
+                }
+
+                // NOM
+                if ($row['D']) $row['D'] = strtoupper($row['D']);
+
+                // PRENOM
+                if ($row['E']) $row['E'] = ucfirst(strtolower($row['E']));
+
+                // SIREN
+                if ($row['F']) $row['F'] = str_replace('.', '', $row['F']);
+
+                // DENOMINATION
+                if ($row['G']) $row['G'] = strtoupper($row['G']);
+
+                // REPRESENTANT
+                if ($row['H']) $row['H'] = strtoupper($row['H']);
+
+                // NOM PRENOM SIREN DENOMINATION REPRESENTANT
+                if (
+                    !$row['D'] && ('' == $row['D'] || null == $row['D']) &&
+                    !$row['E'] && ('' == $row['E'] || null == $row['E']) &&
+                    !$row['F'] && ('' == $row['F'] || null == $row['F']) &&
+                    !$row['G'] && ('' == $row['G'] || null == $row['G']) &&
+                    !$row['H'] && ('' == $row['H'] || null == $row['H'])
+                ) {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne D E F G H incorrecte');
+                }
+
+                // ADRESSE FACTURATION
+                if ($row['I'] && ('' != $row['I'] || null != $row['I'])) {
+                    $row['I'] = trim($row['I']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne I incorrecte');
+                    $row['I'] = '';
+                }
+
+                // COMPLEMENT FACTURATION
+                if ($row['J']) {
+                    $row['J'] = trim($row['J']);
+                }
+
+                // CODE POSTAL FACTURATION
+                if ($row['K'] && ('' != $row['K'] || null != $row['K'])) {
+                    $row['K'] = trim($row['K']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne K incorrecte');
+                    $row['K'] = '';
+                }
+
+                // VILLE FACTURATION
+                if ($row['L'] && ('' != $row['L'] || null != $row['L'])) {
+                    $row['L'] = strtoupper($row['L']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne L incorrecte');
+                    $row['L'] = '';
+                }
+
+                // PAYS FACTURATION
+                if ($row['M']) {
+                    $row['M'] = strtoupper($row['M']);
+                }
+
+                // ADRESSE CHANTIER
+                if ($row['N'] && ('' != $row['N'] || null != $row['N'])) {
+                    $row['N'] = trim($row['N']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne N incorrecte');
+                    $row['N'] = '';
+                }
+
+                // COMPLEMENT CHANTIER
+                if ($row['O']) {
+                    $row['O'] = trim($row['O']);
+                }
+
+                // CODE POSTAL CHANTIER
+                if ($row['P'] && ('' != $row['P'] || null != $row['P'])) {
+                    $row['P'] = trim($row['P']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne P incorrecte');
+                    $row['P'] = '';
+                }
+
+                // VILLE CHANTIER
+                if ($row['Q'] && ('' != $row['Q'] || null != $row['Q'])) {
+                    $row['Q'] = strtoupper($row['Q']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne Q incorrecte');
+                    $row['Q'] = '';
+                }
+
+                // TELEPHONE
+                if ($row['R']) {
+                    if (true == $this->isValidTelephone($row['R'])) {
+                        $row['R'] = filter_var($row['R'],FILTER_SANITIZE_NUMBER_INT);
+                    } else {
+                        $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne R incorrecte');
+                    }
+                }
+
+                // MAIL
+                if ($row['S']) {
+                    if (true == filter_var($row['S'],FILTER_VALIDATE_EMAIL)) {
+                        $row['S'] = filter_var($row['S'],FILTER_SANITIZE_EMAIL);
+                    } else {
+                        $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne S incorrecte');
+                    }
+                }
+
+                // IBAN
+                if ($row['T']) {
+                    $row['T'] = strtoupper($row['T']);
+                }
+
+                // MONTANT AIDE
+                if ($row['U'] && ('' != $row['U'] || null != $row['U']) && true == $this->isValidDecimal($row['U'])) {
+                    $row['U'] = floatval($row['U']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne U incorrecte');
+                    $row['U'] = floatval(0);
+                }
+
+                // NUMERO ACTION
+                if ($row['V']) {
+                    $row['V'] = trim($row['V']);
+                }
+
+                // APPORTEUR AFFAIRE
+                if ($row['W']) {
+                    $row['W'] = trim($row['W']);
+                }
+
+                // ONGLET
+                if ($row['X']) {
+                    $row['X'] = trim($row['X']);
+                }
+
+                // NOM MODELE
+                if ($row['Y'] && ('' != $row['Y'] || null != $row['Y'])) {
+                    $row['Y'] = trim($row['Y']);
+                } else {
+                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne Y incorrecte');
+                    $row['Y'] = '';
+                }
 
                 $objectCommande = new Import_prime();
                 $objectCommande->setCanalId($objectCanal->getId());
-                $objectCommande->setType($row["A"]);
-                $objectCommande->setDate($row["B"]);
-                $objectCommande->setNumero($row["C"]);
-                $objectCommande->setNom($row["D"]);
-                $objectCommande->setPrenom($row["E"]);
-                $objectCommande->setSiren($row["F"]);
-                $objectCommande->setDenomination($row["G"]);
-                $objectCommande->setRepresentant($row["H"]);
-                $objectCommande->setAdresseFacturation($row["I"]);
-                $objectCommande->setComplementAdresseFacturation($row["J"]);
-                $objectCommande->setCodePostalFacturation($row["K"]);
-                $objectCommande->setVilleFacturation($row["L"]);
-                $objectCommande->setPays($row["M"]);
-                $objectCommande->setAdresseChantier($row["N"]);
-                $objectCommande->setComplementAdresseChantier($row["O"]);
-                $objectCommande->setCodePostalChantier($row["P"]);
-                $objectCommande->setVilleChantier($row["Q"]);
-                $objectCommande->setTelephone($row["R"]);
-                $objectCommande->setEmail($row["S"]);
-                $objectCommande->setIban($row["T"]);
-                $objectCommande->setMontantAide($row["U"]);
-                $objectCommande->setNumeroAction($row["V"]);
-                $objectCommande->setApporteurAffaire($row["W"]);
-                $objectCommande->setOnglet($row["X"]);
+                $objectCommande->setIndex($row['C']);
+                $objectCommande->setType($row['A']);
+                $objectCommande->setDate($row['B']);
+                $objectCommande->setNumero(null);
+
+                if (($row['D'] && $row['E']) || ('' != $row['D'] && '' != $row['E'])) {
+                    $objectCommande->setNom($row['D']);
+                    $objectCommande->setPrenom($row['E']);
+                } else {
+                    $objectCommande->setSiren($row['F']);
+                    $objectCommande->setDenomination($row['G']);
+                    $objectCommande->setRepresentant($row['H']);
+                }
+
+                $objectCommande->setAdresseFacturation($row['I']);
+                $objectCommande->setComplementAdresseFacturation($row['J']);
+                $objectCommande->setCodePostalFacturation($row['K']);
+                $objectCommande->setVilleFacturation($row['L']);
+                $objectCommande->setPays($row['M']);
+                $objectCommande->setAdresseChantier($row['N']);
+                $objectCommande->setComplementAdresseChantier($row['O']);
+                $objectCommande->setCodePostalChantier($row['P']);
+                $objectCommande->setVilleChantier($row['Q']);
+                $objectCommande->setTelephone($row['R']);
+                $objectCommande->setEmail($row['S']);
+                $objectCommande->setIban($row['T']);
+                $objectCommande->setMontantAide($row['U']);
+                $objectCommande->setNumeroAction($row['V']);
+                $objectCommande->setApporteurAffaire($row['W']);
+                $objectCommande->setOnglet($row['X']);
+                $objectCommande->setNomModele($row['Y']);
 
                 $EM->persist($objectCommande);
 
-                //dump(gettype($row['Y']));
-            }//die;
-            $EM->flush();
-
-            /*
-             * Autre Méthode mais ne calcule pas les formules
-            $highestRow = $sheet->getHighestRow();
-            $highestDataColumn = $sheet->getHighestColumn();
-
-            for ($row=3; $row<=($highestRow-7); $row++) {
-                //$rowData = $sheet->toArray();
-                $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestDataColumn . $row, true, true, true);
-                dump($rowData[0]);
-
-                $formatData = array();
-                $colNumber = PHPExcel_Cell::columnIndexFromString($highestDataColumn);
-                for ($i=0; $i<=($colNumber-1); $i++) {
-                    if (!is_bool($rowData[0][$i])) {
-                        if (1 == $i) {
-                            $rowData[0][$i] = new \DateTime($rowData[0][$i]);
-                            //$date = date_format($rowData[0][$i], 'Y-m-d');
-                        }
-
-                        if (2 == $i) $rowData[0][$i] = (int)$rowData[0][$i];
-                        if (5 == $i) $rowData[0][$i] = str_replace('.', '', $rowData[0][$i]);
-                        if (17 == $i) $rowData[0][$i] = filter_var($rowData[0][$i],FILTER_SANITIZE_NUMBER_INT);
-                        if (18 == $i) $rowData[0][$i] = filter_var($rowData[0][$i],FILTER_SANITIZE_EMAIL);
-                        if (20 == $i) $rowData[0][$i] = floatval($rowData[0][$i]);
-                    } else {
-                        $rowData[0][$i] = null;
-                    }
-                    $formatData[$i] = $rowData[0][$i];
-                }
-                dump($formatData);
-
-                $commandeObject = new Import_commande();
-                $commandeObject->setCanalId($objectCanal->getId());
-                $commandeObject->setType($formatData[0]);
-                $commandeObject->setDate($formatData[1]);
-                $commandeObject->setNumero($formatData[2]);
-                $commandeObject->setNom($formatData[3]);
-                $commandeObject->setPrenom($formatData[4]);
-                $commandeObject->setSiren($formatData[5]);
-                $commandeObject->setDenomination($formatData[6]);
-                $commandeObject->setRepresentant($formatData[7]);
-                $commandeObject->setAdresseFacturation($formatData[8]);
-                $commandeObject->setComplementAdresseFacturation($formatData[9]);
-                $commandeObject->setCodePostalFacturation($formatData[10]);
-                $commandeObject->setVilleFacturation($formatData[11]);
-                $commandeObject->setPays($formatData[12]);
-                $commandeObject->setAdresseChantier($formatData[13]);
-                $commandeObject->setComplementAdresseChantier($formatData[14]);
-                $commandeObject->setCodePostalChantier($formatData[15]);
-                $commandeObject->setVilleChantier($formatData[16]);
-                $commandeObject->setTelephone($formatData[17]);
-                $commandeObject->setEmail($formatData[18]);
-                $commandeObject->setIban($formatData[19]);
-                $commandeObject->setMontantAide($formatData[20]);
-                $commandeObject->setNumeroAction($formatData[21]);
-                $commandeObject->setApporteurAffaire($formatData[22]);
-                $commandeObject->setOnglet($formatData[23]);
-
-                $EM->persist($commandeObject);
+                $i++;
+                $arraydoublon[(int)$row['C']] = 'doublon';
             }
             $EM->flush();
-            */
+
+            if (file_exists($this->container->getParameter('kernel.project_dir')."/data/import/error/".$importId."_import_error.txt")) {
+                $bypass = false;
+
+                /* /////////////////////////////////////////////////////////////////
+                                            GET PRIME
+                ///////////////////////////////////////////////////////////////// */
+                $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
+                $dataPrime = $repo_prime->findBy(array(
+                    'canal_id' => $objectCanal->getId()
+                ));
+
+                foreach ($dataPrime as $itemPrime) {
+                    $EM->remove($itemPrime);
+                }
+
+                /* /////////////////////////////////////////////////////////////////
+                                            GET CANAL
+                ///////////////////////////////////////////////////////////////// */
+                $repo_canal = $EM->getRepository('blackLabelImportBundle:Import_canal');
+                $dataCanal = $repo_canal->find($objectCanal->getId());
+
+                $EM->remove($dataCanal);
+                $EM->flush();
+
+                $this->sendErrorFile($importId, $numeroLot, $dateImport, $auteurImport);
+            }
+
+            break;
         }
+
+        return $bypass;
     }
+
+    /**
+     * @param $importId
+     */
+    public function updateStatutLot($importId)
+    {
+        $EM = $this->doctrine->getManager();
+
+        $query = "
+            UPDATE import_lot
+            SET statut_id = " . Statut_lot::STATUT_11 . "
+            WHERE id = " . $importId
+        ;
+
+        $stmt = $EM
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+    }
+
 
 
     /* *******************************************************************
@@ -238,7 +425,6 @@ class ImportService
                             F U N C T I O N S
      * *******************************************************************
      * ***************************************************************** */
-
     /**
      * @param $sheet
      * @return array
@@ -266,13 +452,12 @@ class ImportService
     }
 
     /**
-     * @param $title
      * @param $importId
+     * @param $numeroLot
      */
-    private function updateNumeroLot($title, $importId)
+    private function updateNumeroLot($importId, $numeroLot)
     {
         $EM = $this->doctrine->getManager();
-        $numeroLot = filter_var($title, FILTER_SANITIZE_NUMBER_INT);
 
         $query = "
             UPDATE import_lot
@@ -284,5 +469,106 @@ class ImportService
             ->getConnection()
             ->prepare($query);
         $stmt->execute();
+    }
+
+    /**
+     * @param $importId
+     * @param $content
+     */
+    private function createErrorFile($importId, $content)
+    {
+        $folder = 'error';
+        $pathFolder = $this->container->getParameter('kernel.project_dir')."/data/import/".$folder;
+        if (!is_dir($pathFolder)) {
+            mkdir($pathFolder);
+            chmod($pathFolder, 0755);
+        }
+
+        $file = fopen( $this->container->getParameter('kernel.project_dir')."/data/import/error/".$importId."_import_error.txt", "a+" );
+        fwrite($file,$content.chr(13));
+        fclose($file);
+    }
+
+    /**
+     * @param $importId
+     * @param $numeroLot
+     * @param $dateImport
+     * @param $auteurImport
+     * @return int
+     */
+    private function sendErrorFile($importId, $numeroLot, $dateImport, $auteurImport)
+    {
+        /* /////////////////////////////////////////////////////////////////
+                                    SEND EMAIL
+        ///////////////////////////////////////////////////////////////// */
+        $subject = 'Lot ' . $numeroLot . ' / Rapport d\'erreur';
+        $templatePath = 'whiteLabelBackOfficeBundle:Lot:inc/email/error.html.twig';
+
+        $message = (\Swift_Message::newInstance(
+            $subject, $this->environment->render($templatePath, array(
+            'lotNumero'     => $numeroLot,
+            'dateImport'    => $dateImport,
+            'auteurImport'  => $auteurImport
+        )), 'text/html')
+            ->setFrom($this->container->getParameter('mailer_address_from'))
+            ->setTo($this->container->getParameter('import_error_recipient'))
+        );
+
+        $attachment = \Swift_Attachment::fromPath($this->container->getParameter('kernel.project_dir')."/data/import/error/".$importId."_import_error.txt");
+        $message->attach($attachment);
+
+        return $this->mailer->send($message);
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    private function isValidDate($value)
+    {
+        $regexp = "#([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))#";
+
+        if (!preg_match($regexp, $value)) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param $value
+     * @return int
+     */
+    private function isValidTelephone($value)
+    {
+        $regexp = "#^0[0-9]([-. ]?[0-9]{2}){4}$#";
+        //$regexp = '#^0[0-9]{1}\d{8}$#';
+
+        if (!preg_match($regexp, $value)) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    private function isValidDecimal($value)
+    {
+        $regexp = "#^\d*(\.?\d{0,2})+$#";
+
+        if (!preg_match($regexp, $value)) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
     }
 }

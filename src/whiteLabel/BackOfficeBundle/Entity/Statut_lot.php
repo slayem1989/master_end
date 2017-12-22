@@ -45,6 +45,7 @@ class Statut_lot
 
 
     const STATUT_1 = 1;
+    const STATUT_11 = 11;
     const STATUT_2 = 2;
     const STATUT_3 = 3;
     const STATUT_4 = 4;
@@ -55,7 +56,8 @@ class Statut_lot
     const STATUT_7 = 7;
     const STATUT_8 = 8;
 
-    const STATUT_SLUG_1 = 'Intégration d’un nouveau lot de prime';
+    const STATUT_SLUG_1 = 'Intégration d\'un nouveau lot de prime';
+    const STATUT_SLUG_11 = 'Rejet d\'un lot de prime';
     const STATUT_SLUG_2 = 'Emission de la ND par le groupe Up';
     const STATUT_SLUG_3 = 'Emission des BAT par le groupe Up';
     const STATUT_SLUG_4 = 'Validation de la ND par TMF';

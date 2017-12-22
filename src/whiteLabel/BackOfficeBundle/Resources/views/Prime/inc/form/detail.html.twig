@@ -24,9 +24,19 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.index) }}</div>
+        <div class="form-group">
+            {{ form_label(form.index, "Référence", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{ form_widget(form.index, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.numero) }}</div>
         <div class="form-group">
-            {{ form_label(form.numero, "Numéro", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+            {{ form_label(form.numero, "Numéro de Chèque", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                 {{ form_widget(form.numero, {'attr': {'class': 'form-control'}}) }}

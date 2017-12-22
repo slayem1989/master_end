@@ -2,6 +2,8 @@
 
 namespace blackLabel\ImportBundle\Repository;
 
+use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
+
 /**
  * Import_lotRepository
  *
@@ -36,8 +38,8 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                 INNER JOIN import_prime ip ON ip.canal_id = ic.id
                 INNER JOIN client_banque cb ON cb.id = il.banque_id
                 INNER JOIN statut_lot sl ON sl.id = il.statut_id
-            WHERE il.client_id = " . $clientId . "
-                AND ic.title LIKE '%ecap%'
+            WHERE il.statut_id <> " . Statut_lot::STATUT_11 . "
+                AND il.client_id = " . $clientId . "
             GROUP BY il.id
             ORDER BY il.id DESC
         ";
@@ -158,7 +160,6 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                 INNER JOIN client_banque cb ON cb.id = il.banque_id
             WHERE il.client_id = " . $clientId . " 
                 AND il.id = " . $lotId . "
-                AND ic.title NOT LIKE '%ecap%'
         ";
 
         $stmt = $EM

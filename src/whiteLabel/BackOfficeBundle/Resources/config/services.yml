@@ -14,6 +14,19 @@ services:
         class: whiteLabel\BackOfficeBundle\Service\LettreChequeService
         arguments: ['@doctrine', '@service_container']
 
+    white_label.service.cheque:
+        class: whiteLabel\BackOfficeBundle\Service\ChequeService
+        arguments: ['@doctrine', '@service_container']
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #  F O R M S   E N T I T Y   M A N A G E R
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    entityManager.formType.chequeStock:
+        class: whiteLabel\BackOfficeBundle\Form\Cheque_stockType
+        tags:
+            - { name: form.type, alias: form_em }
+        arguments: ['@doctrine']
+
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #  S E C U R I T Y
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

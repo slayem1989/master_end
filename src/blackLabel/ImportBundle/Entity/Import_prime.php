@@ -33,16 +33,23 @@ class Import_prime extends Log
     private $canal_id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="index_prime", type="integer")
+     */
+    private $index;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255, nullable=true)
+     * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime", nullable=true)
+     * @ORM\Column(name="date", type="datetime")
      */
     private $date;
 
@@ -91,7 +98,7 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse_facturation", type="string", length=255, nullable=true)
+     * @ORM\Column(name="adresse_facturation", type="string", length=255)
      */
     private $adresseFacturation;
 
@@ -105,14 +112,14 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="code_postal_facturation", type="string", length=20, nullable=true)
+     * @ORM\Column(name="code_postal_facturation", type="string", length=20)
      */
     private $codePostalFacturation;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ville_facturation", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ville_facturation", type="string", length=255)
      */
     private $villeFacturation;
 
@@ -126,7 +133,7 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse_chantier", type="string", length=255, nullable=true)
+     * @ORM\Column(name="adresse_chantier", type="string", length=255)
      */
     private $adresseChantier;
 
@@ -140,14 +147,14 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="code_postal_chantier", type="string", length=30, nullable=true)
+     * @ORM\Column(name="code_postal_chantier", type="string", length=30)
      */
     private $codePostalChantier;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ville_chantier", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ville_chantier", type="string", length=255)
      */
     private $villeChantier;
 
@@ -175,7 +182,7 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="montant_aide", type="decimal", precision=12, scale=2, nullable=true)
+     * @ORM\Column(name="montant_aide", type="decimal", precision=12, scale=2)
      */
     private $montantAide;
 
@@ -203,7 +210,7 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="nom_modele", type="string", length=255, nullable=true)
+     * @ORM\Column(name="nom_modele", type="string", length=255)
      */
     private $nomModele;
 
@@ -251,6 +258,30 @@ class Import_prime extends Log
     public function getCanalId()
     {
         return $this->canal_id;
+    }
+
+    /**
+     * Set index
+     *
+     * @param integer $index
+     *
+     * @return Import_prime
+     */
+    public function setIndex($index)
+    {
+        $this->index = $index;
+
+        return $this;
+    }
+
+    /**
+     * Get index
+     *
+     * @return integer
+     */
+    public function getIndex()
+    {
+        return $this->index;
     }
 
     /**

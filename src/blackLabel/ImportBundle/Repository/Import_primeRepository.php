@@ -22,7 +22,7 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
                     ip.canal_id AS canalId,
-                    ip.date_creation AS primeDateIntegration,
+                    ip.date AS primeDateIntegration,
                     ip.id AS primeId,
                     ip.numero AS primeNumero,
                     ip.type AS primeType,

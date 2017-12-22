@@ -82,7 +82,7 @@ class PrimeController extends Controller
         $prime = $repo->find($primeId);
 
         // Format date to display
-        $bdd_date = $prime->getDateCreation();
+        $bdd_date = $prime->getDate();
         $convert_date = $bdd_date->format('d/m/Y');
         $prime->setDate($convert_date);
 
@@ -130,6 +130,133 @@ class PrimeController extends Controller
         }
 
         return $this->render('whiteLabelBackOfficeBundle:Prime:update.html.twig', array(
+            'form'      => $form->createView(),
+            'prime'     => $prime,
+            'clientId'  => $clientId
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @param $clientId
+     * @param $primeId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function updateRIBAction(Request $request, $clientId, $primeId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET PRIME
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
+        $prime = $repo->find($primeId);
+
+        /* /////////////////////////////////////////////////////////////////
+                                BUILD FORM
+        ///////////////////////////////////////////////////////////////// */
+        $form = $this->createForm(Import_primeType::class, $prime);
+        $form->remove('type');
+        $form->remove('date');
+        $form->remove('index');
+        $form->remove('numero');
+        $form->remove('adresseFacturation');
+        $form->remove('complementAdresseFacturation');
+        $form->remove('codePostalFacturation');
+        $form->remove('villeFacturation');
+        $form->remove('pays');
+        $form->remove('adresseChantier');
+        $form->remove('complementAdresseChantier');
+        $form->remove('codePostalChantier');
+        $form->remove('villeChantier');
+        $form->remove('telephone');
+        $form->remove('email');
+        $form->remove('montantAide');
+        $form->remove('numeroAction');
+        $form->remove('apporteurAffaire');
+        $form->remove('onglet');
+        $form->remove('nomModele');
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $prime->setDateModif(new \Datetime());
+            $prime->setAuteurModif($_SESSION['login']->getUsername());
+
+            $EM->persist($prime);
+            $EM->flush();
+
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'Le RIB de la Prime ' . $prime->getNumero() . ' a bien été mis à jour.'
+            );
+
+            return $this->redirectToRoute('prime_list', array(
+                'clientId' => $clientId
+            ));
+        }
+
+        return $this->render('whiteLabelBackOfficeBundle:Prime:update_rib.html.twig', array(
+            'form'      => $form->createView(),
+            'prime'     => $prime,
+            'clientId'  => $clientId
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @param $clientId
+     * @param $primeId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function updateAddressAction(Request $request, $clientId, $primeId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET PRIME
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
+        $prime = $repo->findOneBy(array('id' => $primeId));
+
+        /* /////////////////////////////////////////////////////////////////
+                                BUILD FORM
+        ///////////////////////////////////////////////////////////////// */
+        $form = $this->createForm(Import_primeType::class, $prime);
+        $form->remove('type');
+        $form->remove('date');
+        $form->remove('index');
+        $form->remove('numero');
+        $form->remove('pays');
+        $form->remove('adresseChantier');
+        $form->remove('complementAdresseChantier');
+        $form->remove('codePostalChantier');
+        $form->remove('villeChantier');
+        $form->remove('telephone');
+        $form->remove('email');
+        $form->remove('iban');
+        $form->remove('montantAide');
+        $form->remove('numeroAction');
+        $form->remove('apporteurAffaire');
+        $form->remove('onglet');
+        $form->remove('nomModele');
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $prime->setDateModif(new \Datetime());
+            $prime->setAuteurModif($_SESSION['login']->getUsername());
+
+            $EM->persist($prime);
+            $EM->flush();
+
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'L\'adresse de la Prime ' . $prime->getNumero() . ' a bien été mise à jour.'
+            );
+
+            return $this->redirectToRoute('prime_list', array(
+                'clientId' => $clientId
+            ));
+        }
+
+        return $this->render('whiteLabelBackOfficeBundle:Prime:update_address.html.twig', array(
             'form'      => $form->createView(),
             'prime'     => $prime,
             'clientId'  => $clientId

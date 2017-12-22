@@ -1,0 +1,10 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Lot/inc/email/error.html.twig #}
+{% block body_html %}
+    <p>Bonjour,</p>
+
+    <p>La tentative d'import du lot <b>{{ lotNumero }}</b> a &eacute;chou&eacute; le <b>{{ dateImport }}</b> par <b>{{ auteurImport }}</b>.</p>
+
+    <p>Veuillez-trouver les d&eacute;tails des erreurs dans le fichier ci-joint.</p>
+
+    <p>Groupe Up.</p>
+{% endblock %}

@@ -1,0 +1,12 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Lot/inc/email/error.email.twig #}
+{% block body_text %}
+    {% autoescape false %}
+        Bonjour,
+
+        La tentative d'import du lot {{ lotNumero }} a échoué le {{ dateImport }} par {{ auteurImport }}.
+
+        Veuillez-trouver les détails des erreurs dans le fichier ci-joint.
+
+        Groupe Up.
+    {% endautoescape %}
+{% endblock %}

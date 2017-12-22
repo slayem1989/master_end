@@ -37,17 +37,25 @@ class Import_primeType extends AbstractType
                                                                                 )
                                                                             ))
             ->add('date',                           TextType::class,        array(
-                                                                                'required'  => false,
+                                                                                'required'  => true,
                                                                                 'label'     => 'Date d\'intégration',
                                                                                 'attr'      => array(
                                                                                     'placeholder' => 'DD/MM/YYYY',
                                                                                 )
                                                                             ))
+            ->add('index',                          TextType::class,        array(
+                                                                                'required'  => true,
+                                                                                'label'     => 'Index',
+                                                                                'attr'      => array(
+                                                                                    'placeholder'   => 'Entrez l\'index de la Prime',
+                                                                                    'readonly'      => true
+                                                                                )
+                                                                            ))
             ->add('numero',                         TextType::class,        array(
                                                                                 'required'  => true,
-                                                                                'label'     => 'Numéro',
+                                                                                'label'     => 'Numéro de chèque',
                                                                                 'attr'      => array(
-                                                                                    'placeholder' => 'Entrez le numéro de Prime',
+                                                                                    'placeholder' => 'Entrez le numéro de Chèque de la Prime',
                                                                                 )
                                                                             ))
             ->add('prenom',                         TextType::class,        array(
@@ -203,7 +211,6 @@ class Import_primeType extends AbstractType
                                                                                     'placeholder' => 'Entrez le nom de l\'onglet',
                                                                                 )
                                                                             ))
-            // Manual populate because of no relation between LettreCheque and Client_
             ->add('nomModele',                      ChoiceType::class,      array(
                                                                                 'required'      => true,
                                                                                 'label'         => 'Type',

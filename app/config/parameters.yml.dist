@@ -34,4 +34,9 @@ parameters:
     captcha_server_key: unique_key_from_captcha_server
     captcha_client_key: unique_key_from_captcha_client
 
+    date_reference: 1900/01/01
+    date_reference_convert: 01/01/1900
+
     tva: 0
+
+    import_error_recipient: test@test.com

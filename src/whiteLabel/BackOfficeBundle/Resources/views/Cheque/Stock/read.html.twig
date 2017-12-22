@@ -1,0 +1,35 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Cheque/Stock/read.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
+    'bundles/whitelabelbackoffice/css/cheque/stock/read.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
+        <h2>Consulter un stock Ch&egrave;que: {{ stock.stockReferenceBoite }}</h2>
+        <a href="{{ path('chequeStock_update', {'clientId': clientId, 'stockId': stock.stockId}) }}"
+           class="btn btn-warning btn-xs container_action"
+           id="action_update"
+           role="button"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           data-container="body"
+           title="Modifier le stock Chèque"
+        >
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        {{ include('whiteLabelBackOfficeBundle:Cheque:Stock/inc/back.html.twig') }}
+    </div>
+
+{{ include('whiteLabelBackOfficeBundle:Cheque:Stock/inc/view/detail.html.twig') }}
+
+</div>
+{% endblock %}

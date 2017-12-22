@@ -121,6 +121,20 @@ prime_update:
         clientId: \d+
         primeId: \d+
 
+prime_update_rib:
+    path:     /prime/update/RIB/{clientId}/{primeId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:updateRIB }
+    requirements:
+        clientId: \d+
+        primeId: \d+
+
+prime_update_address:
+    path:     /prime/update/address/{clientId}/{primeId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:updateAddress }
+    requirements:
+        clientId: \d+
+        primeId: \d+
+
 ################################
 ###  Lettre Chèque Routing   ###
 ################################
@@ -149,3 +163,42 @@ lettreCheque_update:
     requirements:
         clientId: \d+
         lettreChequeId: \d+
+
+################################
+###  Chèque Stock Routing    ###
+################################
+chequeStock_list:
+    path:     /cheque/stock/list/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:listStock }
+    requirements:
+        clientId: \d+
+
+chequeStock_create:
+    path:     /cheque/stock/create/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:createStock }
+    requirements:
+        clientId: \d+
+
+chequeStock_read:
+    path:     /cheque/stock/read/{clientId}/{stockId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:readStock }
+    requirements:
+        clientId: \d+
+        stockId: \d+
+
+chequeStock_update:
+    path:     /cheque/stock/update/{clientId}/{stockId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:updateStock }
+    requirements:
+        clientId: \d+
+        stockId: \d+
+
+################################
+###   Chèque Item Routing    ###
+################################
+chequeItem_list:
+    path:     /cheque/item/list/{clientId}/{stockId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:listCheque, stockId: null }
+    requirements:
+        clientId: \d+
+        stockId: \d+

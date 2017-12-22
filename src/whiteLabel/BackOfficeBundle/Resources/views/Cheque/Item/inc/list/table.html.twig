@@ -1,0 +1,28 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/Cheque/Item/inc/list/table.html.twig #}
+<table cellspacing="0" id="table_cheque" class="table table-striped table-bordered big_table">
+    <thead>
+        <tr>
+            <th class="breakWord col0">Num&eacute;ro de Ch&egrave;que</th>
+            <th class="breakWord col1">R&eacute;f&eacute;rence Stock</th>
+            <th class="breakWord col2">Nom de la Banque</th>
+            <th class="breakWord col3">Cr&eacute;&eacute; le</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% if list is not empty %}
+        {% for item in list %}
+        <tr>
+            <td class="breakWord">{{ item.chequeNumero }}</td>
+            <td class="breakWord">{{ item.stockReferenceBoite }}</td>
+            <td class="breakWord">{{ item.banqueNom }}</td>
+            <td class="breakWord">{{ item.dateCreation|date('d/m/Y') }} par {{ item.auteurCreation }}</td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th colspan="4" class="textCenter">Aucun Ch&egrave;que enregistr&eacute;.</th>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>
