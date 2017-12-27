@@ -100,7 +100,7 @@ class Import_primeType extends AbstractType
                                                                                     'placeholder' => 'Entrez l\'adresse',
                                                                                 )
                                                                             ))
-            ->add('complementAdresseFacturation',   TextType::class,        array(
+            ->add('complementFacturation',          TextType::class,        array(
                                                                                 'required'  => false,
                                                                                 'label'     => 'Complément',
                                                                                 'attr'      => array(
@@ -123,7 +123,7 @@ class Import_primeType extends AbstractType
                                                                                     'placeholder' => 'Entrez la ville',
                                                                                 )
                                                                             ))
-            ->add('pays',                           TextType::class,        array(
+            ->add('paysFacturation',                TextType::class,        array(
                                                                                 'required'  => true,
                                                                                 'label'     => 'Pays',
                                                                                 'attr'      => array(
@@ -137,7 +137,7 @@ class Import_primeType extends AbstractType
                                                                                     'placeholder' => 'Entrez l\'adresse',
                                                                                 )
                                                                             ))
-            ->add('complementAdresseChantier',      TextType::class,        array(
+            ->add('complementChantier',             TextType::class,        array(
                                                                                 'required'  => false,
                                                                                 'label'     => 'Complément',
                                                                                 'attr'      => array(

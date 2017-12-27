@@ -44,21 +44,21 @@ class Import_lot extends Log
      *
      * @ORM\Column(name="client_id", type="integer")
      */
-    private $client_id;
+    private $clientId;
 
     /**
      * @var int
      *
      * @ORM\Column(name="banque_id", type="integer")
      */
-    private $banque_id;
+    private $banqueId;
 
     /**
      * @var int
      *
      * @ORM\Column(name="statut_id", type="integer")
      */
-    private $statut_id;
+    private $statutId;
 
     /**
      * @var \DateTime
@@ -66,6 +66,13 @@ class Import_lot extends Log
      * @ORM\Column(name="date_statut_1", type="datetime", nullable=true)
      */
     private $dateStatut1;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_statut_11", type="datetime", nullable=true)
+     */
+    private $dateStatut11;
 
     /**
      * @var \DateTime
@@ -159,7 +166,7 @@ class Import_lot extends Log
     {
         parent::__construct();
 
-        $this->statut_id = Statut_Lot::STATUT_1;
+        $this->statutId = Statut_Lot::STATUT_1;
         $this->dateStatut1 = new \Datetime();
     }
 
@@ -208,7 +215,7 @@ class Import_lot extends Log
      */
     public function setClientId($clientId)
     {
-        $this->client_id = $clientId;
+        $this->clientId = $clientId;
 
         return $this;
     }
@@ -220,7 +227,7 @@ class Import_lot extends Log
      */
     public function getClientId()
     {
-        return $this->client_id;
+        return $this->clientId;
     }
 
     /**
@@ -232,7 +239,7 @@ class Import_lot extends Log
      */
     public function setBanqueId($banqueId)
     {
-        $this->banque_id = $banqueId;
+        $this->banqueId = $banqueId;
 
         return $this;
     }
@@ -244,7 +251,7 @@ class Import_lot extends Log
      */
     public function getBanqueId()
     {
-        return $this->banque_id;
+        return $this->banqueId;
     }
 
     /**
@@ -256,7 +263,7 @@ class Import_lot extends Log
      */
     public function setStatutId($statutId)
     {
-        $this->statut_id = $statutId;
+        $this->statutId = $statutId;
 
         return $this;
     }
@@ -268,7 +275,7 @@ class Import_lot extends Log
      */
     public function getStatutId()
     {
-        return $this->statut_id;
+        return $this->statutId;
     }
 
     /**
@@ -293,6 +300,30 @@ class Import_lot extends Log
     public function getDateStatut1()
     {
         return $this->dateStatut1;
+    }
+
+    /**
+     * Set dateStatut11
+     *
+     * @param \DateTime $dateStatut11
+     *
+     * @return Import_lot
+     */
+    public function setDateStatut11($dateStatut11)
+    {
+        $this->dateStatut11 = $dateStatut11;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStatut11
+     *
+     * @return \DateTime
+     */
+    public function getDateStatut11()
+    {
+        return $this->dateStatut11;
     }
 
     /**

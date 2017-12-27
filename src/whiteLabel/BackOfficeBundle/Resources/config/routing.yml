@@ -91,6 +91,13 @@ lot_update:
         clientId: \d+
         lotId: \d+
 
+lot_delete:
+    path:     /lot/delete/{clientId}/{lotId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Lot:delete }
+    requirements:
+        clientId: \d+
+        lotId: \d+
+
 lot_export_noteDebit:
     path:     /lot/export/noteDebit/{clientId}/{lotId}
     defaults: { _controller: whiteLabelBackOfficeBundle:Lot:exportNoteDebit }

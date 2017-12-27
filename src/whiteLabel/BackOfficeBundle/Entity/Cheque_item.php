@@ -25,7 +25,7 @@ class Cheque_item extends Log
     /**
      * @var int
      *
-     * @ORM\Column(name="numero", type="integer")
+     * @ORM\Column(name="numero", type="string", length=7)
      */
     private $numero;
 

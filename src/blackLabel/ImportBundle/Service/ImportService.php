@@ -51,6 +51,9 @@ class ImportService
     /**
      * ImportService constructor.
      * @param $doctrine
+     * @param $router
+     * @param \Swift_Mailer $mailer
+     * @param \Twig_Environment $environment
      * @param Container $container
      */
     public function __construct(
@@ -77,6 +80,8 @@ class ImportService
     /**
      * @param $importId
      * @param $fileWebPath
+     * @param $dateImport
+     * @param $auteurImport
      * @return bool
      */
     public function persistXLSX($importId, $fileWebPath, $dateImport, $auteurImport)
@@ -342,12 +347,12 @@ class ImportService
                 }
 
                 $objectCommande->setAdresseFacturation($row['I']);
-                $objectCommande->setComplementAdresseFacturation($row['J']);
+                $objectCommande->setComplementFacturation($row['J']);
                 $objectCommande->setCodePostalFacturation($row['K']);
                 $objectCommande->setVilleFacturation($row['L']);
-                $objectCommande->setPays($row['M']);
+                $objectCommande->setPaysFacturation($row['M']);
                 $objectCommande->setAdresseChantier($row['N']);
-                $objectCommande->setComplementAdresseChantier($row['O']);
+                $objectCommande->setComplementChantier($row['O']);
                 $objectCommande->setCodePostalChantier($row['P']);
                 $objectCommande->setVilleChantier($row['Q']);
                 $objectCommande->setTelephone($row['R']);
@@ -374,7 +379,7 @@ class ImportService
                 ///////////////////////////////////////////////////////////////// */
                 $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
                 $dataPrime = $repo_prime->findBy(array(
-                    'canal_id' => $objectCanal->getId()
+                    'canalId' => $objectCanal->getId()
                 ));
 
                 foreach ($dataPrime as $itemPrime) {
@@ -405,10 +410,11 @@ class ImportService
     public function updateStatutLot($importId)
     {
         $EM = $this->doctrine->getManager();
+        $now = new \DateTime();
 
         $query = "
             UPDATE import_lot
-            SET statut_id = " . Statut_lot::STATUT_11 . "
+            SET statut_id = " . Statut_lot::STATUT_11 . ", date_statut_11 = '" . $now->format('Y-m-d H:i:s') . "'
             WHERE id = " . $importId
         ;
 

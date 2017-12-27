@@ -31,7 +31,7 @@ class Commentaire_lot extends Log
      *
      * @ORM\Column(name="lot_id", type="integer")
      */
-    private $lot_id;
+    private $lotId;
 
     /**
      * @var string
@@ -72,7 +72,7 @@ class Commentaire_lot extends Log
      */
     public function setLotId($lotId)
     {
-        $this->lot_id = $lotId;
+        $this->lotId = $lotId;
 
         return $this;
     }
@@ -84,7 +84,7 @@ class Commentaire_lot extends Log
      */
     public function getLotId()
     {
-        return $this->lot_id;
+        return $this->lotId;
     }
 
     /**

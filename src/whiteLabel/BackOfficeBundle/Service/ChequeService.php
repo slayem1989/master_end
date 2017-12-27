@@ -43,6 +43,7 @@ class ChequeService
     ********************************************************************
     *******************************************************************/
     /**
+     * @param $first
      * @param $last
      * @return array
      */
@@ -55,7 +56,7 @@ class ChequeService
         $arrayCheque = array();
         for ($i=$first; $i<=$delta_increment; $i++) {
             $objectCheque = new Cheque_item();
-            $objectCheque->setNumero($i);
+            $objectCheque->setNumero($this->formatNumeroCheque($i));
 
             $arrayCheque[] = $objectCheque;
         }

@@ -50,7 +50,7 @@ class LotController extends Controller
 
                 $lotId = $item['lotId'];
                 $list_commentaireData[$lotId] = $commentaireRepository->findBy(array(
-                    'lot_id' => $lotId
+                    'lotId' => $lotId
                 ));
 
                 /* /////////////////////////////////////////////////////////////////
@@ -120,6 +120,14 @@ class LotController extends Controller
         /////////////////////////////////////////////////////////// */
         $historiqueService = $this->get('black_label.service.historique');
 
+        /* /////////////////////////////////////////////////////////////////
+                                GET DELETE FORM
+        ///////////////////////////////////////////////////////////////// */
+        $form_delete = $this
+            ->get('form.factory')
+            ->create()
+        ;
+
         if ($request->isMethod('POST') && $form_validate->handleRequest($request)->isValid()) {
             $lotObject->setDateModif(new \Datetime());
             $lotObject->setAuteurModif($_SESSION['login']->getUsername());
@@ -130,87 +138,87 @@ class LotController extends Controller
 
             $statutCurrent = $lotObject->getStatutId();
             switch ($statutCurrent) {
-                case 1:
-                    $lotObject->setStatutId(2);
+                case Statut_lot::STATUT_1:
+                    $lotObject->setStatutId(Statut_lot::STATUT_2);
                     $lotObject->setDateStatut2($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_2,
                         $_POST,
-                        2,
+                        Statut_lot::STATUT_2,
                         $post_dateStatut
                     );
                     break;
-                case 2:
-                    $lotObject->setStatutId(3);
+                case Statut_lot::STATUT_2:
+                    $lotObject->setStatutId(Statut_lot::STATUT_3);
                     $lotObject->setDateStatut3($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_3,
                         $_POST,
-                        3,
+                        Statut_lot::STATUT_3,
                         $post_dateStatut
                     );
                     break;
-                case 3:
-                    $lotObject->setStatutId(4);
+                case Statut_lot::STATUT_3:
+                    $lotObject->setStatutId(Statut_lot::STATUT_4);
                     $lotObject->setDateStatut4($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_4,
                         $_POST,
-                        4,
+                        Statut_lot::STATUT_4,
                         $post_dateStatut
                     );
                     break;
-                case 4:
-                    $lotObject->setStatutId(5);
+                case Statut_lot::STATUT_4:
+                    $lotObject->setStatutId(Statut_lot::STATUT_5);
                     $lotObject->setDateStatut5($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_5,
                         $_POST,
-                        5,
+                        Statut_lot::STATUT_5,
                         $post_dateStatut
                     );
                     break;
-                case 5:
-                    $lotObject->setStatutId(6);
+                case Statut_lot::STATUT_5:
+                    $lotObject->setStatutId(Statut_lot::STATUT_6);
                     $lotObject->setDateStatut6($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_6,
                         $_POST,
-                        6,
+                        Statut_lot::STATUT_6,
                         $post_dateStatut
                     );
                     break;
-                case 6:
-                    $lotObject->setStatutId(7);
+                case Statut_lot::STATUT_6:
+                    $lotObject->setStatutId(Statut_lot::STATUT_7);
                     $lotObject->setDateStatut7($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_7,
                         $_POST,
-                        7,
+                        Statut_lot::STATUT_7,
                         $post_dateStatut
                     );
                     break;
-                case 7:
-                    $lotObject->setStatutId(8);
+                case Statut_lot::STATUT_7:
+                    $lotObject->setStatutId(Statut_lot::STATUT_8);
                     $lotObject->setDateStatut8($format_dateStatut);
 
                     $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_8,
                         $_POST,
-                        8,
+                        Statut_lot::STATUT_8,
                         $post_dateStatut
                     );
                     break;
@@ -231,11 +239,11 @@ class LotController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 GET DENY FORM => ND STATUT 4
         ///////////////////////////////////////////////////////////////// */
-        $form_deny4 = $lotService->updateDenyType(4);
+        $form_deny4 = $lotService->updateDenyType(Statut_lot::STATUT_4);
 
         if ($request->isMethod('POST') && $form_deny4->handleRequest($request)->isValid()) {
             if ($request->request->has('form_deny4')) {
-                $lotObject->setStatutId(1);
+                $lotObject->setStatutId(Statut_lot::STATUT_1);
                 $lotObject->setDateStatut2(null);
                 $lotObject->setDateStatut3(null);
                 $lotObject->setDateStatut44(new \Datetime());
@@ -247,7 +255,7 @@ class LotController extends Controller
                     $lotId,
                     Statut_lot::STATUT_SLUG_44 . ' => Prochaine action: ' . Statut_lot::STATUT_SLUG_2,
                     $_POST,
-                    44
+                    Statut_lot::STATUT_44
                 );
 
                 $request->getSession()->getFlashBag()->add(
@@ -264,11 +272,11 @@ class LotController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 GET DENY FORM => BAT STATUT 5
         ///////////////////////////////////////////////////////////////// */
-        $form_deny5 = $lotService->updateDenyType(5);
+        $form_deny5 = $lotService->updateDenyType(Statut_lot::STATUT_5);
 
         if ($request->isMethod('POST') && $form_deny5->handleRequest($request)->isValid()) {
             if ($request->request->has('form_deny5')) {
-                $lotObject->setStatutId(2);
+                $lotObject->setStatutId(Statut_lot::STATUT_2);
                 $lotObject->setDateStatut3(null);
                 $lotObject->setDateStatut4(null);
                 $lotObject->setDateStatut55(new \Datetime());
@@ -280,7 +288,7 @@ class LotController extends Controller
                     $lotId,
                     Statut_lot::STATUT_SLUG_55 . ' => Prochaine action: ' . Statut_lot::STATUT_SLUG_3,
                     $_POST,
-                    55
+                    Statut_lot::STATUT_55
                 );
 
                 $request->getSession()->getFlashBag()->add(
@@ -295,11 +303,98 @@ class LotController extends Controller
         }
 
         return $this->render('whiteLabelBackOfficeBundle:Lot:update.html.twig', array(
+            'form_delete'   => $form_delete->createView(),
             'form_validate' => $form_validate->createView(),
             'form_deny4'    => $form_deny4->createView(),
             'form_deny5'    => $form_deny5->createView(),
             'lot'           => $lotData,
             'clientId'      => $clientId
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @param $clientId
+     * @param $lotId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(Request $request, $clientId, $lotId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET LOT
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_lot');
+        $lotObject = $repo->find($lotId);
+
+        $uploadDir = $this->getParameter('kernel.project_dir').'/data';
+        $webPath_import = $lotObject->file_getWebPath();
+        $file_import = $uploadDir . '/' . $webPath_import;
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET CANAL
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_canal');
+        $canalArray = $repo->findBy(array(
+            'lotId' => $lotId
+        ));
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET PRIME
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
+        $primeArray = $repo->findBy(array(
+            'canalId' => $canalArray[0]->getId()
+        ));
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET HISTORIQUE LOT
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelHistoriqueBundle:Historique_lot');
+        $historiqueArray = $repo->findBy(array(
+            'lotId' => $lotId
+        ));
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET COMMENTAIRE LOT
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('blackLabelCommentaireBundle:Commentaire_lot');
+        $commentaireArray = $repo->findBy(array(
+            'lotId' => $lotId
+        ));
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET DELETE FORM
+        ///////////////////////////////////////////////////////////////// */
+        $form = $this
+            ->get('form.factory')
+            ->create()
+        ;
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                if (file_exists($file_import)) unlink($file_import);
+                foreach ($commentaireArray as $item) {$EM->remove($item);}
+                foreach ($historiqueArray as $item) {$EM->remove($item);}
+                foreach ($primeArray as $item) {$EM->remove($item);}
+                $EM->remove($canalArray[0]);
+                $EM->remove($lotObject);
+                $EM->flush();
+            }
+
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'Le Lot n°' . $lotObject->getNumero() . ' a bien été supprimé.'
+            );
+
+            return $this->redirectToRoute('lot_list', array(
+                'clientId' => $clientId
+            ));
+        }
+
+        return $this->redirectToRoute('lot_list', array(
+            'clientId' => $clientId
         ));
     }
 

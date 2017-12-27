@@ -37,14 +37,14 @@ class Import_canal extends Log
      *
      * @ORM\Column(name="lot_id", type="integer")
      */
-    private $lot_id;
+    private $lotId;
 
     /**
      * @var int
      *
      * @ORM\Column(name="nombre_commande", type="integer")
      */
-    private $nombre_commande;
+    private $nombreCommande;
 
     /**
      * @var string
@@ -136,7 +136,7 @@ class Import_canal extends Log
      */
     public function setLotId($lotId)
     {
-        $this->lot_id = $lotId;
+        $this->lotId = $lotId;
 
         return $this;
     }
@@ -148,7 +148,7 @@ class Import_canal extends Log
      */
     public function getLotId()
     {
-        return $this->lot_id;
+        return $this->lotId;
     }
 
     /**
@@ -160,7 +160,7 @@ class Import_canal extends Log
      */
     public function setNombreCommande($nombreCommande)
     {
-        $this->nombre_commande = $nombreCommande;
+        $this->nombreCommande = $nombreCommande;
 
         return $this;
     }
@@ -172,7 +172,7 @@ class Import_canal extends Log
      */
     public function getNombreCommande()
     {
-        return $this->nombre_commande;
+        return $this->nombreCommande;
     }
 
     /**

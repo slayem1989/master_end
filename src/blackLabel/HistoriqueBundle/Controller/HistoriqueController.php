@@ -32,7 +32,7 @@ class HistoriqueController extends Controller
         ///////////////////////////////////////////////////////////////// */
         $repo_historique = $EM->getRepository('blackLabelHistoriqueBundle:Historique_lot');
         $list = $repo_historique->findBy(array(
-            'lot_id' => $lotId
+            'lotId' => $lotId
         ));
 
         return $this->render('blackLabelHistoriqueBundle:Historique:list_lot.html.twig', array(

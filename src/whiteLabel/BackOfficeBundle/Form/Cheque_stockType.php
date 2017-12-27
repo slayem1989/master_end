@@ -40,7 +40,7 @@ class Cheque_stockType extends AbstractType
         $this->traitChoices = $options['trait_choices'];
 
         $builder
-            ->add('banque_id',      EntityType::class,  array(
+            ->add('banqueId',       EntityType::class,  array(
                                                             'required'      => true,
                                                             'placeholder'   => '-- Choisir une banque --',
                                                             'label'         => false,
@@ -54,7 +54,7 @@ class Cheque_stockType extends AbstractType
                                                             'choice_value'  => 'id',
                                                             'data'          => $this->repo_banque->findOneBy(['id' => $this->traitChoices[1]])
                                                         ))
-            ->add('reference_boite',TextType::class,    array(
+            ->add('referenceBoite', TextType::class,    array(
                                                             'required'  => true,
                                                             'label'     => 'Référence boîte',
                                                             'attr'      => array(
@@ -82,7 +82,7 @@ class Cheque_stockType extends AbstractType
                                                                 'readonly'  => true
                                                             )
                                                         ))
-            ->add('date_reception', TextType::class,    array(
+            ->add('dateReception',  TextType::class,    array(
                                                             'required'  => true,
                                                             'label'     => 'Date réception',
                                                             'attr'      => array(

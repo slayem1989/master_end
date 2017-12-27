@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $.fn.datepicker.defaults.language = 'fr';
 
-    var date = $('input[id="whitelabel_backofficebundle_cheque_stock_date_reception"]');
+    var date = $('input[id="whitelabel_backofficebundle_cheque_stock_dateReception"]');
     var container = $('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
 
     date.datepicker({

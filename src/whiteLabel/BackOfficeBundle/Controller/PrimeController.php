@@ -116,6 +116,11 @@ class PrimeController extends Controller
             $convert_date = \DateTime::createFromFormat('d/m/Y', $post_date);
             $prime->setDate($convert_date);
 
+            if ($prime->getNumero()) {
+                $chequeService= $this->get('white_label.service.cheque');
+                $prime->setNumero($chequeService->formatNumeroCheque($prime->getNumero()));
+            }
+
             $EM->persist($prime);
             $EM->flush();
 
@@ -161,12 +166,12 @@ class PrimeController extends Controller
         $form->remove('index');
         $form->remove('numero');
         $form->remove('adresseFacturation');
-        $form->remove('complementAdresseFacturation');
+        $form->remove('complementFacturation');
         $form->remove('codePostalFacturation');
         $form->remove('villeFacturation');
-        $form->remove('pays');
+        $form->remove('paysFacturation');
         $form->remove('adresseChantier');
-        $form->remove('complementAdresseChantier');
+        $form->remove('complementChantier');
         $form->remove('codePostalChantier');
         $form->remove('villeChantier');
         $form->remove('telephone');
@@ -225,9 +230,9 @@ class PrimeController extends Controller
         $form->remove('date');
         $form->remove('index');
         $form->remove('numero');
-        $form->remove('pays');
+        $form->remove('paysFacturation');
         $form->remove('adresseChantier');
-        $form->remove('complementAdresseChantier');
+        $form->remove('complementChantier');
         $form->remove('codePostalChantier');
         $form->remove('villeChantier');
         $form->remove('telephone');

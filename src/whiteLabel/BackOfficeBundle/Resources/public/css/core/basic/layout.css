@@ -48,6 +48,7 @@ body {
 .paddingBottom10 { padding-bottom: 10px; }
 .paddingBottom15 { padding-bottom: 15px; }
 .paddingLeft10 { padding-left: 10px; }
+.paddingTop100 { padding-top: 100px; }
 
 a:focus, a:hover, a.no-underline { outline: 0;text-decoration: none; }
 
@@ -74,6 +75,7 @@ a:focus, a:hover, a.no-underline { outline: 0;text-decoration: none; }
 #action_back { margin-right: 0; }
 #action_create { margin-right: 0; }
 #action_update { margin-right: 28px; }
+#action_delete { margin-right: 56px; }
 
 /*******************************************
                 TABLE STYLE

@@ -49,11 +49,9 @@ class LotService
     ********************************************************************
     *******************************************************************/
     /**
-     * @param array $option
-     * @param string $data
      * @return mixed
      */
-    public function updateValidateType($option=array(), $data='')
+    public function updateValidateType()
     {
         $form = $this->formFactory->createBuilder()
             ->add('date',       TextType::class,    array(

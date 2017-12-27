@@ -151,12 +151,6 @@ class ChequeController extends Controller
         $convert_date = $bdd_date->format('d/m/Y');
         $objectStock->setDateReception($convert_date);
 
-        // Format Integer to display
-        $chequeFirst = (int)$objectStock->getFirst();
-        $chequeLast = (int)$objectStock->getLast();
-        $objectStock->setFirst($chequeFirst);
-        $objectStock->setLast($chequeLast);
-
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */

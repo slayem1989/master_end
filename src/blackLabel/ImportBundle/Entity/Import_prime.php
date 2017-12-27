@@ -30,7 +30,7 @@ class Import_prime extends Log
      *
      * @ORM\Column(name="canal_id", type="integer")
      */
-    private $canal_id;
+    private $canalId;
 
     /**
      * @var int
@@ -56,7 +56,7 @@ class Import_prime extends Log
     /**
      * @var int
      *
-     * @ORM\Column(name="numero", type="integer", nullable=true)
+     * @ORM\Column(name="numero", type="string", length=7, nullable=true)
      */
     private $numero;
 
@@ -105,9 +105,9 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="complement_adresse_facturation", type="string", length=255, nullable=true)
+     * @ORM\Column(name="complement_facturation", type="string", length=255, nullable=true)
      */
-    private $complementAdresseFacturation;
+    private $complementFacturation;
 
     /**
      * @var string
@@ -126,9 +126,9 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="pays", type="string", length=50, nullable=true)
+     * @ORM\Column(name="pays_facturation", type="string", length=50, nullable=true)
      */
-    private $pays;
+    private $paysFacturation;
 
     /**
      * @var string
@@ -140,9 +140,9 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="complement_adresse_chantier", type="string", length=255, nullable=true)
+     * @ORM\Column(name="complement_chantier", type="string", length=255, nullable=true)
      */
-    private $complementAdresseChantier;
+    private $complementChantier;
 
     /**
      * @var string
@@ -245,7 +245,7 @@ class Import_prime extends Log
      */
     public function setCanalId($canalId)
     {
-        $this->canal_id = $canalId;
+        $this->canalId = $canalId;
 
         return $this;
     }
@@ -257,7 +257,7 @@ class Import_prime extends Log
      */
     public function getCanalId()
     {
-        return $this->canal_id;
+        return $this->canalId;
     }
 
     /**
@@ -501,27 +501,27 @@ class Import_prime extends Log
     }
 
     /**
-     * Set complementAdresseFacturation
+     * Set complementFacturation
      *
-     * @param string $complementAdresseFacturation
+     * @param string $complementFacturation
      *
      * @return Import_prime
      */
-    public function setComplementAdresseFacturation($complementAdresseFacturation)
+    public function setComplementFacturation($complementFacturation)
     {
-        $this->complementAdresseFacturation = $complementAdresseFacturation;
+        $this->complementFacturation = $complementFacturation;
 
         return $this;
     }
 
     /**
-     * Get complementAdresseFacturation
+     * Get complementFacturation
      *
      * @return string
      */
-    public function getComplementAdresseFacturation()
+    public function getComplementFacturation()
     {
-        return $this->complementAdresseFacturation;
+        return $this->complementFacturation;
     }
 
     /**
@@ -573,27 +573,27 @@ class Import_prime extends Log
     }
 
     /**
-     * Set pays
+     * Set paysFacturation
      *
-     * @param string $pays
+     * @param string $paysFacturation
      *
      * @return Import_prime
      */
-    public function setPays($pays)
+    public function setPaysFacturation($paysFacturation)
     {
-        $this->pays = $pays;
+        $this->paysFacturation = $paysFacturation;
 
         return $this;
     }
 
     /**
-     * Get pays
+     * Get paysFacturation
      *
      * @return string
      */
-    public function getPays()
+    public function getPaysFacturation()
     {
-        return $this->pays;
+        return $this->paysFacturation;
     }
 
     /**
@@ -621,27 +621,27 @@ class Import_prime extends Log
     }
 
     /**
-     * Set complementAdresseChantier
+     * Set complementChantier
      *
-     * @param string $complementAdresseChantier
+     * @param string $complementChantier
      *
      * @return Import_prime
      */
-    public function setComplementAdresseChantier($complementAdresseChantier)
+    public function setComplementChantier($complementChantier)
     {
-        $this->complementAdresseChantier = $complementAdresseChantier;
+        $this->complementChantier = $complementChantier;
 
         return $this;
     }
 
     /**
-     * Get complementAdresseChantier
+     * Get complementChantier
      *
      * @return string
      */
-    public function getComplementAdresseChantier()
+    public function getComplementChantier()
     {
-        return $this->complementAdresseChantier;
+        return $this->complementChantier;
     }
 
     /**

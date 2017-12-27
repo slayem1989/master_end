@@ -80,6 +80,10 @@ input[type=submit] {
     position: relative;
     width: 100%;
 }
+.modal-body input[type=submit] {
+    display: inline-block;
+    width: inherit;
+}
 
 
 

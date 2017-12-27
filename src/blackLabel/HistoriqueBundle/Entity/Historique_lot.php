@@ -31,7 +31,7 @@ class Historique_lot extends Log
      *
      * @ORM\Column(name="lot_id", type="integer")
      */
-    private $lot_id;
+    private $lotId;
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class Historique_lot extends Log
      *
      * @ORM\Column(name="statut_id", type="integer")
      */
-    private $statut_id;
+    private $statutId;
 
     /**
      * @var string
@@ -92,7 +92,7 @@ class Historique_lot extends Log
      */
     public function setLotId($lotId)
     {
-        $this->lot_id = $lotId;
+        $this->lotId = $lotId;
 
         return $this;
     }
@@ -104,7 +104,7 @@ class Historique_lot extends Log
      */
     public function getLotId()
     {
-        return $this->lot_id;
+        return $this->lotId;
     }
 
     /**
@@ -164,7 +164,7 @@ class Historique_lot extends Log
      */
     public function setStatutId($statutId)
     {
-        $this->statut_id = $statutId;
+        $this->statutId = $statutId;
 
         return $this;
     }
@@ -176,7 +176,7 @@ class Historique_lot extends Log
      */
     public function getStatutId()
     {
-        return $this->statut_id;
+        return $this->statutId;
     }
 
     /**

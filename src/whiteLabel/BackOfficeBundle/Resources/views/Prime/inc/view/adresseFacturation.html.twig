@@ -13,7 +13,7 @@
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Compl&eacute;ment :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ prime.complementAdresseFacturation ? prime.complementAdresseFacturation|capitalize : '-' }}
+                {{ prime.complementFacturation ? prime.complementFacturation|capitalize : '-' }}
             </div>
         </div>
 
@@ -27,7 +27,7 @@
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Pays :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ prime.pays ? prime.pays|upper : '-' }}
+                {{ prime.paysFacturation ? prime.paysFacturation|upper : '-' }}
             </div>
         </div>
 

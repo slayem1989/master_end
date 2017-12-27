@@ -40,7 +40,7 @@ class Import_lotType extends AbstractType
         $this->traitChoices = $options['trait_choices'];
 
         $builder
-            ->add('banque_id',  EntityType::class,  array(
+            ->add('banqueId',   EntityType::class,  array(
                                                         'required'      => true,
                                                         'placeholder'   => '-- Choisir une banque --',
                                                         'label'         => false,
