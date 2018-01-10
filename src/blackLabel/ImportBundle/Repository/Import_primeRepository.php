@@ -11,13 +11,21 @@ namespace blackLabel\ImportBundle\Repository;
 class Import_primeRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * Import_primeRepository constructor.
+     */
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
+        parent::__construct($em, $class);
+    }
+
+
+
+    /**
      * @param $clientId
      * @return array
      */
     public function findByClient($clientId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
@@ -46,7 +54,82 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
             ORDER BY ip.id DESC
         ";
 
-        $stmt = $EM
+        $stmt = $this->_em
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param $clientId
+     * @param string $where
+     * @return mixed
+     */
+    public function countByClient($clientId, $where='')
+    {
+        $query = "
+            SELECT COUNT(ip.id) AS countId
+            FROM import_lot il
+                INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN import_prime ip ON ip.canal_id = ic.id
+                INNER JOIN statut_prime sp ON sp.id = ip.statut_id
+            WHERE il.client_id = " . $clientId . "
+                AND ic.title LIKE '%ecap%'" . $where . "
+        ";
+
+        $stmt = $this->_em
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    /**
+     * @param $clientId
+     * @param $orderBy
+     * @param $orderType
+     * @param $start
+     * @param $length
+     * @param string $where
+     * @return array
+     */
+    public function findAjaxByClient($clientId, $orderBy, $orderType, $start, $length, $where='')
+    {
+        $query = "
+            SELECT  il.numero AS lotNumero,
+                    ip.id AS primeId,
+                    CASE WHEN ('' != ip.numero)
+                        THEN ip.numero
+                        ELSE 'En attente'
+                    END AS primeNumero,
+                    CASE WHEN ('' != ip.prenom AND '' != ip.nom)
+                        THEN CONCAT(' ', CONCAT(UCASE(LEFT(ip.prenom, 1)), LCASE(SUBSTRING(ip.prenom, 2))), ' ', UPPER(ip.nom))
+                        ELSE CONCAT_WS(' ', UPPER(ip.siren), '<br>', UPPER(ip.denomination), '<br>', UPPER(ip.representant))
+                    END AS primeIdentifiant,
+                    CONCAT(ip.code_postal_facturation, ' ', ip.ville_facturation) AS primeVille,
+                    ip.type AS primeType,
+                    ip.email AS primeEmail,
+                    ip.telephone AS primeTelephone,
+                    DATE_FORMAT(ip.date, '%d/%m/%Y') AS primeDateIntegration,
+                    ip.onglet AS primeOnglet,
+                    sp.slug AS primeStatut,
+                    '' AS action,
+                    GROUP_CONCAT(CONCAT_WS('', cp.content, '<>', cp.auteur_creation, '<>', DATE_FORMAT(cp.date_creation, '%d/%m/%Y à %H:%i:%s')) ORDER BY cp.id DESC SEPARATOR '|') AS commentaire            FROM import_lot il
+                INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN import_prime ip ON ip.canal_id = ic.id
+                INNER JOIN statut_prime sp ON sp.id = ip.statut_id
+                LEFT JOIN commentaire_prime cp ON cp.prime_id = ip.id
+            WHERE il.client_id = " . $clientId . "
+                AND ic.title LIKE '%ecap%'" . $where . "
+            GROUP BY ip.id
+            ORDER BY " . $orderBy . " " . $orderType . "
+            LIMIT " . $start . "," . $length . "
+        ";
+
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();

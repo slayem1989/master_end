@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+use IBAN\Validation\IBANValidator;
+
 use whiteLabel\BackOfficeBundle\Entity\Client_;
 use whiteLabel\BackOfficeBundle\Form\Client_Type;
 
@@ -52,13 +54,35 @@ class ClientController extends Controller
         $form = $this->createForm(Client_Type::class, $client);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $EM->persist($client);
-            $EM->flush();
+            /* /////////////////////////////////////////////////////////////////
+                                        IBAN CHECK
+            ///////////////////////////////////////////////////////////////// */
+            $IBANValidator = new IBANValidator();
+            $post_banque = $client->getBanque();
+            $isIBANValid = true;
+            foreach ($post_banque as $item) {
+                $post_iban = $item->getIban();
+                if (isset($post_iban) && false == $IBANValidator->validate($post_iban)) {
+                    $isIBANValid = false;
+                    break;
+                }
+            }
 
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'Le Client ' . $client->getClientInformation()->getNom() . ' a été créé avec succès.'
-            );
+            if (true != $isIBANValid) {
+                $request->getSession()->getFlashBag()->add(
+                    'danger',
+                    'Les coordonnées bancaires sont erronées.'
+                );
+            } else {
+                $EM->persist($client);
+                $EM->flush();
+                $EM->clear();
+
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'Le Client ' . $client->getClientInformation()->getNom() . ' a été créé avec succès.'
+                );
+            }
 
             return $this->redirectToRoute('client_list', array());
         }
@@ -112,13 +136,35 @@ class ClientController extends Controller
             $client->setDateModif(new \Datetime());
             $client->setAuteurModif($_SESSION['login']->getUsername());
 
-            $EM->persist($client);
-            $EM->flush();
+            /* /////////////////////////////////////////////////////////////////
+                                        IBAN CHECK
+            ///////////////////////////////////////////////////////////////// */
+            $IBANValidator = new IBANValidator();
+            $post_banque = $client->getBanque();
+            $isIBANValid = true;
+            foreach ($post_banque as $item) {
+                $post_iban = $item->getIban();
+                if (isset($post_iban) && false == $IBANValidator->validate($post_iban)) {
+                    $isIBANValid = false;
+                    break;
+                }
+            }
 
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'Le Client ' . $client->getClientInformation()->getNom() . ' a bien été modifié.'
-            );
+            if (true != $isIBANValid) {
+                $request->getSession()->getFlashBag()->add(
+                    'danger',
+                    'Les coordonnées bancaires sont erronées.'
+                );
+            } else {
+                $EM->persist($client);
+                $EM->flush();
+                $EM->clear();
+
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'Le Client ' . $client->getClientInformation()->getNom() . ' a bien été modifié.'
+                );
+            }
 
             return $this->redirectToRoute('client_list', array());
         }

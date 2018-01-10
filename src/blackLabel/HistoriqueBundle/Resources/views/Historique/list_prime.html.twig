@@ -1,0 +1,36 @@
+{# src/blackLabel/HistoriqueBundle/Resources/views/Historique/list_prime.html.twig #}
+{% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/list/*.css'
+    'bundles/whitelabelbackoffice/css/prime/historique.css'
+    'bundles/blacklabelhistorique/css/historique/list.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 marginBottom40 noPadding" id="bloc_title">
+        <h2>Consulter l'historique d'une prime: {{ prime.numero ? prime.numero : 'En attente' }}</h2>
+        {{ include('whiteLabelBackOfficeBundle:Prime:inc/back.html.twig') }}
+    </div>
+
+{{ include('whiteLabelBackOfficeBundle:Prime:inc/historique/table.html.twig') }}
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/blacklabelhistorique/js/historique/list/*.js'
+    'bundles/blacklabelhistorique/js/core/list/jquery_datatable.js'
+    'bundles/blacklabelhistorique/js/core/list/bootstrap_datatable.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

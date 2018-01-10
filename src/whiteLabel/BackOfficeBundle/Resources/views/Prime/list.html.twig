@@ -4,6 +4,7 @@
 {% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
+    'bundles/whitelabelbackoffice/css/core/form/*.css'
     'bundles/whitelabelbackoffice/css/core/list/*.css'
     'bundles/whitelabelbackoffice/css/prime/list.css'
     %}
@@ -17,6 +18,7 @@
         <h2>Liste des Primes</h2>
     </div>
 
+<input type="hidden" value="{{ clientId }}" id="data_clientId" />
 {{ include('whiteLabelBackOfficeBundle:Prime:inc/list/table.html.twig') }}
 
 </div>

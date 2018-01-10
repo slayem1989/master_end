@@ -45,7 +45,7 @@ class Client_informationType extends AbstractType
                                                                 )
                                                             ))
             ->add('logo',               FileType::class,    array(
-                                                                'required'  => false,
+                                                                'required'  => true,
                                                                 'label'     => 'Logo',
                                                             ))
         ;

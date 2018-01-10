@@ -11,29 +11,37 @@ $(document).ready(function() {
 
     idLogo.change(function() {
         validateFile(this.files[0], messageLogo, idBoutonValider);
+
+        var elt_file = $('#value_file').val();
+        if ('true' == elt_file) {
+            idBoutonValider.prop('disabled', false);
+        } else {
+            idBoutonValider.prop('disabled', true);
+        }
     });
 
     /* *************************************************
                         FUNCTION
     ************************************************* */
     function validateFile(file, message, idSubmit) {
-        var errorFlag = false;
-        message.empty();
+        var isFileValid = true;
         var normalSize = '5242880';
+        message.empty();
+
         if (file.size > normalSize) {
             message.append('<li>Le fichier ' + file.name + ' est trop volumineux (' + formatFileSize(file) + '). Sa taille ne doit pas dépasser 5 MB. </li>').css('color', 'red');
-            errorFlag = true;
+            isFileValid = false;
         }
 
         if (fileExtension.indexOf(file.type) <= -1) {
             message.append('<li>Le type du fichier est invalide. Les types autorisés sont ".jpg", ".jpeg", ".png". </li>').css('color', 'red');
-            errorFlag = true;
+            isFileValid = false;
         }
 
-        if (true == errorFlag) {
-            idSubmit.prop('disabled', true);
+        if (true != isFileValid) {
+            $('#value_file').val('false');
         } else {
-            idSubmit.prop('disabled', false);
+            $('#value_file').val('true');
         }
     }
 

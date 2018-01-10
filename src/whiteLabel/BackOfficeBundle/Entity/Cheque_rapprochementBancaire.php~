@@ -1,0 +1,79 @@
+<?php
+
+namespace whiteLabel\BackOfficeBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use blackLabel\GenericBundle\Entity\Log;
+
+/**
+ * Cheque_rapprochementBancaire
+ *
+ * @ORM\Table(name="cheque_rapprochement_bancaire", indexes={
+ *      @ORM\Index(name="client_idx", columns={"client_id"})
+ * })
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\Cheque_rapprochementBancaireRepository")
+ */
+class Cheque_rapprochementBancaire extends Log
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="client_id", type="integer")
+     */
+    private $clientId;
+
+    /**
+     * @ORM\Column(name="file_url", type="string", length=255)
+     */
+    private $file_url;
+
+    /**
+     * @ORM\Column(name="file_alt", type="string", length=255)
+     */
+    private $file_alt;
+
+    /**
+     * @Assert\File(
+     *     maxSize="20480k",
+     *     mimeTypes={ "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+     * )
+     */
+    private $file;
+
+    private $tempFilename;
+
+
+
+    /**
+     * Cheque_rapprochementBancaire constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+

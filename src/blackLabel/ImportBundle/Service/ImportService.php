@@ -104,7 +104,7 @@ class ImportService
         $numeroLot = filter_var($allSheet[0]->getTitle(), FILTER_SANITIZE_NUMBER_INT);
         $this->updateNumeroLot($importId, $numeroLot);
 
-        $bypass = true;
+        $isValid = true;
         foreach ($allSheet as $sheet) {
             /* //////////////////////////////////////////////////////////
                                 PARSE DATA FILE BY SHEET
@@ -154,6 +154,7 @@ class ImportService
 
             $EM->persist($objectCanal);
             $EM->flush();
+            $EM->clear();
 
             /* //////////////////////////////////////////////////////////
                                 SET PRIME DATA
@@ -330,78 +331,69 @@ class ImportService
                     $row['Y'] = '';
                 }
 
-                $objectCommande = new Import_prime();
-                $objectCommande->setCanalId($objectCanal->getId());
-                $objectCommande->setIndex($row['C']);
-                $objectCommande->setType($row['A']);
-                $objectCommande->setDate($row['B']);
-                $objectCommande->setNumero(null);
+                $objectPrime = new Import_prime();
+                $objectPrime->setCanalId($objectCanal->getId());
+                $objectPrime->setIndex($row['C']);
+                $objectPrime->setType($row['A']);
+                $objectPrime->setDate($row['B']);
+                $objectPrime->setNumero(null);
 
                 if (($row['D'] && $row['E']) || ('' != $row['D'] && '' != $row['E'])) {
-                    $objectCommande->setNom($row['D']);
-                    $objectCommande->setPrenom($row['E']);
+                    $objectPrime->setNom($row['D']);
+                    $objectPrime->setPrenom($row['E']);
                 } else {
-                    $objectCommande->setSiren($row['F']);
-                    $objectCommande->setDenomination($row['G']);
-                    $objectCommande->setRepresentant($row['H']);
+                    $objectPrime->setSiren($row['F']);
+                    $objectPrime->setDenomination($row['G']);
+                    $objectPrime->setRepresentant($row['H']);
                 }
 
-                $objectCommande->setAdresseFacturation($row['I']);
-                $objectCommande->setComplementFacturation($row['J']);
-                $objectCommande->setCodePostalFacturation($row['K']);
-                $objectCommande->setVilleFacturation($row['L']);
-                $objectCommande->setPaysFacturation($row['M']);
-                $objectCommande->setAdresseChantier($row['N']);
-                $objectCommande->setComplementChantier($row['O']);
-                $objectCommande->setCodePostalChantier($row['P']);
-                $objectCommande->setVilleChantier($row['Q']);
-                $objectCommande->setTelephone($row['R']);
-                $objectCommande->setEmail($row['S']);
-                $objectCommande->setIban($row['T']);
-                $objectCommande->setMontantAide($row['U']);
-                $objectCommande->setNumeroAction($row['V']);
-                $objectCommande->setApporteurAffaire($row['W']);
-                $objectCommande->setOnglet($row['X']);
-                $objectCommande->setNomModele($row['Y']);
+                $objectPrime->setAdresseFacturation($row['I']);
+                $objectPrime->setComplementFacturation($row['J']);
+                $objectPrime->setCodePostalFacturation($row['K']);
+                $objectPrime->setVilleFacturation($row['L']);
+                $objectPrime->setPaysFacturation($row['M']);
+                $objectPrime->setAdresseChantier($row['N']);
+                $objectPrime->setComplementChantier($row['O']);
+                $objectPrime->setCodePostalChantier($row['P']);
+                $objectPrime->setVilleChantier($row['Q']);
+                $objectPrime->setTelephone($row['R']);
+                $objectPrime->setEmail($row['S']);
+                $objectPrime->setIban($row['T']);
+                $objectPrime->setMontantAide($row['U']);
+                $objectPrime->setNumeroAction($row['V']);
+                $objectPrime->setApporteurAffaire($row['W']);
+                $objectPrime->setOnglet($row['X']);
+                $objectPrime->setNomModele($row['Y']);
 
-                $EM->persist($objectCommande);
+                $EM->persist($objectPrime);
 
                 $i++;
                 $arraydoublon[(int)$row['C']] = 'doublon';
             }
-            $EM->flush();
 
             if (file_exists($this->container->getParameter('kernel.project_dir')."/data/import/error/".$importId."_import_error.txt")) {
-                $bypass = false;
-
-                /* /////////////////////////////////////////////////////////////////
-                                            GET PRIME
-                ///////////////////////////////////////////////////////////////// */
-                $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
-                $dataPrime = $repo_prime->findBy(array(
-                    'canalId' => $objectCanal->getId()
-                ));
-
-                foreach ($dataPrime as $itemPrime) {
-                    $EM->remove($itemPrime);
-                }
+                $isValid = false;
+                $EM->clear();
 
                 /* /////////////////////////////////////////////////////////////////
                                             GET CANAL
                 ///////////////////////////////////////////////////////////////// */
                 $repo_canal = $EM->getRepository('blackLabelImportBundle:Import_canal');
-                $dataCanal = $repo_canal->find($objectCanal->getId());
+                $dataCanal = $repo_canal->findOneBy(array(
+                    'lotId' => $importId
+                ));
 
                 $EM->remove($dataCanal);
-                $EM->flush();
 
                 $this->sendErrorFile($importId, $numeroLot, $dateImport, $auteurImport);
             }
 
+            $EM->flush();
+            $EM->clear();
             break;
         }
 
-        return $bypass;
+        return $isValid;
     }
 
     /**

@@ -29,9 +29,16 @@ class Commentaire_lot extends Log
     /**
      * @var int
      *
+     * @ORM\Column(name="historique_id", type="integer")
+     */
+    private $historiqueId;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="lot_id", type="integer")
      */
-    private $lot_id;
+    private $lotId;
 
     /**
      * @var string
@@ -63,4 +70,3 @@ class Commentaire_lot extends Log
         return $this->id;
     }
 }
-

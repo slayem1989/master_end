@@ -3,6 +3,9 @@
 namespace whiteLabel\BackOfficeBundle\Service;
 
 use whiteLabel\BackOfficeBundle\Entity\Cheque_item;
+use whiteLabel\BackOfficeBundle\Entity\Statut_prime;
+
+use PHPExcel_IOFactory;
 
 /**
  * Class ChequeService
@@ -83,6 +86,63 @@ class ChequeService
                 ->prepare($query);
             $stmt->execute();
         }
+    }
+
+    /**
+     * @param $fileWebPath
+     */
+    public function processRapprochementBancaire($fileWebPath)
+    {
+        $EM = $this->doctrine->getManager();
+        $historiqueService = $this->container->get('black_label.service.historique');
+
+        $sourceFile = $this->container->getParameter('kernel.project_dir')."/data/".$fileWebPath;
+
+        $inputFileType = PHPExcel_IOFactory::identify($sourceFile);
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+        $phpExcelObject = $objReader->load($sourceFile);
+
+        $sheet=$phpExcelObject->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+        $highestColumn = $sheet->getHighestColumn();
+
+        //Read file line by line
+        for ($row = 2; $row <= $highestRow; $row++) {
+            $single_row = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, true, true, true);
+
+            // Format Montant Debite
+            $montantDebite= filter_var($single_row[0][8], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+            /* /////////////////////////////////////////////////////////////////
+                                    UPDATE PRIME
+            ///////////////////////////////////////////////////////////////// */
+            $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
+            $prime = $repo->findOneBy(array(
+                'numeroCheque'  => $single_row[0][4],
+                'montantDebite' => null
+            ));
+
+            if ($prime) {
+                $prime->setMontantDebite($montantDebite);
+                $prime->setDateOperation(\DateTime::createFromFormat('m-d-y', $single_row[0][5]));
+                $prime->setStatutId(Statut_prime::STATUT_5);
+
+                $EM->persist($prime);
+
+                /* //////////////////////////////////////////////////////////
+                                    UPDATE HISTORIQUE
+                /////////////////////////////////////////////////////////// */
+                $historiqueService->initPrime(
+                    $prime->getId(),
+                    Statut_prime::STATUT_SLUG_5,
+                    $fileWebPath,
+                    Statut_prime::STATUT_5
+                );
+            }
+        }
+
+        $EM->flush();
+        $EM->clear();
     }
 
     /* *****************************************************************

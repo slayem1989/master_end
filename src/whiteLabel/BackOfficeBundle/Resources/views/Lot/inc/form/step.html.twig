@@ -72,6 +72,14 @@
                 <p class="marginBottom20">En cliquant le bouton Refuser, le lot {{ lot.lotNumero }} passera au statut: <span class="textBold">{{ lot.lotStatutSlugDeny4 }}</span>.</p>
 
                 <form action="{{ path('lot_update', {'clientId': clientId, 'lotId': lot.lotId}) }}" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        {{ form_label(form_deny4.date, "Date", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12 control-label textLeft'}}) }}
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{ form_widget(form_deny4.date, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group textCenter" id="container_submit_deny4">
                         {{ form_widget(form_deny4.refuser, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-danger'}}) }}
                     </div>
@@ -85,6 +93,14 @@
                 <p class="marginBottom20">En cliquant le bouton Refuser, le lot {{ lot.lotNumero }} passera au statut: <span class="textBold">{{ lot.lotStatutSlugDeny5 }}</span>.</p>
 
                 <form action="{{ path('lot_update', {'clientId': clientId, 'lotId': lot.lotId}) }}" method="post" class="form-horizontal" name="toto">
+                    <div class="form-group">
+                        {{ form_label(form_deny5.date, "Date", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12 control-label textLeft'}}) }}
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{ form_widget(form_deny5.date, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group textCenter" id="container_submit_deny5">
                         {{ form_widget(form_deny5.refuser, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-danger'}}) }}
                     </div>

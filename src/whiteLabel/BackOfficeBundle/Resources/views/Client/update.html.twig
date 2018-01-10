@@ -18,6 +18,9 @@
         {{ include('whiteLabelBackOfficeBundle:Client:inc/back.html.twig') }}
     </div>
 
+<input type="hidden" value="" id="value_file" />
+{#<input type="hidden" value="" id="value_IBAN" />#}
+
 {{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'form_editClient'}}) }}
 
 {{ form_errors(form) }}

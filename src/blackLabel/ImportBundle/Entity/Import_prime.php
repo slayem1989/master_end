@@ -4,13 +4,15 @@ namespace blackLabel\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use whiteLabel\BackOfficeBundle\Entity\Statut_prime;
 use blackLabel\GenericBundle\Entity\Log;
 
 /**
  * Import_prime
  *
  * @ORM\Table(name="import_prime", indexes={
- *      @ORM\Index(name="canal_idx", columns={"canal_id"})
+ *      @ORM\Index(name="canal_idx", columns={"canal_id"}),
+ *      @ORM\Index(name="statut_idx", columns={"statut_id"})
  * })
  * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_primeRepository")
  */
@@ -24,6 +26,13 @@ class Import_prime extends Log
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut_id", type="integer")
+     */
+    private $statutId;
 
     /**
      * @var int
@@ -214,6 +223,20 @@ class Import_prime extends Log
      */
     private $nomModele;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_operation", type="datetime", nullable=true)
+     */
+    private $dateOperation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_debite", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $montantDebite;
+
 
 
     /**
@@ -222,6 +245,8 @@ class Import_prime extends Log
     public function __construct()
     {
         parent::__construct();
+
+        $this->statutId = Statut_prime::STATUT_1;
     }
 
 
@@ -234,6 +259,30 @@ class Import_prime extends Log
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set statutId
+     *
+     * @param integer $statutId
+     *
+     * @return Import_prime
+     */
+    public function setStatutId($statutId)
+    {
+        $this->statutId = $statutId;
+
+        return $this;
+    }
+
+    /**
+     * Get statutId
+     *
+     * @return integer
+     */
+    public function getStatutId()
+    {
+        return $this->statutId;
     }
 
     /**
@@ -882,5 +931,53 @@ class Import_prime extends Log
     public function getNomModele()
     {
         return $this->nomModele;
+    }
+
+    /**
+     * Set dateOperation
+     *
+     * @param \DateTime $dateOperation
+     *
+     * @return Import_prime
+     */
+    public function setDateOperation($dateOperation)
+    {
+        $this->dateOperation = $dateOperation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateOperation
+     *
+     * @return \DateTime
+     */
+    public function getDateOperation()
+    {
+        return $this->dateOperation;
+    }
+
+    /**
+     * Set montantDebite
+     *
+     * @param string $montantDebite
+     *
+     * @return Import_prime
+     */
+    public function setMontantDebite($montantDebite)
+    {
+        $this->montantDebite = $montantDebite;
+
+        return $this;
+    }
+
+    /**
+     * Get montantDebite
+     *
+     * @return string
+     */
+    public function getMontantDebite()
+    {
+        return $this->montantDebite;
     }
 }

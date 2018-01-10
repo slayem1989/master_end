@@ -168,6 +168,8 @@ $(document).ready(function() {
     };
 
     function controlIBAN(element) {
+        var isIBANValid = true;
+
         $.each(element, function (index, input) {
             var iban_input = input.value.toUpperCase();
 
@@ -178,7 +180,7 @@ $(document).ready(function() {
             // check syntax and length
             if (!code || iban.length !== CODE_LENGTHS[code[1]]) {
                 input.style.backgroundColor = "rgba(217,83,79,0.4)";
-                $('button[type=submit]').attr("disabled", true);
+                isIBANValid = false;
             } else {
                 // rearrange country code and check digits, and convert chars to ints
                 digits = (code[3] + code[1] + code[2]).replace(/[A-Z]/g, function (letter) {
@@ -190,10 +192,18 @@ $(document).ready(function() {
                     input.style.backgroundColor = "rgba(92,184,92,0.4)";
                 } else {
                     input.style.backgroundColor = "rgba(217,83,79,0.4)";
-                    $('button[type=submit]').attr("disabled", true);
+                    isIBANValid = false;
                 }
             }
         });
+
+        /*
+        if (true != isIBANValid) {
+            $("#value_IBAN").val('false');
+        } else {
+            $("#value_IBAN").val('true');
+        }
+        */
     }
 
     // On vérifie l'IBAN au chargement de la page

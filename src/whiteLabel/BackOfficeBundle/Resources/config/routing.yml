@@ -114,6 +114,12 @@ prime_list:
     requirements:
         clientId: \d+
 
+prime_list_ajax:
+    path:     /prime/list/ajax/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:listAjax }
+    requirements:
+        clientId: \d+
+
 prime_read:
     path:     /prime/read/{clientId}/{primeId}
     defaults: { _controller: whiteLabelBackOfficeBundle:Prime:read }
@@ -209,3 +215,12 @@ chequeItem_list:
     requirements:
         clientId: \d+
         stockId: \d+
+
+################################
+###     Chèque RP Routing    ###
+################################
+chequeRapprochementBancaire_create:
+    path:     /cheque/rapprochement/bancaire/create/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:createRapprochementBancaire }
+    requirements:
+        clientId: \d+

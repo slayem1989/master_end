@@ -1,15 +1,15 @@
 /*******************************************
             BLOC TABLE
 *******************************************/
-.col0 { width: 5% }
-.col1 { width: 15px }
-.col2 { width: 10% }
-.col3 { width: 9px }
-.col4 { width: 10% }
-.col5 { width: 20% }
-.col6 { width: 10% }
-.col7 { width: 10% }
-.col8 { width: 7% }
+.col0 { width: 3%; }
+.col1 { width: 10%; }
+.col2 { width: 9%; }
+.col3 { width: 9%; }
+.col4 { width: 13%; }
+.col5 { width: 70px; }
+.col6 { width: 50px; }
+.col7 { width: 50px; }
+.col8 { width: 40px; }
 
 th[class="with_search"] input {
     width: 100%;

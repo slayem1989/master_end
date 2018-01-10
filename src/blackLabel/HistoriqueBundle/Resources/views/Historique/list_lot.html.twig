@@ -6,7 +6,7 @@
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelbackoffice/css/core/list/*.css'
     'bundles/whitelabelbackoffice/css/lot/historique.css'
-    'bundles/blacklabelhistorique/css/historique/list_lot.css'
+    'bundles/blacklabelhistorique/css/historique/list.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -19,7 +19,7 @@
         {{ include('whiteLabelBackOfficeBundle:Lot:inc/back.html.twig') }}
     </div>
 
-{{ include('whiteLabelBackOfficeBundle:Lot:inc/historique/table_lot.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:Lot:inc/historique/table.html.twig') }}
 
 </div>
 {% endblock %}

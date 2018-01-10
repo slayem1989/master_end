@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use whiteLabel\BackOfficeBundle\Entity\Cheque_stock;
 use whiteLabel\BackOfficeBundle\Form\Cheque_stockType;
 
+use whiteLabel\BackOfficeBundle\Entity\Cheque_rapprochementBancaire;
+use whiteLabel\BackOfficeBundle\Form\Cheque_rapprochementBancaireType;
+
 /**
  * Class ChequeController
  * @package whiteLabel\BackOfficeBundle\Controller
@@ -218,6 +221,52 @@ class ChequeController extends Controller
 
         return $this->render('whiteLabelBackOfficeBundle:Cheque:Item/list.html.twig', array(
             'list'      => $listCheque,
+            'clientId'  => $clientId
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @param $clientId
+     * @return Response
+     */
+    public function createRapprochementBancaireAction(Request $request, $clientId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                BUILD FORM
+        ///////////////////////////////////////////////////////////////// */
+        $formOption = array();
+        $rapprochementBancaire = new Cheque_rapprochementBancaire();
+        $form = $this->createForm(Cheque_rapprochementBancaireType::class, $rapprochementBancaire, array(
+            'trait_choices' => $formOption
+        ));
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $EM->persist($rapprochementBancaire);
+            $EM->flush();
+
+            /* //////////////////////////////////////////////////////////
+                                    READ DATA
+            /////////////////////////////////////////////////////////// */
+            $rapprochementBancaireService = $this->get('white_label.service.cheque');
+            $rapprochementBancaireService->processRapprochementBancaire(
+                $rapprochementBancaire->file_getWebPath()
+            );
+
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'Le Rapprochement Bancaire a été effectué avec succès.'
+            );
+
+            return $this->redirectToRoute('prime_list', array(
+                'clientId' => $clientId
+            ));
+        }
+
+        return $this->render('whiteLabelBackOfficeBundle:Cheque:RapprochementBancaire/create.html.twig', array(
+            'form'      => $form->createView(),
             'clientId'  => $clientId
         ));
     }

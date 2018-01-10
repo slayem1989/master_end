@@ -2,7 +2,7 @@ $(document).ready(function() {
     var messageImport = $("#file-error");
 
     var idBoutonValider = $("#whitelabel_backofficebundle_lettrecheque_valider");
-    var fileExtension   = ["text/html", "text/plain"];
+    var fileExtension   = ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
 
     /* *************************************************
                     IMPORT FILE
@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
 
         if (fileExtension.indexOf(file.type) <= -1) {
-            message.append('<li>Le type du fichier est invalide. Les types autorisés sont ".html". </li>').css('color', 'red');
+            message.append('<li>Le type du fichier est invalide. Les types autorisés sont ".docx". </li>').css('color', 'red');
             errorFlag = true;
         }
 

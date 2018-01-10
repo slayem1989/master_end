@@ -1,11 +1,84 @@
-.col0 { width:40px; }
+.col0 { width:20px; }
 .col1 { width:40px; }
-.col2 { width:120px; }
-.col3 { width:130px; }
+.col2 { width:100px; }
+.col3 { width:100px; }
 .col4 { width:30px; }
 .col5 { width:70px; }
 .col6 { width:50px; }
 .col7 { width:15%; }
 .col8 { width:40px; }
 .col9 { width:20%; }
-.col10 { width:40px; }
+.col10 { width:110px; }
+
+tr[id="filterrow"] th input, tr[id="filterrow"] th select {
+    width: 100%;
+    font-size: 11px;
+}
+tr[id="filterrow"] th select{
+    height: 30px;
+}
+tfoot {
+    display: table-header-group;
+}
+
+/*******************************************
+            MODAL PARAMETERS
+*******************************************/
+div.modal_commentaire {
+    padding-top: 100px !important;
+}
+div.modal_commentaire .modal-dialog {
+    overflow-y: initial !important;
+    width: 85%;
+}
+div.modal_commentaire .modal-header legend {
+    border: 0 !important;
+    color: #77b636 !important;
+}
+div.modal_commentaire .modal-body {
+    padding-top: 0 !important;
+}
+
+.bloc-commentaire {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+}
+.bloc-commentaireForm {
+    width: 100%;
+    border-right: 1px solid #e5e5e5;
+}
+.bloc-commentaireList {
+    width: 100%;
+    max-height: 300px !important;
+}
+/*******************************************
+            BLOC COMMENTAIRE FORM
+*******************************************/
+.bloc-commentaireForm {
+}
+
+.bloc-commentaireForm .form-group, .bloc-commentaireForm textarea {
+    font-size: 1em;
+    width: 100% !important;
+}
+
+.bloc-commentaireForm label {
+    font-size: 1em;
+}
+
+/*******************************************
+           BLOC COMMENTAIRE LIST
+*******************************************/
+.bloc-commentaireList {
+    max-height: 350px;
+    overflow-y: auto;
+    display: block;
+}
+
+.bloc-commentaireList hr {
+    border-top: 1px dashed #ddd;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+

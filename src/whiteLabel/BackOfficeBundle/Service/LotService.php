@@ -53,13 +53,15 @@ class LotService
      */
     public function updateValidateType()
     {
+        $now = new \Datetime();
         $form = $this->formFactory->createBuilder()
             ->add('date',       TextType::class,    array(
                                                         'required'  => true,
                                                         'label'     => 'Date de validation',
                                                         'attr'      => array(
                                                             'placeholder' => 'DD/MM/YYYY',
-                                                        )
+                                                        ),
+                                                        'data'      => $now->format('d/m/Y')
                                                     ))
             ->add('valider',    SubmitType::class)
             ->getForm()
@@ -74,7 +76,16 @@ class LotService
      */
     public function updateDenyType($statutId)
     {
+        $now = new \Datetime();
         $form = $this->formFactory->createNamedBuilder('form_deny'.$statutId)
+            ->add('date',       TextType::class,    array(
+                                                        'required'  => true,
+                                                        'label'     => 'Date de refus',
+                                                        'attr'      => array(
+                                                            'placeholder' => 'DD/MM/YYYY',
+                                                        ),
+                                                        'data'      => $now->format('d/m/Y')
+                                                    ))
             ->add('refuser',    SubmitType::class)
             ->getForm()
         ;

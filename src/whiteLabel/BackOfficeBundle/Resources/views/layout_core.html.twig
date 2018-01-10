@@ -86,9 +86,15 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="sidebar-item"><a href="{{ path('lot_list', {'clientId': clientId}) }}" class="sidebar-anchor">Suivi de lot</a></li>
                 <li class="sidebar-item"><a href="{{ path('prime_list', {'clientId': clientId}) }}" class="sidebar-anchor">Suivi de prime</a></li>
+
+                <br>
+
                 <li class="sidebar-item"><a href="{{ path('chequeStock_list', {'clientId': clientId}) }}" class="sidebar-anchor">Gestion de Stock Ch&egrave;que</a></li>
                 <li class="sidebar-item"><a href="{{ path('chequeItem_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste de Ch&egrave;que</a></li>
+                <li class="sidebar-item"><a href="{{ path('chequeRapprochementBancaire_create', {'clientId': clientId}) }}" class="sidebar-anchor">Rapprochement Bancaire</a></li>
                 <li class="sidebar-item"><a href="{{ path('lettreCheque_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste de Lettre Ch&egrave;que</a></li>
+
+                <br>
             {% endif %}
             <li class="sidebar-item"><a href="{{ path('bo_dashboard') }}" class="sidebar-anchor">Retour à la liste des clients</a></li>
         </ul>

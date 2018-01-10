@@ -25,6 +25,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     il.numero AS lotNumero,
                     il.file_alt AS lotFilename,
                     il.date_creation AS lotDateIntegration,
+                    il.statut_id AS lotStatutId,
                     sl.slug AS lotStatut,
                     cb.nom AS banqueNom,
                     COUNT(CASE WHEN ip.type = 'LC' THEN ip.type ELSE NULL END) AS countLC,

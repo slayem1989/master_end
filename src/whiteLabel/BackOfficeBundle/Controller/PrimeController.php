@@ -8,6 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use blackLabel\ImportBundle\Form\Import_primeType;
+use blackLabel\CommentaireBundle\Entity\Commentaire_prime;
+use blackLabel\CommentaireBundle\Form\Commentaire_primeType;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class PrimeController
@@ -21,7 +25,7 @@ class PrimeController extends Controller
      * @param $clientId
      * @return Response
      */
-    public function listAction($clientId)
+    public function listAction(Request $request, $clientId)
     {
         $EM = $this->getDoctrine()->getManager();
 
@@ -31,10 +35,227 @@ class PrimeController extends Controller
         $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
         $list = $repo->findByClient($clientId);
 
+        /* /////////////////////////////////////////////////////////////////
+                                GET COMMENTAIRE FORM
+        ///////////////////////////////////////////////////////////////// */
+        $commentaire = new Commentaire_prime();
+        $form = $this->createForm(Commentaire_primeType::class, $commentaire);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $post_primeId = $form["prime_id"]->getData();
+            $post_content = $form["content"]->getData();
+
+            /* //////////////////////////////////////////////////////////
+                            PERSIST HISTORIQUE PRIME
+            /////////////////////////////////////////////////////////// */
+            $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
+            $objectPrime = $repo_prime->find($post_primeId);
+
+            $historiqueService = $this->get('black_label.service.historique');
+            $historiqueId = $historiqueService->savePrimeByCommentaire(
+                $objectPrime->getId(),
+                'Commentaire',
+                $post_content,
+                $objectPrime->getStatutId()
+            );
+
+            /* //////////////////////////////////////////////////////////
+                            PERSIST COMMENTAIRE PRIME
+            /////////////////////////////////////////////////////////// */
+            $commentaire->setHistoriqueId($historiqueId);
+            $commentaire->setPrimeId($post_primeId);
+            $commentaire->setContent($post_content);
+
+            $EM->persist($commentaire);
+            $EM->flush();
+            $EM->clear();
+
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'Le commentaire a été créé avec succès.'
+            );
+
+            return $this->redirectToRoute('prime_list', array(
+                'clientId' => $clientId
+            ));
+        }
+
         return $this->render('whiteLabelBackOfficeBundle:Prime:list.html.twig', array(
             'list'      => $list,
-            'clientId'  => $clientId
+            'clientId'  => $clientId,
+            'form'      => $form->createView()
         ));
+    }
+
+    /**
+     * @param $clientId
+     * @return bool|JsonResponse
+     */
+    public function listAjaxAction($clientId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        if (!empty($_POST) ) {
+            $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
+            $recordsTotal = $repo->countByClient($clientId)['countId'];
+
+
+
+            /* START of $_POST variables coming from datatable */
+            $draw = $_POST["draw"]; //Counter used by DataTables to ensure that the Ajax returns from server-side processing requests are drawn in sequence
+            $orderByColumnIndex  = $_POST['order'][0]['column']; //Index of the sorting column (0 index based)
+            $orderBy = $_POST['columns'][$orderByColumnIndex]['data']; //Get name of the sorting column from its index
+            $orderType = $_POST['order'][0]['dir']; //ASC or DESC
+            $start  = $_POST["start"]; //Paging first record indicator
+            $length = $_POST['length']; //Number of records that the table can display in the current draw
+            /* END of $_POST variables */
+
+
+
+            /* START INIT of column search */
+            $columnWhereTmp = array();
+            for ($i=0; $i<count($_POST['columns']); $i++) {
+                if ('' != ($_POST['columns'][$i]['search']['value'])) {
+                    $columnWhereTmp[] = $_POST['columns'][$i]['search']['value'];
+                }
+            }
+            /* END INIT of column search */
+
+
+
+            /* START of search */
+            if (!empty($_POST['search']['value'])) {
+
+                $dataColumn = array(
+                    'lotNumero'             => 'il.numero',
+                    'primeNumero'           => 'ip.numero',
+                    'primeType'             => 'ip.type',
+                    'primeEmail'            => 'ip.email',
+                    'primeTelephone'        => 'ip.telephone',
+                    'primeStatut'           => 'sp.slug',
+                    'primeDateIntegration'  => 'ip.date',
+                    'primeOnglet'           => 'ip.onglet'
+                );
+
+                for ($i=0; $i<count($_POST['columns']); $i++) {
+                    $globalSearch = $_POST['columns'][$i]['data'];
+                    if ('action' != $globalSearch) {
+                        if ('primeIdentifiant' == $globalSearch) {
+                            $where[] =  "ip.nom LIKE '%" . $_POST['search']['value'] . "%'" .
+                                        " OR " .
+                                        "ip.prenom LIKE '%" . $_POST['search']['value'] . "%'" .
+                                        " OR " .
+                                        "ip.siren LIKE '%" . $_POST['search']['value'] . "%'" .
+                                        " OR " .
+                                        "ip.denomination LIKE '%" . $_POST['search']['value'] . "%'" .
+                                        " OR " .
+                                        "ip.representant LIKE '%" . $_POST['search']['value'] . "%'"
+                            ;
+                        } elseif ('primeVille' == $globalSearch) {
+                            $where[] =  "ip.code_postal_facturation LIKE '%" . $_POST['search']['value'] . "%'" .
+                                        " OR " .
+                                        "ip.ville_facturation LIKE '%" . $_POST['search']['value'] . "%'"
+                            ;
+                        } else {
+                            $where[] = "$dataColumn[$globalSearch] LIKE '%" . $_POST['search']['value'] . "%'";
+                        }
+                    }
+                }
+                $copy = implode(" OR ", $where);
+                $where = " AND " . $copy;
+
+                // Search filtered result with limit and orderBy clauses
+                $data = $repo->findAjaxByClient($clientId, $orderBy, $orderType, $start, $length, $where);
+
+                $recordsFiltered = $repo->countByClient($clientId, $where)['countId'];
+
+            } elseif (!empty($columnWhereTmp)) {
+
+                for ($i=0; $i<count($_POST['columns']); $i++) {
+                    if ('' != ($_POST['columns'][$i]['search']['value'])) {
+                        $columnSearch = $_POST['columns'][$i]['data'];
+                        switch ($columnSearch) {
+                            case 'lotNumero':
+                                $columnWhere[] =  "il.numero LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeNumero':
+                                $columnWhere[] =  "ip.numero LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeIdentifiant':
+                                $columnWhere[] =   "ip.nom LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                    " OR " .
+                                    "ip.prenom LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                    " OR " .
+                                    "ip.siren LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                    " OR " .
+                                    "ip.denomination LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                    " OR " .
+                                    "ip.representant LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'"
+                                ;
+                                break;
+                            case 'primeVille':
+                                $columnWhere[] =   "ip.code_postal_facturation LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                    " OR " .
+                                    "ip.ville_facturation LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'"
+                                ;
+                                break;
+                            case 'primeType':
+                                $columnWhere[] =  "ip.type LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeEmail':
+                                $columnWhere[] =  "ip.email LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeTelephone':
+                                $columnWhere[] =  "ip.telephone LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeStatut':
+                                $columnWhere[] =  "sp.slug LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeDateIntegration':
+                                $columnWhere[] =  "ip.date LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                            case 'primeOnglet':
+                                $columnWhere[] =  "ip.onglet LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                break;
+                        }
+                    }
+                }
+                if (!empty($columnWhere)) {
+                    $columnCopy = implode(" AND ", $columnWhere);
+                    $columnWhere = " AND " . $columnCopy;
+                } else {
+                    $columnWhere = "";
+                }
+
+                // Search filtered result with limit and orderBy clauses
+                $data = $repo->findAjaxByClient($clientId, $orderBy, $orderType, $start, $length, $columnWhere);
+
+                $recordsFiltered = $repo->countByClient($clientId, $columnWhere)['countId'];
+
+            } else {
+
+                // Search all result with limit and orderBy clauses
+                $data = $repo->findAjaxByClient($clientId, $orderBy, $orderType, $start, $length);
+
+                $recordsFiltered = $recordsTotal;
+
+            }
+            /* END of search */
+
+            $response = array(
+                "draw"              => intval($draw),
+                "recordsTotal"      => $recordsTotal,
+                "recordsFiltered"   => $recordsFiltered,
+                "data"              => $data
+            );
+
+            $json = new JsonResponse();
+            $json->setData($response);
+
+            return $json;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -123,6 +344,7 @@ class PrimeController extends Controller
 
             $EM->persist($prime);
             $EM->flush();
+            $EM->clear();
 
             $request->getSession()->getFlashBag()->add(
                 'success',
@@ -188,6 +410,7 @@ class PrimeController extends Controller
 
             $EM->persist($prime);
             $EM->flush();
+            $EM->clear();
 
             $request->getSession()->getFlashBag()->add(
                 'success',
@@ -220,7 +443,7 @@ class PrimeController extends Controller
                                 GET PRIME
         ///////////////////////////////////////////////////////////////// */
         $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
-        $prime = $repo->findOneBy(array('id' => $primeId));
+        $prime = $repo->find($primeId);
 
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
@@ -250,6 +473,7 @@ class PrimeController extends Controller
 
             $EM->persist($prime);
             $EM->flush();
+            $EM->clear();
 
             $request->getSession()->getFlashBag()->add(
                 'success',

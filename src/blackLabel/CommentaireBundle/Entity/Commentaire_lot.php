@@ -11,7 +11,8 @@ use blackLabel\GenericBundle\Entity\Log;
  * Commentaire_lot
  *
  * @ORM\Table(name="commentaire_lot", indexes={
- *      @ORM\Index(name="lot_idx", columns={"lot_id"})
+ *      @ORM\Index(name="lot_idx", columns={"lot_id"}),
+ *      @ORM\Index(name="historique_idx", columns={"historique_id"})
  * })
  * @ORM\Entity(repositoryClass="blackLabel\CommentaireBundle\Repository\Commentaire_lotRepository")
  */
@@ -25,6 +26,13 @@ class Commentaire_lot extends Log
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="historique_id", type="integer")
+     */
+    private $historiqueId;
 
     /**
      * @var int
@@ -61,6 +69,30 @@ class Commentaire_lot extends Log
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set historiqueId
+     *
+     * @param integer $historiqueId
+     *
+     * @return Commentaire_lot
+     */
+    public function setHistoriqueId($historiqueId)
+    {
+        $this->historiqueId = $historiqueId;
+
+        return $this;
+    }
+
+    /**
+     * Get historiqueId
+     *
+     * @return integer
+     */
+    public function getHistoriqueId()
+    {
+        return $this->historiqueId;
     }
 
     /**

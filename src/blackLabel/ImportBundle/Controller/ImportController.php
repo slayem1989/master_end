@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
+use whiteLabel\BackOfficeBundle\Entity\Statut_prime;
 use blackLabel\ImportBundle\Entity\Import_lot;
 use blackLabel\ImportBundle\Form\Import_lotType;
 
@@ -26,9 +27,15 @@ class ImportController extends Controller
         $EM = $this->getDoctrine()->getManager();
 
         /* //////////////////////////////////////////////////////////
+                            GET BANQUE BY CLIENT
+        /////////////////////////////////////////////////////////// */
+        $repo_client = $EM->getRepository('whiteLabelBackOfficeBundle:Client_');
+        $dataClient = $repo_client->find($clientId);
+
+        /* //////////////////////////////////////////////////////////
                                 CREATE FORM
         /////////////////////////////////////////////////////////// */
-        $formOption = array($clientId);
+        $formOption = array($clientId, count($dataClient->getBanque()));
         $lot = new Import_lot();
         $form = $this->createForm(Import_lotType::class, $lot, array(
             'trait_choices' => $formOption
@@ -39,12 +46,13 @@ class ImportController extends Controller
 
             $EM->persist($lot);
             $EM->flush();
+            $EM->clear();
 
             /* //////////////////////////////////////////////////////////
                                     PERSIST DATA
             /////////////////////////////////////////////////////////// */
             $importService = $this->get('black_label.service.import');
-            $persist = $importService->persistXLSX(
+            $isValid = $importService->persistXLSX(
                 $lot->getId(),
                 $lot->file_getWebPath(),
                 $lot->getDateCreation()->format('d/m/Y'),
@@ -52,16 +60,46 @@ class ImportController extends Controller
             );
 
             /* //////////////////////////////////////////////////////////
-                                    PERSIST HISTORIQUE
+                                PERSIST HISTORIQUE LOT
             /////////////////////////////////////////////////////////// */
             $historiqueService = $this->get('black_label.service.historique');
-            if (true == $persist) {
-                $historiqueService->saveLot(
+            if (true == $isValid) {
+                $historiqueService->initLot(
                     $lot->getId(),
                     Statut_lot::STATUT_SLUG_1,
                     $_POST,
                     $lot->getStatutId()
                 );
+
+                /* /////////////////////////////////////////////////////////////////
+                                            GET CANAL
+                ///////////////////////////////////////////////////////////////// */
+                $repo_canal = $EM->getRepository('blackLabelImportBundle:Import_canal');
+                $dataCanal = $repo_canal->findOneBy(array(
+                    'lotId' => $lot->getId()
+                ));
+
+                /* /////////////////////////////////////////////////////////////////
+                                            GET PRIME
+                ///////////////////////////////////////////////////////////////// */
+                $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
+                $dataPrime = $repo_prime->findBy(array(
+                    'canalId' => $dataCanal->getId()
+                ));
+
+                /* //////////////////////////////////////////////////////////
+                                    PERSIST HISTORIQUE PRIME
+                /////////////////////////////////////////////////////////// */
+                foreach ($dataPrime as $item) {
+                    $historiqueService->initPrime(
+                        $item->getId(),
+                        Statut_prime::STATUT_SLUG_1,
+                        '',
+                        $item->getStatutId()
+                    );
+                }
+                $EM->flush();
+                $EM->clear();
 
                 $request->getSession()->getFlashBag()->add(
                     'success',
@@ -70,7 +108,10 @@ class ImportController extends Controller
             } else {
                 $importService->updateStatutLot($lot->getId());
 
-                $historiqueService->saveLot(
+                /* //////////////////////////////////////////////////////////
+                               PERSIST HISTORIQUE LOT
+                /////////////////////////////////////////////////////////// */
+                $historiqueService->initLot(
                     $lot->getId(),
                     Statut_lot::STATUT_SLUG_11,
                     $_POST,

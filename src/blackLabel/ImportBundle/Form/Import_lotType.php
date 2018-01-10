@@ -39,6 +39,11 @@ class Import_lotType extends AbstractType
     {
         $this->traitChoices = $options['trait_choices'];
 
+        $varData = false;
+        if (1 == $this->traitChoices[1]) {
+            $varData = $this->repo_banque->findOneByClient($this->traitChoices[0]);
+        }
+
         $builder
             ->add('banqueId',   EntityType::class,  array(
                                                         'required'      => true,
@@ -51,8 +56,8 @@ class Import_lotType extends AbstractType
                                                         'choice_label'  => function ($obj) {
                                                             return   $obj->getNom();
                                                         },
-                                                        'choice_value'  => 'id'
-                                                        //'data' => $this->repo_banque->findOneBy(['id' => $this->traitChoices[1]])
+                                                        'choice_value'  => 'id',
+                                                        'data'          => $varData
                                                     ))
             ->add('file',       FileType::class,    array(
                                                         'required'  => true,

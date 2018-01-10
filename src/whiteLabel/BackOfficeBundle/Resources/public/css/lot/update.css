@@ -114,4 +114,5 @@
 #bloc_form #container_submit_deny4, #bloc_form #container_submit_deny5 {
     margin: auto;
     padding: 0;
+    padding-top: 15px;
 }

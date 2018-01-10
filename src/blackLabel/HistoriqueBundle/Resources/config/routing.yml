@@ -8,9 +8,16 @@ historique_homepage:
 ################################
 ###     Function Routing     ###
 ################################
-historique_list:
-    path:     /historique/list/{clientId}/{lotId}
+historique_lot_list:
+    path:     /historique/lot/list/{clientId}/{lotId}
     defaults: { _controller: blackLabelHistoriqueBundle:Historique:listLot }
     requirements:
         clientId: \d+
         lotId: \d+
+
+historique_prime_list:
+    path:     /historique/prime/list/{clientId}/{primeId}
+    defaults: { _controller: blackLabelHistoriqueBundle:Historique:listPrime }
+    requirements:
+        clientId: \d+
+        primeId: \d+

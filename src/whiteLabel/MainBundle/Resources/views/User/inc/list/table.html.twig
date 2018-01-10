@@ -1,16 +1,16 @@
 {# src/whiteLabel/MainBundle/Resources/views/User/inc/list/table.html.twig #}
-<table cellspacing="0" id="table_user" class="table table-striped table-bordered small_table" style="background:#fff;">
+<table cellspacing="0" id="table_user" class="table table-striped table-bordered big_table" style="background:#fff;">
     <thead>
         <tr>
-            <th class="col0">N°</th>
-            <th class="col1">Login</th>
-            <th class="col3">Pr&eacute;nom</th>
-            <th class="col2">Nom</th>
-            <th class="col4">Email</th>
-            <th class="col5">Etat</th>
-            <th class="col6">Profil</th>
-            <th class="col7">Date de derni&egrave;re connexion</th>
-            <th class="col8">Actions</th>
+            <th class="breakWord col0">N°</th>
+            <th class="breakWord col1">Login</th>
+            <th class="breakWord col3">Pr&eacute;nom</th>
+            <th class="breakWord col2">Nom</th>
+            <th class="breakWord col4">Email</th>
+            <th class="breakWord col5">Etat</th>
+            <th class="breakWord col6">Profil</th>
+            <th class="breakWord col7">Date de derni&egrave;re connexion</th>
+            <th class="breakWord col8">Actions</th>
         </tr>
 
         {% if list is not empty %}
@@ -53,24 +53,24 @@
                 {% set role = 'Bénéficiaire' %}
             {% endif %}
             <tr>
-                <td class="textCenter">{{ item.id }}</td>
-                <td>
+                <td class="breakWord textCenter">{{ item.id }}</td>
+                <td class="breakWord">
                     <a href="{{ path('user_read', {'userId': item.id}) }}">
                         {{ item.username }}
                     </a>
                 </td>
-                <td>{{ item.firstname }}</td>
-                <td>{{ item.lastname }}</td>
-                <td>{{ item.email }}</td>
+                <td class="breakWord">{{ item.firstname }}</td>
+                <td class="breakWord">{{ item.lastname }}</td>
+                <td class="breakWord">{{ item.email }}</td>
                 {% if item.enabled == 0 %}
                     {% set statut = 'Inactif' ~ ' depuis le ' ~ item.dateInactif|date('d/m/Y') %}
                 {% elseif 1 == item.enabled %}
                     {% set statut = 'Actif' %}
                 {% endif %}
-                <td>{{ statut }}</td>
-                <td>{{ role }}</td>
-                <td>{{ item.lastLogin|date('d/m/Y') }}</td>
-                <td class="textCenter">
+                <td class="breakWord">{{ statut }}</td>
+                <td class="breakWord">{{ role }}</td>
+                <td class="breakWord">{{ item.lastLogin|date('d/m/Y') }}</td>
+                <td class="breakWord textCenter">
                     {#
                    {% if 0 == item.enabled %}
                        <a href="{{ path('admin_enabled', {'userId': item.id, 'flag': 1}) }}"

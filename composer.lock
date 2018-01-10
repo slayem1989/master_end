@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f431520612191e1352a6410dc3b38597",
+    "content-hash": "cc2182005756643a34353d59bb5de8cf",
     "packages": [
         {
             "name": "components/jquery",
@@ -1237,6 +1237,58 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
+        },
+        {
+            "name": "jschaedl/iban",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jschaedl/Iban.git",
+                "reference": "9cbdf31e3e2c5cf20e9ed4743af860723da49a29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jschaedl/Iban/zipball/9cbdf31e3e2c5cf20e9ed4743af860723da49a29",
+                "reference": "9cbdf31e3e2c5cf20e9ed4743af860723da49a29",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phploc/phploc": "*",
+                "phpunit/php-code-coverage": ">=1.2.10,<1.3.0",
+                "phpunit/phpunit": "3.7.*",
+                "sebastian/phpcpd": "*"
+            },
+            "suggest": {
+                "ext-bcmath": "Because this library make use of bcmod function, an installed bcmath extension is required."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "IBAN": [
+                        "library",
+                        "tests/library"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Schädlich",
+                    "email": "mail@janschaedlich.com",
+                    "homepage": "https://github.com/jschaedl/"
+                }
+            ],
+            "description": "validate and generate IBANs",
+            "homepage": "http://github.com/jschaedl/Iban",
+            "keywords": [
+                "IBAN",
+                "generate",
+                "validation"
+            ],
+            "time": "2017-04-07T16:02:27+00:00"
         },
         {
             "name": "kriswallsmith/assetic",

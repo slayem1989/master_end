@@ -4,13 +4,15 @@ namespace blackLabel\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use whiteLabel\BackOfficeBundle\Entity\Statut_prime;
 use blackLabel\GenericBundle\Entity\Log;
 
 /**
  * Import_prime
  *
  * @ORM\Table(name="import_prime", indexes={
- *      @ORM\Index(name="canal_idx", columns={"canal_id"})
+ *      @ORM\Index(name="canal_idx", columns={"canal_id"}),
+ *      @ORM\Index(name="statut_idx", columns={"statut_id"})
  * })
  * @ORM\Entity(repositoryClass="blackLabel\ImportBundle\Repository\Import_primeRepository")
  */
@@ -28,9 +30,16 @@ class Import_prime extends Log
     /**
      * @var int
      *
+     * @ORM\Column(name="statut_id", type="integer")
+     */
+    private $statutId;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="canal_id", type="integer")
      */
-    private $canal_id;
+    private $canalId;
 
     /**
      * @var int
@@ -56,7 +65,7 @@ class Import_prime extends Log
     /**
      * @var int
      *
-     * @ORM\Column(name="numero", type="integer", nullable=true)
+     * @ORM\Column(name="numero", type="string", length=7, nullable=true)
      */
     private $numero;
 
@@ -105,9 +114,9 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="complement_adresse_facturation", type="string", length=255, nullable=true)
+     * @ORM\Column(name="complement_facturation", type="string", length=255, nullable=true)
      */
-    private $complementAdresseFacturation;
+    private $complementFacturation;
 
     /**
      * @var string
@@ -126,9 +135,9 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="pays", type="string", length=50, nullable=true)
+     * @ORM\Column(name="pays_facturation", type="string", length=50, nullable=true)
      */
-    private $pays;
+    private $paysFacturation;
 
     /**
      * @var string
@@ -140,9 +149,9 @@ class Import_prime extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="complement_adresse_chantier", type="string", length=255, nullable=true)
+     * @ORM\Column(name="complement_chantier", type="string", length=255, nullable=true)
      */
-    private $complementAdresseChantier;
+    private $complementChantier;
 
     /**
      * @var string
@@ -214,6 +223,20 @@ class Import_prime extends Log
      */
     private $nomModele;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_operation", type="datetime", nullable=true)
+     */
+    private $dateOperation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_debite", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $montantDebite;
+
 
 
     /**
@@ -222,6 +245,8 @@ class Import_prime extends Log
     public function __construct()
     {
         parent::__construct();
+
+        $this->statutId = Statut_prime::STATUT_1;
     }
 
 
@@ -234,5 +259,677 @@ class Import_prime extends Log
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set statutId
+     *
+     * @param integer $statutId
+     *
+     * @return Import_prime
+     */
+    public function setStatutId($statutId)
+    {
+        $this->statutId = $statutId;
+
+        return $this;
+    }
+
+    /**
+     * Get statutId
+     *
+     * @return integer
+     */
+    public function getStatutId()
+    {
+        return $this->statutId;
+    }
+
+    /**
+     * Set canalId
+     *
+     * @param integer $canalId
+     *
+     * @return Import_prime
+     */
+    public function setCanalId($canalId)
+    {
+        $this->canalId = $canalId;
+
+        return $this;
+    }
+
+    /**
+     * Get canalId
+     *
+     * @return integer
+     */
+    public function getCanalId()
+    {
+        return $this->canalId;
+    }
+
+    /**
+     * Set index
+     *
+     * @param integer $index
+     *
+     * @return Import_prime
+     */
+    public function setIndex($index)
+    {
+        $this->index = $index;
+
+        return $this;
+    }
+
+    /**
+     * Get index
+     *
+     * @return integer
+     */
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Import_prime
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Import_prime
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return Import_prime
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Import_prime
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     *
+     * @return Import_prime
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set siren
+     *
+     * @param string $siren
+     *
+     * @return Import_prime
+     */
+    public function setSiren($siren)
+    {
+        $this->siren = $siren;
+
+        return $this;
+    }
+
+    /**
+     * Get siren
+     *
+     * @return string
+     */
+    public function getSiren()
+    {
+        return $this->siren;
+    }
+
+    /**
+     * Set denomination
+     *
+     * @param string $denomination
+     *
+     * @return Import_prime
+     */
+    public function setDenomination($denomination)
+    {
+        $this->denomination = $denomination;
+
+        return $this;
+    }
+
+    /**
+     * Get denomination
+     *
+     * @return string
+     */
+    public function getDenomination()
+    {
+        return $this->denomination;
+    }
+
+    /**
+     * Set representant
+     *
+     * @param string $representant
+     *
+     * @return Import_prime
+     */
+    public function setRepresentant($representant)
+    {
+        $this->representant = $representant;
+
+        return $this;
+    }
+
+    /**
+     * Get representant
+     *
+     * @return string
+     */
+    public function getRepresentant()
+    {
+        return $this->representant;
+    }
+
+    /**
+     * Set adresseFacturation
+     *
+     * @param string $adresseFacturation
+     *
+     * @return Import_prime
+     */
+    public function setAdresseFacturation($adresseFacturation)
+    {
+        $this->adresseFacturation = $adresseFacturation;
+
+        return $this;
+    }
+
+    /**
+     * Get adresseFacturation
+     *
+     * @return string
+     */
+    public function getAdresseFacturation()
+    {
+        return $this->adresseFacturation;
+    }
+
+    /**
+     * Set complementFacturation
+     *
+     * @param string $complementFacturation
+     *
+     * @return Import_prime
+     */
+    public function setComplementFacturation($complementFacturation)
+    {
+        $this->complementFacturation = $complementFacturation;
+
+        return $this;
+    }
+
+    /**
+     * Get complementFacturation
+     *
+     * @return string
+     */
+    public function getComplementFacturation()
+    {
+        return $this->complementFacturation;
+    }
+
+    /**
+     * Set codePostalFacturation
+     *
+     * @param string $codePostalFacturation
+     *
+     * @return Import_prime
+     */
+    public function setCodePostalFacturation($codePostalFacturation)
+    {
+        $this->codePostalFacturation = $codePostalFacturation;
+
+        return $this;
+    }
+
+    /**
+     * Get codePostalFacturation
+     *
+     * @return string
+     */
+    public function getCodePostalFacturation()
+    {
+        return $this->codePostalFacturation;
+    }
+
+    /**
+     * Set villeFacturation
+     *
+     * @param string $villeFacturation
+     *
+     * @return Import_prime
+     */
+    public function setVilleFacturation($villeFacturation)
+    {
+        $this->villeFacturation = $villeFacturation;
+
+        return $this;
+    }
+
+    /**
+     * Get villeFacturation
+     *
+     * @return string
+     */
+    public function getVilleFacturation()
+    {
+        return $this->villeFacturation;
+    }
+
+    /**
+     * Set paysFacturation
+     *
+     * @param string $paysFacturation
+     *
+     * @return Import_prime
+     */
+    public function setPaysFacturation($paysFacturation)
+    {
+        $this->paysFacturation = $paysFacturation;
+
+        return $this;
+    }
+
+    /**
+     * Get paysFacturation
+     *
+     * @return string
+     */
+    public function getPaysFacturation()
+    {
+        return $this->paysFacturation;
+    }
+
+    /**
+     * Set adresseChantier
+     *
+     * @param string $adresseChantier
+     *
+     * @return Import_prime
+     */
+    public function setAdresseChantier($adresseChantier)
+    {
+        $this->adresseChantier = $adresseChantier;
+
+        return $this;
+    }
+
+    /**
+     * Get adresseChantier
+     *
+     * @return string
+     */
+    public function getAdresseChantier()
+    {
+        return $this->adresseChantier;
+    }
+
+    /**
+     * Set complementChantier
+     *
+     * @param string $complementChantier
+     *
+     * @return Import_prime
+     */
+    public function setComplementChantier($complementChantier)
+    {
+        $this->complementChantier = $complementChantier;
+
+        return $this;
+    }
+
+    /**
+     * Get complementChantier
+     *
+     * @return string
+     */
+    public function getComplementChantier()
+    {
+        return $this->complementChantier;
+    }
+
+    /**
+     * Set codePostalChantier
+     *
+     * @param string $codePostalChantier
+     *
+     * @return Import_prime
+     */
+    public function setCodePostalChantier($codePostalChantier)
+    {
+        $this->codePostalChantier = $codePostalChantier;
+
+        return $this;
+    }
+
+    /**
+     * Get codePostalChantier
+     *
+     * @return string
+     */
+    public function getCodePostalChantier()
+    {
+        return $this->codePostalChantier;
+    }
+
+    /**
+     * Set villeChantier
+     *
+     * @param string $villeChantier
+     *
+     * @return Import_prime
+     */
+    public function setVilleChantier($villeChantier)
+    {
+        $this->villeChantier = $villeChantier;
+
+        return $this;
+    }
+
+    /**
+     * Get villeChantier
+     *
+     * @return string
+     */
+    public function getVilleChantier()
+    {
+        return $this->villeChantier;
+    }
+
+    /**
+     * Set telephone
+     *
+     * @param string $telephone
+     *
+     * @return Import_prime
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * Get telephone
+     *
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Import_prime
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set iban
+     *
+     * @param string $iban
+     *
+     * @return Import_prime
+     */
+    public function setIban($iban)
+    {
+        $this->iban = $iban;
+
+        return $this;
+    }
+
+    /**
+     * Get iban
+     *
+     * @return string
+     */
+    public function getIban()
+    {
+        return $this->iban;
+    }
+
+    /**
+     * Set montantAide
+     *
+     * @param string $montantAide
+     *
+     * @return Import_prime
+     */
+    public function setMontantAide($montantAide)
+    {
+        $this->montantAide = $montantAide;
+
+        return $this;
+    }
+
+    /**
+     * Get montantAide
+     *
+     * @return string
+     */
+    public function getMontantAide()
+    {
+        return $this->montantAide;
+    }
+
+    /**
+     * Set numeroAction
+     *
+     * @param string $numeroAction
+     *
+     * @return Import_prime
+     */
+    public function setNumeroAction($numeroAction)
+    {
+        $this->numeroAction = $numeroAction;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroAction
+     *
+     * @return string
+     */
+    public function getNumeroAction()
+    {
+        return $this->numeroAction;
+    }
+
+    /**
+     * Set apporteurAffaire
+     *
+     * @param string $apporteurAffaire
+     *
+     * @return Import_prime
+     */
+    public function setApporteurAffaire($apporteurAffaire)
+    {
+        $this->apporteurAffaire = $apporteurAffaire;
+
+        return $this;
+    }
+
+    /**
+     * Get apporteurAffaire
+     *
+     * @return string
+     */
+    public function getApporteurAffaire()
+    {
+        return $this->apporteurAffaire;
+    }
+
+    /**
+     * Set onglet
+     *
+     * @param string $onglet
+     *
+     * @return Import_prime
+     */
+    public function setOnglet($onglet)
+    {
+        $this->onglet = $onglet;
+
+        return $this;
+    }
+
+    /**
+     * Get onglet
+     *
+     * @return string
+     */
+    public function getOnglet()
+    {
+        return $this->onglet;
+    }
+
+    /**
+     * Set nomModele
+     *
+     * @param string $nomModele
+     *
+     * @return Import_prime
+     */
+    public function setNomModele($nomModele)
+    {
+        $this->nomModele = $nomModele;
+
+        return $this;
+    }
+
+    /**
+     * Get nomModele
+     *
+     * @return string
+     */
+    public function getNomModele()
+    {
+        return $this->nomModele;
     }
 }

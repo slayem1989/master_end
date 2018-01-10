@@ -43,8 +43,6 @@ class UploadController extends Controller
                 break;
         }
 
-        if ('txt' == $extension) $extension = 'pdf';
-
         $path = $this->get('kernel')->getRootDir(). "/../data/" . $folder;
         $file = $path . $uploadId . $type . $extension;
         $response = new BinaryFileResponse($file);

@@ -67,7 +67,7 @@ class LettreCheque extends Log
     /**
      * @Assert\File(
      *     maxSize="5120k",
-     *     mimeTypes={ "text/html", "application/html", "text/plain" }
+     *     mimeTypes={ "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }
      * )
      */
     private $file;
