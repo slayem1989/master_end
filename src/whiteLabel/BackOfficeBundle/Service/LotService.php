@@ -180,11 +180,11 @@ class LotService
 
         // Send file
         //$TBS->Show(OPENTBS_DOWNLOAD, 'BAT_' . $clientId . '_' . date("YmdHis") . '.docx');
-        $TBS->Show(OPENTBS_FILE, $this->container->getParameter('kernel.project_dir').'/data/BAT_' . $clientId . '_' . date("YmdHis") . '.docx');
+        $TBS->Show(OPENTBS_FILE, $this->container->getParameter('kernel.project_dir').'/data/BAT.docx');
 
         // Generate PDF
         $source = $this->container->getParameter('kernel.project_dir').'/data/BAT.docx';
-        $destination = $this->container->getParameter('kernel.project_dir').'/data/document.pdf';
+        $destination = $this->container->getParameter('kernel.project_dir').'/data/BAT.pdf';
 
         $unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv',));
         //putenv('PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin');
