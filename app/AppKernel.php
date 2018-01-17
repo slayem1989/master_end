@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new blackLabel\CommentaireBundle\blackLabelCommentaireBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
+            new MBence\OpenTBSBundle\OpenTBSBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
