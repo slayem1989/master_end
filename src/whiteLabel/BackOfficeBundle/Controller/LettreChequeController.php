@@ -59,15 +59,6 @@ class LettreChequeController extends Controller
             $EM->persist($lettreCheque);
             $EM->flush();
 
-            /* //////////////////////////////////////////////////////////
-                                    PERSIST DATA
-            /////////////////////////////////////////////////////////// */
-            $importService = $this->get('white_label.service.lettreCheque');
-            $importService->persistHTML(
-                $lettreCheque->getId(),
-                $lettreCheque->file_getWebPath()
-            );
-
             $request->getSession()->getFlashBag()->add(
                 'success',
                 'La Lettre Chèque ' . $lettreCheque->getNomModele() . ' a été créée avec succès.'

@@ -13,13 +13,23 @@ use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
 class Import_lotRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * Import_lotRepository constructor.
+     * @param $em
+     * @param \Doctrine\ORM\Mapping\ClassMetadata $class
+     */
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
+        parent::__construct($em, $class);
+    }
+
+
+
+    /**
      * @param $clientId
      * @return array
      */
     public function findByClient($clientId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
@@ -45,7 +55,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
             ORDER BY il.id DESC
         ";
 
-        $stmt = $EM
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();
@@ -60,8 +70,6 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findByIdCustom($clientId, $lotId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
@@ -87,7 +95,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                 AND il.client_id = " . $clientId
         ;
 
-        $stmt = $EM
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();
@@ -102,8 +110,6 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findByPrime($clientId, $primeId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
@@ -116,7 +122,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                 AND il.client_id = " . $clientId
         ;
 
-        $stmt = $EM
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();
@@ -131,8 +137,6 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findDataNDByLot($clientId, $lotId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
@@ -163,7 +167,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                 AND il.id = " . $lotId . "
         ";
 
-        $stmt = $EM
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();

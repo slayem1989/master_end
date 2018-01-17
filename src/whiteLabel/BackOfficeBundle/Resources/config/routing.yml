@@ -105,6 +105,13 @@ lot_export_noteDebit:
         clientId: \d+
         lotId: \d+
 
+lot_generate_BAT:
+    path:     /lot/generate/BAT/{clientId}/{lotId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Lot:generateBAT }
+    requirements:
+        clientId: \d+
+        lotId: \d+
+
 ################################
 ###       Prime Routing      ###
 ################################

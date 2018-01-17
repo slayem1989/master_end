@@ -3,12 +3,8 @@
 namespace blackLabel\ImportBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-use PHPExcel;
 use PHPExcel_IOFactory;
-use PHPExcel_Cell;
-use PHPExcel_Shared_Date;
 
 use whiteLabel\BackOfficeBundle\Entity\Statut_lot;
 use blackLabel\ImportBundle\Entity\Import_canal;
@@ -172,8 +168,6 @@ class ImportService
 
                 // DATE
                 if (($row['B'] && ('' != $row['B'] || null != $row['B'])) && true == $this->isValidDate($row['B'])) {
-                    //$row['B'] = new \DateTime(date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($row['B'])));
-                    //$row['B'] = PHPExcel_Shared_Date::ExcelToPHPObject($row['B']);
                     $row['B'] = new \DateTime(\PHPExcel_Style_NumberFormat::toFormattedString($row['B'], 'Y-m-d'));
                 } else {
                     $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne B incorrecte');
@@ -504,10 +498,10 @@ class ImportService
 
         $message = (\Swift_Message::newInstance(
             $subject, $this->environment->render($templatePath, array(
-            'lotNumero'     => $numeroLot,
-            'dateImport'    => $dateImport,
-            'auteurImport'  => $auteurImport
-        )), 'text/html')
+                'lotNumero'     => $numeroLot,
+                'dateImport'    => $dateImport,
+                'auteurImport'  => $auteurImport
+            )), 'text/html')
             ->setFrom($this->container->getParameter('mailer_address_from'))
             ->setTo($this->container->getParameter('import_error_recipient'))
         );

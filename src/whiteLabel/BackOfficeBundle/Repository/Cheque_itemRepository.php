@@ -11,13 +11,23 @@ namespace whiteLabel\BackOfficeBundle\Repository;
 class Cheque_itemRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * Cheque_itemRepository constructor.
+     * @param $em
+     * @param \Doctrine\ORM\Mapping\ClassMetadata $class
+     */
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
+    {
+        parent::__construct($em, $class);
+    }
+
+
+
+    /**
      * @param $clientId
      * @return array
      */
     public function findByClient($clientId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  cs.id AS stockId,
                     cs.reference_boite AS stockReferenceBoite,
@@ -32,7 +42,7 @@ class Cheque_itemRepository extends \Doctrine\ORM\EntityRepository
             ORDER BY ci.numero DESC
         ";
 
-        $stmt = $EM
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();
@@ -47,8 +57,6 @@ class Cheque_itemRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findByStock($clientId, $stockId)
     {
-        $EM = $this->getEntityManager('EM_MYSQL');
-
         $query = "
             SELECT  cs.id AS stockId,
                     cs.reference_boite AS stockReferenceBoite,
@@ -64,7 +72,7 @@ class Cheque_itemRepository extends \Doctrine\ORM\EntityRepository
             ORDER BY ci.numero DESC
         ";
 
-        $stmt = $EM
+        $stmt = $this->_em
             ->getConnection()
             ->prepare($query);
         $stmt->execute();

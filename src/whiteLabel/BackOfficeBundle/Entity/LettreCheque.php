@@ -50,11 +50,6 @@ class LettreCheque extends Log
     private $typeBeneficiaire;
 
     /**
-     * @ORM\Column(name="file_content", type="text")
-     */
-    private $file_content;
-
-    /**
      * @ORM\Column(name="file_url", type="string", length=255)
      */
     private $file_url;
@@ -169,29 +164,6 @@ class LettreCheque extends Log
     }
 
     /**
-     * Set fileContent
-     *
-     * @return LettreCheque
-     */
-    public function setFileContent()
-    {
-        $fileContent = file_get_contents($this->getFile());
-        $this->file_content = $fileContent;
-
-        return $this;
-    }
-
-    /**
-     * Get fileContent
-     *
-     * @return string
-     */
-    public function getFileContent()
-    {
-        return $this->file_content;
-    }
-
-    /**
      * Set fileUrl
      *
      * @param string $fileUrl
@@ -288,8 +260,6 @@ class LettreCheque extends Log
 
         // Et on génère l'attribut alt de la balise <img>, à la valeur du nom du fichier sur le PC de l'internaute
         $this->file_alt = $this->file->getClientOriginalName();
-
-        $this->setFileContent();
     }
 
     /**
