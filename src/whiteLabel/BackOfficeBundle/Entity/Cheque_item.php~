@@ -25,17 +25,23 @@ class Cheque_item extends Log
     /**
      * @var int
      *
-     * @ORM\Column(name="numero", type="integer")
+     * @ORM\Column(name="statut", type="integer")
+     */
+    private $statut;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="numero", type="string", length=7)
      */
     private $numero;
 
     /**
-     * @var \whiteLabel\BackOfficeBundle\Entity\Cheque_stock
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="whiteLabel\BackOfficeBundle\Entity\Cheque_stock", inversedBy="cheque")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(name="stock_id", type="integer")
      */
-    private $stock;
+    private $stockId;
 
 
 
@@ -45,6 +51,8 @@ class Cheque_item extends Log
     public function __construct()
     {
         parent::__construct();
+
+        $this->statut = 0;
     }
 
 
@@ -66,5 +74,53 @@ class Cheque_item extends Log
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return Cheque_item
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return integer
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param string $numero
+     *
+     * @return Cheque_item
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
     }
 }

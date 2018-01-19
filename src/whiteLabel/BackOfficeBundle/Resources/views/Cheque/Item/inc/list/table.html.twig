@@ -6,6 +6,7 @@
             <th class="breakWord col1">R&eacute;f&eacute;rence Stock</th>
             <th class="breakWord col2">Nom de la Banque</th>
             <th class="breakWord col3">Cr&eacute;&eacute; le</th>
+            <th class="breakWord col4">Statut</th>
         </tr>
     </thead>
 
@@ -13,10 +14,25 @@
     {% if list is not empty %}
         {% for item in list %}
         <tr>
-            <td class="breakWord">{{ item.chequeNumero }}</td>
+            <td class="breakWord">
+                {% if '1' == item.chequeStatut and item.primeId %}
+                <a href="{{ path('prime_read', {'clientId': clientId, 'primeId': item.primeId}) }}" title="link">
+                    {{ item.chequeNumero }}
+                    </a>
+                {% else %}
+                    {{ item.chequeNumero }}
+                {% endif %}
+            </td>
             <td class="breakWord">{{ item.stockReferenceBoite }}</td>
             <td class="breakWord">{{ item.banqueNom }}</td>
             <td class="breakWord">{{ item.dateCreation|date('d/m/Y') }} par {{ item.auteurCreation }}</td>
+            <td class="breakWord textCenter">
+                {% if '0' == item.chequeStatut %}
+                    <button class="btn btn-xs btn-success">Disponible</button>
+                {% else %}
+                    <button class="btn btn-xs btn-danger">Consomm&eacute;</button>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     {% else %}

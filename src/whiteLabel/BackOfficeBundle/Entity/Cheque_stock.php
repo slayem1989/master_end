@@ -74,13 +74,6 @@ class Cheque_stock extends Log
      */
     private $dateReception;
 
-    /**
-     * @var \whiteLabel\BackOfficeBundle\Entity\Cheque_item
-     *
-     * @ORM\OneToMany(targetEntity="whiteLabel\BackOfficeBundle\Entity\Cheque_item", mappedBy="stock", cascade={"persist"})
-     */
-    private $cheque;
-
 
 
     /**
@@ -89,8 +82,6 @@ class Cheque_stock extends Log
     public function __construct()
     {
         parent::__construct();
-
-        $this->cheque = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -271,39 +262,5 @@ class Cheque_stock extends Log
     public function getDateReception()
     {
         return $this->dateReception;
-    }
-
-    /**
-     * Add cheque
-     *
-     * @param \whiteLabel\BackOfficeBundle\Entity\Cheque_item $cheque
-     *
-     * @return Cheque_stock
-     */
-    public function addCheque(\whiteLabel\BackOfficeBundle\Entity\Cheque_item $cheque)
-    {
-        $this->cheque[] = $cheque;
-
-        return $this;
-    }
-
-    /**
-     * Remove cheque
-     *
-     * @param \whiteLabel\BackOfficeBundle\Entity\Cheque_item $cheque
-     */
-    public function removeCheque(\whiteLabel\BackOfficeBundle\Entity\Cheque_item $cheque)
-    {
-        $this->cheque->removeElement($cheque);
-    }
-
-    /**
-     * Get cheque
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCheque()
-    {
-        return $this->cheque;
     }
 }

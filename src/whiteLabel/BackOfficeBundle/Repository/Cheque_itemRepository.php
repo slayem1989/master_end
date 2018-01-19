@@ -33,11 +33,14 @@ class Cheque_itemRepository extends \Doctrine\ORM\EntityRepository
                     cs.reference_boite AS stockReferenceBoite,
                     cb.nom AS banqueNom,
                     ci.numero AS chequeNumero,
+                    ci.statut AS chequeStatut,
                     ci.date_creation AS dateCreation,
-                    ci.auteur_creation AS auteurCreation
+                    ci.auteur_creation AS auteurCreation,
+                    ip.id AS primeId
             FROM cheque_item ci
                 INNER JOIN cheque_stock cs ON cs.id = ci.stock_id
                 INNER JOIN client_banque cb ON cb.id = cs.banque_id
+                LEFT JOIN import_prime ip ON ip.numero = ci.numero
             WHERE cs.client_id = " . $clientId . "
             ORDER BY ci.numero DESC
         ";
@@ -62,13 +65,68 @@ class Cheque_itemRepository extends \Doctrine\ORM\EntityRepository
                     cs.reference_boite AS stockReferenceBoite,
                     cb.nom AS banqueNom,
                     ci.numero AS chequeNumero,
+                    ci.statut AS chequeStatut,
                     ci.date_creation AS dateCreation,
-                    ci.auteur_creation AS auteurCreation
+                    ci.auteur_creation AS auteurCreation,
+                    ip.id AS primeId
             FROM cheque_item ci
                 INNER JOIN cheque_stock cs ON cs.id = ci.stock_id
                 INNER JOIN client_banque cb ON cb.id = cs.banque_id
+                LEFT JOIN import_prime ip ON ip.numero = ci.numero
             WHERE cs.client_id = " . $clientId . "
                 AND ci.stock_id = " . $stockId . "
+            ORDER BY ci.numero DESC
+        ";
+
+        $stmt = $this->_em
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param $clientId
+     * @param $lotId
+     * @return array
+     */
+    public function findForBATByClient($clientId, $lotId)
+    {
+        $query = "
+            SELECT  ci.id AS chequeId,
+                    ci.numero AS chequeNumero
+            FROM cheque_item ci
+                INNER JOIN cheque_stock cs ON cs.id = ci.stock_id
+                INNER JOIN import_lot ip ON ip.banque_id = cs.banque_id
+            WHERE cs.client_id = " . $clientId . "
+                AND ip.id = ".$lotId."
+                AND ci.statut <> 1
+            ORDER BY ci.numero ASC
+        ";
+
+        $stmt = $this->_em
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param $clientId
+     * @param $banqueId
+     * @return array
+     */
+    public function findByBanque($clientId, $banqueId)
+    {
+        $query = "
+            SELECT  ci.id AS chequeId,
+                    ci.numero AS chequeNumero
+            FROM cheque_item ci
+                INNER JOIN cheque_stock cs ON cs.id = ci.stock_id
+            WHERE cs.client_id = " . $clientId . "
+                AND cs.banque_id = " . $banqueId . "
             ORDER BY ci.numero DESC
         ";
 

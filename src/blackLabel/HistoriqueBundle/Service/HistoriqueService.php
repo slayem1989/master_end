@@ -49,8 +49,9 @@ class HistoriqueService
      * @param $content
      * @param $statutId
      * @param null $dateForm
+     * @return Historique_lot
      */
-    public function initLot(
+    public function saveLot(
         $lotId,
         $action,
         $content,
@@ -60,50 +61,17 @@ class HistoriqueService
         $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut_lot');
         $statutSlug = $repo_statut->findSlugByStatut($statutId);
 
-        if ($dateForm) $state = $statutSlug . ' et indiqué au ' . $dateForm;
-        else $state = $statutSlug;
+        if ($dateForm) $statutCurrent = $statutSlug . ' et indiqué au ' . $dateForm;
+        else $statutCurrent = $statutSlug;
 
         $historique = new Historique_lot();
         $historique->setLotId($lotId);
         $historique->setAction($action);
         $historique->setContent($content);
         $historique->setStatutId($statutId);
-        $historique->setStatutSlug($state);
+        $historique->setStatutSlug($statutCurrent);
 
-        // No need to move FLUSH() because there is always only ONE Lot
-        $this->EM->persist($historique);
-        $this->EM->flush();
-        $this->EM->clear();
-    }
-
-    /**
-     * @param $lotId
-     * @param $action
-     * @param $content
-     * @param $statutId
-     * @return int
-     */
-    public function saveLotByCommentaire(
-        $lotId,
-        $action,
-        $content,
-        $statutId
-    ) {
-        $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut_prime');
-        $statutSlug = $repo_statut->findSlugByStatut($statutId);
-
-        $historique = new Historique_lot();
-        $historique->setLotId($lotId);
-        $historique->setAction($action);
-        $historique->setContent($content);
-        $historique->setStatutId($statutId);
-        $historique->setStatutSlug($statutSlug);
-
-        $this->EM->persist($historique);
-        $this->EM->flush();
-        $this->EM->clear();
-
-        return $historique->getId();
+        return $historique;
     }
 
     /**
@@ -111,8 +79,9 @@ class HistoriqueService
      * @param $action
      * @param $content
      * @param $statutId
+     * @return Historique_prime
      */
-    public function initPrime(
+    public function savePrime(
         $primeId,
         $action,
         $content,
@@ -128,40 +97,8 @@ class HistoriqueService
         $historique->setStatutId($statutId);
         $historique->setStatutSlug($statutSlug);
 
-        // Move FLUSH() to avoid memory limit in a loop
-        $this->EM->persist($historique);
+        return $historique;
     }
-
-    /**
-     * @param $primeId
-     * @param $action
-     * @param $content
-     * @param $statutId
-     * @return int
-     */
-    public function savePrimeByCommentaire(
-        $primeId,
-        $action,
-        $content,
-        $statutId
-    ) {
-        $repo_statut = $this->EM->getRepository('whiteLabelBackOfficeBundle:Statut_prime');
-        $statutSlug = $repo_statut->findSlugByStatut($statutId);
-
-        $historique = new Historique_prime();
-        $historique->setPrimeId($primeId);
-        $historique->setAction($action);
-        $historique->setContent($content);
-        $historique->setStatutId($statutId);
-        $historique->setStatutSlug($statutSlug);
-
-        $this->EM->persist($historique);
-        $this->EM->flush();
-        $this->EM->clear();
-
-        return $historique->getId();
-    }
-
 
     /* *******************************************************************
      * *******************************************************************

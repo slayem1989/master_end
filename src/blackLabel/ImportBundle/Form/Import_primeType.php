@@ -211,9 +211,9 @@ class Import_primeType extends AbstractType
                                                                                     'placeholder' => 'Entrez le nom de l\'onglet',
                                                                                 )
                                                                             ))
-            ->add('nomModele',                      ChoiceType::class,      array(
+            ->add('modeleId',                       ChoiceType::class,      array(
                                                                                 'required'      => true,
-                                                                                'label'         => 'Type',
+                                                                                'label'         => 'Modèle de Lettre Chèque',
                                                                                 'placeholder'   => '-- Choisir un modèle de Lettre Chèque --',
                                                                                 'multiple'      => false,
                                                                                 'empty_data'    => null,

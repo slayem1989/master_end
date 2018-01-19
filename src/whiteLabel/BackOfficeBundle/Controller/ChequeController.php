@@ -76,30 +76,41 @@ class ChequeController extends Controller
             $objectStock->setFirst($chequeService->formatNumeroCheque($objectStock->getFirst()));
             $objectStock->setLast($chequeService->formatNumeroCheque($objectStock->getLast()));
 
+            $EM->persist($objectStock);
+            $EM->flush();
+            $EM->clear();
+
             /* //////////////////////////////////////////////////////////
                                 PERSIST CHEQUE ITEM
             /////////////////////////////////////////////////////////// */
             $chequeService = $this->get('white_label.service.cheque');
             $listCheque = $chequeService->createChequeItem(
+                $clientId,
+                $objectStock->getId(),
+                $objectStock->getBanqueId(),
                 $objectStock->getFirst(),
                 $objectStock->getLast()
             );
-            foreach ($listCheque as $item) {
-                $objectStock->addCheque($item);
+
+            if (!empty($listCheque)) {
+                foreach ($listCheque as $item) {
+                    $EM->persist($item);
+                }
+                $EM->flush();
+                $EM->clear();
+
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'L\'import du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a été effectué avec succès.'
+                );
+            } else {
+                $EM->clear();
+
+                $request->getSession()->getFlashBag()->add(
+                    'danger',
+                    'L\'import du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a détecté des numéros de chèque déjà existant.'
+                );
             }
-
-            $EM->persist($objectStock);
-            $EM->flush();
-
-            /* //////////////////////////////////////////////////////////
-                                UPDATE CHEQUE ITEM
-            /////////////////////////////////////////////////////////// */
-            $chequeService->updateStockId($listCheque, $objectStock->getId());
-
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'L\'import du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a été effectué avec succès.'
-            );
 
             return $this->redirectToRoute('chequeStock_list', array(
                 'clientId' => $clientId
@@ -180,13 +191,43 @@ class ChequeController extends Controller
             $objectStock->setFirst($chequeService->formatNumeroCheque($objectStock->getFirst()));
             $objectStock->setLast($chequeService->formatNumeroCheque($objectStock->getLast()));
 
-            $EM->persist($objectStock);
-            $EM->flush();
-
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'Le stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a bien été mis à jour.'
+            /* //////////////////////////////////////////////////////////
+                                PERSIST CHEQUE ITEM
+            /////////////////////////////////////////////////////////// */
+            $chequeService = $this->get('white_label.service.cheque');
+            $listCheque = $chequeService->createChequeItem(
+                $clientId,
+                $objectStock->getBanqueId(),
+                $objectStock->getFirst(),
+                $objectStock->getLast()
             );
+
+            if (!empty($listCheque)) {
+                foreach ($listCheque as $item) {
+                    $objectStock->addCheque($item);
+                }
+
+                $EM->persist($objectStock);
+                $EM->flush();
+                $EM->clear();
+
+                /* //////////////////////////////////////////////////////////
+                            UPDATE CHEQUE ITEM WITH STOCK ID
+                /////////////////////////////////////////////////////////// */
+                $chequeService->updateStockId($listCheque, $objectStock->getId());
+
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'Le stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a bien été mis à jour.'
+                );
+            } else {
+                $EM->clear();
+
+                $request->getSession()->getFlashBag()->add(
+                    'danger',
+                    'La mise à jour du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a détecté des numéros de chèque déjà existant.'
+                );
+            }
 
             return $this->redirectToRoute('chequeStock_list', array(
                 'clientId' => $clientId

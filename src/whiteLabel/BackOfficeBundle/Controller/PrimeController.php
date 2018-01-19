@@ -52,17 +52,21 @@ class PrimeController extends Controller
             $objectPrime = $repo_prime->find($post_primeId);
 
             $historiqueService = $this->get('black_label.service.historique');
-            $historiqueId = $historiqueService->savePrimeByCommentaire(
+            $historique = $historiqueService->savePrime(
                 $objectPrime->getId(),
                 'Commentaire',
                 $post_content,
                 $objectPrime->getStatutId()
             );
 
+            $EM->persist($historique);
+            $EM->flush();
+            $EM->clear();
+
             /* //////////////////////////////////////////////////////////
                             PERSIST COMMENTAIRE PRIME
             /////////////////////////////////////////////////////////// */
-            $commentaire->setHistoriqueId($historiqueId);
+            $commentaire->setHistoriqueId($historique->getId());
             $commentaire->setPrimeId($post_primeId);
             $commentaire->setContent($post_content);
 
@@ -317,7 +321,7 @@ class PrimeController extends Controller
 
         $array_lettreCheque = array();
         foreach ($list_lettreCheque as $item) {
-            $array_lettreCheque[$item->getNomModele()] = $item->getId() . ' | ' . $item->getNomModele();
+            $array_lettreCheque[$item->getNomModele()] = $item->getId();
         }
         $formOption[] = $array_lettreCheque;
 
@@ -402,7 +406,7 @@ class PrimeController extends Controller
         $form->remove('numeroAction');
         $form->remove('apporteurAffaire');
         $form->remove('onglet');
-        $form->remove('nomModele');
+        $form->remove('modeleId');
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $prime->setDateModif(new \Datetime());
@@ -465,7 +469,7 @@ class PrimeController extends Controller
         $form->remove('numeroAction');
         $form->remove('apporteurAffaire');
         $form->remove('onglet');
-        $form->remove('nomModele');
+        $form->remove('modeleId');
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $prime->setDateModif(new \Datetime());

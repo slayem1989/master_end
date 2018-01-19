@@ -217,11 +217,11 @@ class Import_prime extends Log
     private $onglet;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="nom_modele", type="string", length=255)
+     * @ORM\Column(name="modele_id", type="integer")
      */
-    private $nomModele;
+    private $modeleId;
 
     /**
      * @var \DateTime
@@ -910,26 +910,50 @@ class Import_prime extends Log
     }
 
     /**
-     * Set nomModele
+     * Set dateOperation
      *
-     * @param string $nomModele
+     * @param \DateTime $dateOperation
      *
      * @return Import_prime
      */
-    public function setNomModele($nomModele)
+    public function setDateOperation($dateOperation)
     {
-        $this->nomModele = $nomModele;
+        $this->dateOperation = $dateOperation;
 
         return $this;
     }
 
     /**
-     * Get nomModele
+     * Get dateOperation
+     *
+     * @return \DateTime
+     */
+    public function getDateOperation()
+    {
+        return $this->dateOperation;
+    }
+
+    /**
+     * Set montantDebite
+     *
+     * @param string $montantDebite
+     *
+     * @return Import_prime
+     */
+    public function setMontantDebite($montantDebite)
+    {
+        $this->montantDebite = $montantDebite;
+
+        return $this;
+    }
+
+    /**
+     * Get montantDebite
      *
      * @return string
      */
-    public function getNomModele()
+    public function getMontantDebite()
     {
-        return $this->nomModele;
+        return $this->montantDebite;
     }
 }

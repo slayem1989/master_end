@@ -170,6 +170,7 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
                     ip.ville_chantier AS primeVilleChantier,
                     ip.index_prime AS primeIndex,
                     ip.onglet AS primeOnglet,
+                    ip.modele_id AS modeleId,
                     il.numero AS lotNumero,
                     CASE WHEN ('' != DATE_FORMAT(il.date_statut_8, '%d/%m/%Y'))
                         THEN DATE_FORMAT(il.date_statut_8, '%d/%m/%Y')

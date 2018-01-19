@@ -8,7 +8,9 @@ use blackLabel\GenericBundle\Entity\Log;
 /**
  * Cheque_item
  *
- * @ORM\Table(name="cheque_item")
+ * @ORM\Table(name="cheque_item", indexes={
+ *      @ORM\Index(name="stock_idx", columns={"stock_id"})
+ * })
  * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\Cheque_itemRepository")
  */
 class Cheque_item extends Log
@@ -25,16 +27,23 @@ class Cheque_item extends Log
     /**
      * @var int
      *
+     * @ORM\Column(name="statut", type="integer")
+     */
+    private $statut;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="numero", type="string", length=7)
      */
     private $numero;
 
     /**
-     * @var \whiteLabel\BackOfficeBundle\Entity\Cheque_stock
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="whiteLabel\BackOfficeBundle\Entity\Cheque_stock", inversedBy="cheque")
+     * @ORM\Column(name="stock_id", type="integer")
      */
-    private $stock;
+    private $stockId;
 
 
 
@@ -44,6 +53,8 @@ class Cheque_item extends Log
     public function __construct()
     {
         parent::__construct();
+
+        $this->statut = 0;
     }
 
 
@@ -68,9 +79,33 @@ class Cheque_item extends Log
     }
 
     /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return Cheque_item
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return integer
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
      * Set numero
      *
-     * @param integer $numero
+     * @param string $numero
      *
      * @return Cheque_item
      */
@@ -84,7 +119,7 @@ class Cheque_item extends Log
     /**
      * Get numero
      *
-     * @return integer
+     * @return string
      */
     public function getNumero()
     {
@@ -92,26 +127,26 @@ class Cheque_item extends Log
     }
 
     /**
-     * Set stock
+     * Set stockId
      *
-     * @param \whiteLabel\BackOfficeBundle\Entity\Cheque_stock $stock
+     * @param integer $stockId
      *
      * @return Cheque_item
      */
-    public function setStock(\whiteLabel\BackOfficeBundle\Entity\Cheque_stock $stock)
+    public function setStockId($stockId)
     {
-        $this->stock = $stock;
+        $this->stockId = $stockId;
 
         return $this;
     }
 
     /**
-     * Get stock
+     * Get stockId
      *
-     * @return \whiteLabel\BackOfficeBundle\Entity\Cheque_stock
+     * @return integer
      */
-    public function getStock()
+    public function getStockId()
     {
-        return $this->stock;
+        return $this->stockId;
     }
 }

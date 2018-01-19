@@ -46,46 +46,47 @@ class ChequeService
     ********************************************************************
     *******************************************************************/
     /**
+     * @param $clientId
+     * @param $stockId
+     * @param $banqueId
      * @param $first
      * @param $last
      * @return array
      */
-    public function createChequeItem($first, $last)
+    public function createChequeItem($clientId, $stockId, $banqueId, $first, $last)
     {
+        $EM = $this->doctrine->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET STOCK BY BANQUE
+        ///////////////////////////////////////////////////////////////// */
+        $repo_chequeItem = $EM->getRepository('whiteLabelBackOfficeBundle:Cheque_item');
+        $listChequeItem = $repo_chequeItem->findByBanque($clientId, $banqueId);
+
+        $arrayChequeBDD = array();
+        foreach ($listChequeItem as $item) {
+            $arrayChequeBDD[$item['chequeNumero']] = $item['chequeId'];
+        }
+
         $first = (int)$first;
         $last = (int)$last;
         $delta_increment = ($last - $first) + $first;
 
         $arrayCheque = array();
         for ($i=$first; $i<=$delta_increment; $i++) {
-            $objectCheque = new Cheque_item();
-            $objectCheque->setNumero($this->formatNumeroCheque($i));
+            if (array_key_exists($this->formatNumeroCheque($i), $arrayChequeBDD)) {
+                $arrayCheque = array();
+                break;
+            } else {
+                $objectCheque = new Cheque_item();
+                $objectCheque->setStockId($stockId);
+                $objectCheque->setNumero($this->formatNumeroCheque($i));
 
-            $arrayCheque[] = $objectCheque;
+                $arrayCheque[] = $objectCheque;
+            }
         }
 
         return $arrayCheque;
-    }
-
-    /**
-     * @param $listCheque
-     * @param $stockId
-     */
-    public function updateStockId($listCheque, $stockId)
-    {
-        $EM = $this->doctrine->getManager();
-
-        foreach ($listCheque as $item) {
-            $query = "
-            UPDATE cheque_item
-            SET stock_id = " . $stockId . "
-            WHERE id = " . $item->getId();
-
-            $stmt = $EM
-                ->getConnection()
-                ->prepare($query);
-            $stmt->execute();
-        }
     }
 
     /**
@@ -132,12 +133,13 @@ class ChequeService
                 /* //////////////////////////////////////////////////////////
                                     UPDATE HISTORIQUE
                 /////////////////////////////////////////////////////////// */
-                $historiqueService->initPrime(
+                $historique = $historiqueService->savePrime(
                     $prime->getId(),
                     Statut_prime::STATUT_SLUG_5,
                     $fileWebPath,
                     Statut_prime::STATUT_5
                 );
+                $EM->persist($historique);
             }
         }
 

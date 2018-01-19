@@ -53,6 +53,7 @@ class ImportController extends Controller
             /////////////////////////////////////////////////////////// */
             $importService = $this->get('black_label.service.import');
             $isValid = $importService->persistXLSX(
+                $clientId,
                 $lot->getId(),
                 $lot->file_getWebPath(),
                 $lot->getDateCreation()->format('d/m/Y'),
@@ -64,12 +65,13 @@ class ImportController extends Controller
             /////////////////////////////////////////////////////////// */
             $historiqueService = $this->get('black_label.service.historique');
             if (true == $isValid) {
-                $historiqueService->initLot(
+                $historiqueLot = $historiqueService->saveLot(
                     $lot->getId(),
                     Statut_lot::STATUT_SLUG_1,
                     $_POST,
                     $lot->getStatutId()
                 );
+                $EM->persist($historiqueLot);
 
                 /* /////////////////////////////////////////////////////////////////
                                             GET CANAL
@@ -91,15 +93,15 @@ class ImportController extends Controller
                                     PERSIST HISTORIQUE PRIME
                 /////////////////////////////////////////////////////////// */
                 foreach ($dataPrime as $item) {
-                    $historiqueService->initPrime(
+                    $historiquePrime = $historiqueService->savePrime(
                         $item->getId(),
                         Statut_prime::STATUT_SLUG_1,
                         '',
                         $item->getStatutId()
                     );
+                    $EM->persist($historiquePrime);
                 }
-                $EM->flush();
-                $EM->clear();
+
 
                 $request->getSession()->getFlashBag()->add(
                     'success',
@@ -111,18 +113,22 @@ class ImportController extends Controller
                 /* //////////////////////////////////////////////////////////
                                PERSIST HISTORIQUE LOT
                 /////////////////////////////////////////////////////////// */
-                $historiqueService->initLot(
+                $historiqueLot = $historiqueService->saveLot(
                     $lot->getId(),
                     Statut_lot::STATUT_SLUG_11,
                     $_POST,
                     Statut_lot::STATUT_11
                 );
+                $EM->persist($historiqueLot);
 
                 $request->getSession()->getFlashBag()->add(
                     'danger',
                     'L\'import du Lot ne s\'est pas déroulé correctement.'
                 );
             }
+
+            $EM->flush();
+            $EM->clear();
 
             return $this->redirectToRoute('lot_list', array(
                 'clientId' => $clientId

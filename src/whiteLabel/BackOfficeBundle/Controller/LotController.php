@@ -71,17 +71,21 @@ class LotController extends Controller
                                     PERSIST HISTORIQUE LOT
                     /////////////////////////////////////////////////////////// */
                     $historiqueService = $this->get('black_label.service.historique');
-                    $historiqueId = $historiqueService->saveLotByCommentaire(
+                    $historique = $historiqueService->saveLot(
                         $item['lotId'],
                         'Commentaire',
                         $commentaire->getContent(),
                         $item['lotStatutId']
                     );
 
+                    $EM->persist($historique);
+                    $EM->flush();
+                    $EM->clear();
+
                     /* //////////////////////////////////////////////////////////
                                     PERSIST COMMENTAIRE LOT
                     /////////////////////////////////////////////////////////// */
-                    $commentaire->setHistoriqueId($historiqueId);
+                    $commentaire->setHistoriqueId($historique->getId());
 
                     $EM->persist($commentaire);
                     $EM->flush();
@@ -116,6 +120,7 @@ class LotController extends Controller
     public function updateAction(Request $request, $clientId, $lotId)
     {
         $EM = $this->getDoctrine()->getManager();
+        $return = 99;
 
         /* /////////////////////////////////////////////////////////////////
                                 GET LOT
@@ -131,7 +136,7 @@ class LotController extends Controller
         $form_validate = $lotService->updateValidateType();
 
         /* //////////////////////////////////////////////////////////
-                                PERSIST HISTORIQUE
+                                GET HISTORIQUE SERVICE
         /////////////////////////////////////////////////////////// */
         $historiqueService = $this->get('black_label.service.historique');
 
@@ -157,7 +162,7 @@ class LotController extends Controller
                     $lotObject->setStatutId(Statut_lot::STATUT_2);
                     $lotObject->setDateStatut2($format_dateStatut);
 
-                    $historiqueService->initLot(
+                    $historique = $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_2,
                         $_POST,
@@ -166,22 +171,43 @@ class LotController extends Controller
                     );
                     break;
                 case Statut_lot::STATUT_2:
-                    $lotObject->setStatutId(Statut_lot::STATUT_3);
-                    $lotObject->setDateStatut3($format_dateStatut);
+                    /* /////////////////////////////////////////////////////////////////
+                                                GET PRIME
+                    ///////////////////////////////////////////////////////////////// */
+                    $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
+                    $listPrime = $repo_prime->findDataBATByLot($clientId, $lotId);
 
-                    $historiqueService->initLot(
-                        $lotId,
-                        Statut_lot::STATUT_SLUG_3,
-                        $_POST,
-                        Statut_lot::STATUT_3,
-                        $post_dateStatut
-                    );
+                    /* /////////////////////////////////////////////////////////////////
+                                                GENERATE BAT
+                    ///////////////////////////////////////////////////////////////// */
+                    $lotService = $this->get('white_label.service.lot');
+                    $return = $lotService->generateBAT($clientId, $lotId, $listPrime);
+
+                    if (0 == $return) {
+                        $historique = $historiqueService->saveLot(
+                            $lotId,
+                            Statut_lot::STATUT_SLUG_3.' => ERREUR: Le nombre de chèque restant est insuffisant.',
+                            $_POST,
+                            Statut_lot::STATUT_2
+                        );
+                    } elseif (1 == $return) {
+                        $lotObject->setStatutId(Statut_lot::STATUT_3);
+                        $lotObject->setDateStatut3($format_dateStatut);
+
+                        $historique = $historiqueService->saveLot(
+                            $lotId,
+                            Statut_lot::STATUT_SLUG_3,
+                            $_POST,
+                            Statut_lot::STATUT_3,
+                            $post_dateStatut
+                        );
+                    }
                     break;
                 case Statut_lot::STATUT_3:
                     $lotObject->setStatutId(Statut_lot::STATUT_4);
                     $lotObject->setDateStatut4($format_dateStatut);
 
-                    $historiqueService->initLot(
+                    $historique = $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_4,
                         $_POST,
@@ -193,7 +219,7 @@ class LotController extends Controller
                     $lotObject->setStatutId(Statut_lot::STATUT_5);
                     $lotObject->setDateStatut5($format_dateStatut);
 
-                    $historiqueService->initLot(
+                    $historique = $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_5,
                         $_POST,
@@ -205,7 +231,7 @@ class LotController extends Controller
                     $lotObject->setStatutId(Statut_lot::STATUT_6);
                     $lotObject->setDateStatut6($format_dateStatut);
 
-                    $historiqueService->initLot(
+                    $historique = $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_6,
                         $_POST,
@@ -217,7 +243,7 @@ class LotController extends Controller
                     $lotObject->setStatutId(Statut_lot::STATUT_7);
                     $lotObject->setDateStatut7($format_dateStatut);
 
-                    $historiqueService->initLot(
+                    $historique = $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_7,
                         $_POST,
@@ -229,7 +255,7 @@ class LotController extends Controller
                     $lotObject->setStatutId(Statut_lot::STATUT_8);
                     $lotObject->setDateStatut8($format_dateStatut);
 
-                    $historiqueService->initLot(
+                    $historique = $historiqueService->saveLot(
                         $lotId,
                         Statut_lot::STATUT_SLUG_8,
                         $_POST,
@@ -238,14 +264,28 @@ class LotController extends Controller
                     );
                     break;
             }
+
             $EM->persist($lotObject);
+            $EM->persist($historique);
             $EM->flush();
             $EM->clear();
 
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour.'
-            );
+            if (0 == $return) {
+                $request->getSession()->getFlashBag()->add(
+                    'danger',
+                    'Le nombre de chèque restant est insuffisant.'
+                );
+            } elseif (1 == $return) {
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour et les BAT ont été générés avec succès.'
+                );
+            } else {
+                $request->getSession()->getFlashBag()->add(
+                    'success',
+                    'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour.'
+                );
+            }
 
             return $this->redirectToRoute('lot_list', array(
                 'clientId' => $clientId
@@ -268,17 +308,18 @@ class LotController extends Controller
                 $lotObject->setDateStatut3(null);
                 $lotObject->setDateStatut44($format_dateStatut);
 
-                $EM->persist($lotObject);
-                $EM->flush();
-                $EM->clear();
-
-                $historiqueService->initLot(
+                $historique = $historiqueService->saveLot(
                     $lotId,
                     Statut_lot::STATUT_SLUG_44 . ' => Prochaine action: ' . Statut_lot::STATUT_SLUG_2,
                     $_POST,
                     Statut_lot::STATUT_44,
                     $post_dateStatut
                 );
+
+                $EM->persist($lotObject);
+                $EM->persist($historique);
+                $EM->flush();
+                $EM->clear();
 
                 $request->getSession()->getFlashBag()->add(
                     'success',
@@ -307,11 +348,7 @@ class LotController extends Controller
                 $lotObject->setDateStatut4(null);
                 $lotObject->setDateStatut55($format_dateStatut);
 
-                $EM->persist($lotObject);
-                $EM->flush();
-                $EM->clear();
-
-                $historiqueService->initLot(
+                $historique = $historiqueService->saveLot(
                     $lotId,
                     Statut_lot::STATUT_SLUG_55 . ' => Prochaine action: ' . Statut_lot::STATUT_SLUG_3,
                     $_POST,
@@ -319,9 +356,14 @@ class LotController extends Controller
                     $post_dateStatut
                 );
 
+                $EM->persist($lotObject);
+                $EM->persist($historique);
+                $EM->flush();
+                $EM->clear();
+
                 $request->getSession()->getFlashBag()->add(
                     'success',
-                    'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour.'
+                    'Le Lot n° ' . $lotObject->getNumero() . ' a bien été mise à jour.'
                 );
 
                 return $this->redirectToRoute('lot_list', array(
@@ -446,30 +488,5 @@ class LotController extends Controller
          //////////////////////////////////////////////////////////////////// */
         $lotService = $this->get('white_label.service.lot');
         $lotService->exportND($data);
-    }
-
-    /**
-     * @param $clientId
-     * @param $lotId
-     */
-    public function generateBATAction($clientId, $lotId)
-    {
-        $EM = $this->getDoctrine()->getManager();
-
-        /* /////////////////////////////////////////////////////////////////
-                                GET LOT
-        ///////////////////////////////////////////////////////////////// */
-        $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
-        $listPrime = $repo->findDataBATByLot($clientId, $lotId);
-
-        /* //////////////////////////////////////////////////////////////////////
-                                GENERATE BAT
-         //////////////////////////////////////////////////////////////////// */
-        $lotService = $this->get('white_label.service.lot');
-        $lotService->generateBAT($clientId, $listPrime);
-
-        return $this->redirectToRoute('lot_list', array(
-            'clientId' => $clientId
-        ));
     }
 }

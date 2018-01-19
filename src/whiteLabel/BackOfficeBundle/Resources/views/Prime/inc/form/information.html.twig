@@ -74,12 +74,12 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.nomModele) }}</div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">{{ form_errors(form.modeleId) }}</div>
         <div class="form-group">
-            {{ form_label(form.nomModele, "Modèle", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+            {{ form_label(form.modeleId, "Modèle", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                {{ form_widget(form.nomModele, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.modeleId, {'attr': {'class': 'form-control'}}) }}
             </div>
         </div>
 

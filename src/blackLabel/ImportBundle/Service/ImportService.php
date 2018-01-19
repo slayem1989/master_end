@@ -74,15 +74,28 @@ class ImportService
      * *******************************************************************
      * ***************************************************************** */
     /**
+     * @param $clientId
      * @param $importId
      * @param $fileWebPath
      * @param $dateImport
      * @param $auteurImport
      * @return bool
      */
-    public function persistXLSX($importId, $fileWebPath, $dateImport, $auteurImport)
+    public function persistXLSX($clientId, $importId, $fileWebPath, $dateImport, $auteurImport)
     {
         $EM = $this->doctrine->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET LETTRE CHEQUE
+        ///////////////////////////////////////////////////////////////// */
+        $repo_lettreCheque = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
+        $lettreCheque = $repo_lettreCheque->findBy(array(
+            'clientId' => $clientId
+        ));
+        $arrayLC = array();
+        foreach ($lettreCheque as $item) {
+            $arrayLC[$item->getNomModele()] = $item->getId();
+        }
 
         $sourceFile = $this->container->getParameter('kernel.project_dir')."/data/".$fileWebPath;
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject($sourceFile);
@@ -318,8 +331,8 @@ class ImportService
                 }
 
                 // NOM MODELE
-                if ($row['Y'] && ('' != $row['Y'] || null != $row['Y'])) {
-                    $row['Y'] = trim($row['Y']);
+                if ($row['Y'] && ('' != $row['Y'] || null != $row['Y']) && array_key_exists(trim($row['Y']), $arrayLC)) {
+                    $row['Y'] = $arrayLC[trim($row['Y'])];
                 } else {
                     $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne Y incorrecte');
                     $row['Y'] = '';
@@ -357,7 +370,7 @@ class ImportService
                 $objectPrime->setNumeroAction($row['V']);
                 $objectPrime->setApporteurAffaire($row['W']);
                 $objectPrime->setOnglet($row['X']);
-                $objectPrime->setNomModele($row['Y']);
+                $objectPrime->setModeleId($row['Y']);
 
                 $EM->persist($objectPrime);
 
