@@ -16,7 +16,12 @@
         <tr>
             <td class="breakWord">{{ item.banqueNom }}</td>
             <td class="breakWord">
-                <a href="{{ path('chequeStock_read', {'clientId': clientId, 'stockId': item.stockId}) }}" title="link">
+                <a href="{{ path('chequeStock_read', {'clientId': clientId, 'stockId': item.stockId}) }}"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Consulter le stock Chèque"
+                >
                     {{ item.stockReferenceBoite }}
                 </a>
             </td>

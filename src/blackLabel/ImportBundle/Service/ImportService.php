@@ -86,15 +86,15 @@ class ImportService
         $EM = $this->doctrine->getManager();
 
         /* /////////////////////////////////////////////////////////////////
-                                GET LETTRE CHEQUE
+                                GET LIST OF MODELE LETTRE
         ///////////////////////////////////////////////////////////////// */
-        $repo_lettreCheque = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
-        $lettreCheque = $repo_lettreCheque->findBy(array(
+        $repo_modeleLettre = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $listModeleLettre = $repo_modeleLettre->findBy(array(
             'clientId' => $clientId
         ));
-        $arrayLC = array();
-        foreach ($lettreCheque as $item) {
-            $arrayLC[$item->getNomModele()] = $item->getId();
+        $arrayModeleLettre = array();
+        foreach ($listModeleLettre as $item) {
+            $arrayModeleLettre[$item->getNom()] = $item->getId();
         }
 
         $sourceFile = $this->container->getParameter('kernel.project_dir')."/data/".$fileWebPath;
@@ -175,7 +175,7 @@ class ImportService
                 if ($row['A'] && ('' != $row['A'] || null != $row['A']) && (('LC' == $row['A']) || ('VIR' == $row['A']))) {
                     $row['A'] = strtoupper($row['A']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne A incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne A incorrecte');
                     $row['A'] = '';
                 }
 
@@ -183,7 +183,7 @@ class ImportService
                 if (($row['B'] && ('' != $row['B'] || null != $row['B'])) && true == $this->isValidDate($row['B'])) {
                     $row['B'] = new \DateTime(\PHPExcel_Style_NumberFormat::toFormattedString($row['B'], 'Y-m-d'));
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne B incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne B incorrecte');
                     $row['B'] = new \DateTime($this->container->getParameter('date_reference'));
                 }
 
@@ -191,7 +191,7 @@ class ImportService
                 if ($row['C'] && ('' != $row['C'] || null != $row['C']) && true == is_int((int)$row['C']) && !array_key_exists((int)$row['C'], $arraydoublon)) {
                     $row['C'] = (int)$row['C'];
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne C incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne C incorrecte');
                     $row['C'] = 9999999;
                 }
 
@@ -218,14 +218,14 @@ class ImportService
                     !$row['G'] && ('' == $row['G'] || null == $row['G']) &&
                     !$row['H'] && ('' == $row['H'] || null == $row['H'])
                 ) {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne D E F G H incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne D E F G H incorrecte');
                 }
 
                 // ADRESSE FACTURATION
                 if ($row['I'] && ('' != $row['I'] || null != $row['I'])) {
                     $row['I'] = trim($row['I']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne I incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne I incorrecte');
                     $row['I'] = '';
                 }
 
@@ -238,7 +238,7 @@ class ImportService
                 if ($row['K'] && ('' != $row['K'] || null != $row['K'])) {
                     $row['K'] = trim($row['K']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne K incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne K incorrecte');
                     $row['K'] = '';
                 }
 
@@ -246,7 +246,7 @@ class ImportService
                 if ($row['L'] && ('' != $row['L'] || null != $row['L'])) {
                     $row['L'] = strtoupper($row['L']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne L incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne L incorrecte');
                     $row['L'] = '';
                 }
 
@@ -259,7 +259,7 @@ class ImportService
                 if ($row['N'] && ('' != $row['N'] || null != $row['N'])) {
                     $row['N'] = trim($row['N']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne N incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne N incorrecte');
                     $row['N'] = '';
                 }
 
@@ -272,7 +272,7 @@ class ImportService
                 if ($row['P'] && ('' != $row['P'] || null != $row['P'])) {
                     $row['P'] = trim($row['P']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne P incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne P incorrecte');
                     $row['P'] = '';
                 }
 
@@ -280,7 +280,7 @@ class ImportService
                 if ($row['Q'] && ('' != $row['Q'] || null != $row['Q'])) {
                     $row['Q'] = strtoupper($row['Q']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne Q incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne Q incorrecte');
                     $row['Q'] = '';
                 }
 
@@ -289,7 +289,7 @@ class ImportService
                     if (true == $this->isValidTelephone($row['R'])) {
                         $row['R'] = filter_var($row['R'],FILTER_SANITIZE_NUMBER_INT);
                     } else {
-                        $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne R incorrecte');
+                        $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne R incorrecte');
                     }
                 }
 
@@ -298,7 +298,7 @@ class ImportService
                     if (true == filter_var($row['S'],FILTER_VALIDATE_EMAIL)) {
                         $row['S'] = filter_var($row['S'],FILTER_SANITIZE_EMAIL);
                     } else {
-                        $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne S incorrecte');
+                        $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne S incorrecte');
                     }
                 }
 
@@ -311,7 +311,7 @@ class ImportService
                 if ($row['U'] && ('' != $row['U'] || null != $row['U']) && true == $this->isValidDecimal($row['U'])) {
                     $row['U'] = floatval($row['U']);
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne U incorrecte');
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne U incorrecte');
                     $row['U'] = floatval(0);
                 }
 
@@ -331,11 +331,11 @@ class ImportService
                 }
 
                 // NOM MODELE
-                if ($row['Y'] && ('' != $row['Y'] || null != $row['Y']) && array_key_exists(trim($row['Y']), $arrayLC)) {
-                    $row['Y'] = $arrayLC[trim($row['Y'])];
+                if ($row['Y'] && ('' != $row['Y'] || null != $row['Y']) && array_key_exists(trim($row['Y']), $arrayModeleLettre)) {
+                    $row['Y'] = $arrayModeleLettre[trim($row['Y'])];
                 } else {
-                    $this->createErrorFile($importId, 'Ligne: '.$i.' | Motif: Colonne Y incorrecte');
-                    $row['Y'] = '';
+                    $this->createErrorFile($clientId, $importId, 'Ligne: '.$i.' | Motif: Colonne Y incorrecte');
+                    $row['Y'] = null;
                 }
 
                 $objectPrime = new Import_prime();
@@ -378,7 +378,7 @@ class ImportService
                 $arraydoublon[(int)$row['C']] = 'doublon';
             }
 
-            if (file_exists($this->container->getParameter('kernel.project_dir')."/data/import/error/".$importId."_import_error.txt")) {
+            if (file_exists($this->container->getParameter('kernel.project_dir')."/data/".$clientId."/import/error/".$importId."_import_error.txt")) {
                 $isValid = false;
                 $EM->clear();
 
@@ -477,19 +477,23 @@ class ImportService
     }
 
     /**
+     * @param $clientId
      * @param $importId
      * @param $content
      */
-    private function createErrorFile($importId, $content)
+    private function createErrorFile($clientId, $importId, $content)
     {
-        $folder = 'error';
-        $pathFolder = $this->container->getParameter('kernel.project_dir')."/data/import/".$folder;
-        if (!is_dir($pathFolder)) {
-            mkdir($pathFolder);
-            chmod($pathFolder, 0755);
+        $folder = '/error';
+        $pathFolder = $this->container->getParameter('kernel.project_dir')."/data/".$clientId."/import";
+        if (!file_exists($pathFolder) || !is_dir($pathFolder)) {
+            mkdir($pathFolder, 0755);
         }
 
-        $file = fopen( $this->container->getParameter('kernel.project_dir')."/data/import/error/".$importId."_import_error.txt", "a+" );
+        if (!file_exists($pathFolder.$folder) || !is_dir($pathFolder.$folder)) {
+            mkdir($pathFolder.$folder, 0755);
+        }
+
+        $file = fopen( $this->container->getParameter('kernel.project_dir')."/data/".$clientId."/import/error/".$importId."_import_error.txt", "a+" );
         fwrite($file,$content.chr(13));
         fclose($file);
     }

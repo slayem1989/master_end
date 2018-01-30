@@ -35,21 +35,21 @@
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"></div>
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-error">
-            {{ form_errors(form.client_information.logo) }}
+            {{ form_errors(form.logo) }}
             <ul id="file-error"></ul>
         </div>
         <div class="form-group">
-            {{ form_label(form.client_information.logo, "Logo", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
+            {{ form_label(form.logo, "Logo", {'label_attr': {'class': 'col-xs-12 col-sm-12 col-md-4 col-lg-4 control-label'}}) }}
 
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                {{ form_widget(form.client_information.logo) }}
+                {{ form_widget(form.logo) }}
             </div>
         </div>
 
-        {% if client and client.clientInformation and client.clientInformation.logoUrl %}
+        {% if client and client.id and client.logoUrl %}
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-4 col-lg-offset-4">
             <p>
-                <a href="{{ path('upload_read', {'uploadId': client.clientInformation.id, 'fileKey': 0, 'extension': client.clientInformation.logoUrl, 'folderKey': 0}) }}" target="_blank">
+                <a href="{{ path('upload_read', {'clientId': client.id, 'uploadId': client.id, 'fileKey': 0, 'extension': client.logoUrl, 'folderKey': 0}) }}" target="_blank">
                     Voir le fichier
                 </a>
             </p>

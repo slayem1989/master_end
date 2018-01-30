@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -43,6 +44,10 @@ class Client_Type extends AbstractType
                                                                                             'required'      => false,
                                                                                             'prototype'     => true,
                                                                                             'by_reference'  => false
+                                                                                        ))
+            ->add('logo',                       FileType::class,                        array(
+                                                                                            'required'  => true,
+                                                                                            'label'     => 'Logo',
                                                                                         ))
             ->add('valider',                    SubmitType::class)
         ;

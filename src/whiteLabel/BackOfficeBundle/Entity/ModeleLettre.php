@@ -9,15 +9,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use blackLabel\GenericBundle\Entity\Log;
 
 /**
- * LettreCheque
+ * ModeleLettre
  *
- * @ORM\Table(name="lettre_cheque", indexes={
+ * @ORM\Table(name="modele_lettre", indexes={
  *      @ORM\Index(name="client_idx", columns={"client_id"})
  * })
- * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\LettreChequeRepository")
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\ModeleLettreRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class LettreCheque extends Log
+class ModeleLettre extends Log
 {
     /**
      * @var int
@@ -38,9 +38,9 @@ class LettreCheque extends Log
     /**
      * @var string
      *
-     * @ORM\Column(name="nom_modele", type="string", length=255)
+     * @ORM\Column(name="nom", type="string", length=255)
      */
-    private $nomModele;
+    private $nom;
 
     /**
      * @var string
@@ -72,13 +72,13 @@ class LettreCheque extends Log
 
 
     /**
-     * LettreCheque constructor.
+     * ModeleLettre constructor.
      */
     public function __construct()
     {
         parent::__construct();
     }
-
+    
 
 
     /**
@@ -96,7 +96,7 @@ class LettreCheque extends Log
      *
      * @param integer $clientId
      *
-     * @return LettreCheque
+     * @return ModeleLettre
      */
     public function setClientId($clientId)
     {
@@ -116,27 +116,27 @@ class LettreCheque extends Log
     }
 
     /**
-     * Set nomModele
+     * Set nom
      *
-     * @param string $nomModele
+     * @param string $nom
      *
-     * @return LettreCheque
+     * @return ModeleLettre
      */
-    public function setNomModele($nomModele)
+    public function setNom($nom)
     {
-        $this->nomModele = $nomModele;
+        $this->nom = $nom;
 
         return $this;
     }
 
     /**
-     * Get nomModele
+     * Get nom
      *
      * @return string
      */
-    public function getNomModele()
+    public function getNom()
     {
-        return $this->nomModele;
+        return $this->nom;
     }
 
     /**
@@ -144,7 +144,7 @@ class LettreCheque extends Log
      *
      * @param string $typeBeneficiaire
      *
-     * @return LettreCheque
+     * @return ModeleLettre
      */
     public function setTypeBeneficiaire($typeBeneficiaire)
     {
@@ -168,7 +168,7 @@ class LettreCheque extends Log
      *
      * @param string $fileUrl
      *
-     * @return LettreCheque
+     * @return ModeleLettre
      */
     public function setFileUrl($fileUrl)
     {
@@ -192,7 +192,7 @@ class LettreCheque extends Log
      *
      * @param string $fileAlt
      *
-     * @return LettreCheque
+     * @return ModeleLettre
      */
     public function setFileAlt($fileAlt)
     {
@@ -275,7 +275,7 @@ class LettreCheque extends Log
 
         // Si on avait un ancien fichier, on le supprime
         if (null !== $this->tempFilename) {
-            $oldFile = $this->file_getUploadRootDir() . '/' . $this->id . '_lettre_cheque.' . $this->tempFilename;
+            $oldFile = $this->file_getUploadRootDir() . '/' . $this->id . '_modele_lettre.' . $this->tempFilename;
             if (file_exists($oldFile)) {
                 unlink($oldFile);
             }
@@ -284,7 +284,7 @@ class LettreCheque extends Log
         // On déplace le fichier envoyé dans le répertoire de notre choix
         $this->file->move(
             $this->file_getUploadRootDir(), // Le répertoire de destination
-            $this->id . '_lettre_cheque.' . $this->file_url   // Le nom du fichier à créer, ici « id.extension »
+            $this->id . '_modele_lettre.' . $this->file_url   // Le nom du fichier à créer, ici « id.extension »
         );
     }
 
@@ -294,7 +294,7 @@ class LettreCheque extends Log
     public function file_preRemoveUpload()
     {
         // On sauvegarde temporairement le nom du fichier, car il dépend de l'id
-        $this->tempFilename = $this->file_getUploadRootDir() . '/' . $this->id . '_lettre_cheque.' . $this->file_url;
+        $this->tempFilename = $this->file_getUploadRootDir() . '/' . $this->id . '_modele_lettre.' . $this->file_url;
     }
 
     /**
@@ -315,7 +315,7 @@ class LettreCheque extends Log
     public function file_getUploadDir()
     {
         // On retourne le chemin relatif vers l'image pour un navigateur
-        return 'client/lettreCheque';
+        return $this->getClientId() . '/modeleLettre';
     }
 
     /**
@@ -332,6 +332,6 @@ class LettreCheque extends Log
      */
     public function file_getWebPath()
     {
-        return $this->file_getUploadDir() . '/' . $this->getId() . '_lettre_cheque.'.$this->getFileUrl();
+        return $this->file_getUploadDir() . '/' . $this->getId() . '_modele_lettre.'.$this->getFileUrl();
     }
 }

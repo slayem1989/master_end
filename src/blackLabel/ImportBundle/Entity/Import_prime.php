@@ -219,7 +219,7 @@ class Import_prime extends Log
     /**
      * @var int
      *
-     * @ORM\Column(name="modele_id", type="integer")
+     * @ORM\Column(name="modele_id", type="integer", nullable=true)
      */
     private $modeleId;
 

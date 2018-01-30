@@ -15,7 +15,12 @@
         {% for item in list %}
         <tr>
             <td>
-                <a href="{{ path('client_read', {'clientId': item.id}) }}">
+                <a href="{{ path('client_read', {'clientId': item.id}) }}"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Consulter le Client"
+                >
                     {{ item.clientInformation.nom }}
                 </a>
             </td>

@@ -50,12 +50,19 @@ class ChequeController extends Controller
     {
         $EM = $this->getDoctrine()->getManager();
 
+        /* //////////////////////////////////////////////////////////
+                            GET BANQUE BY CLIENT
+        /////////////////////////////////////////////////////////// */
+        $repo_client = $EM->getRepository('whiteLabelBackOfficeBundle:Client_');
+        $client = $repo_client->find($clientId);
+
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
         $formOption = array();
         $formOption[] = $clientId;
-        $formOption[] = null;
+        $formOption[] = true;
+        $formOption[] = count($client->getBanque());
 
         $objectStock = new Cheque_stock();
         $form = $this->createForm(Cheque_stockType::class, $objectStock, array(
@@ -104,11 +111,21 @@ class ChequeController extends Controller
                     'L\'import du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a été effectué avec succès.'
                 );
             } else {
+                /* /////////////////////////////////////////////////////////////////
+                                        GET STOCK TO REMOVE
+                ///////////////////////////////////////////////////////////////// */
+                $repo_chequeStock = $EM->getRepository('whiteLabelBackOfficeBundle:Cheque_stock');
+                $objectStockToRemove = $repo_chequeStock->find($objectStock->getId());
+
+                $referenceBoiteToRemove = $objectStockToRemove->getReferenceBoite();
+
+                $EM->remove($objectStockToRemove);
+                $EM->flush();
                 $EM->clear();
 
                 $request->getSession()->getFlashBag()->add(
                     'danger',
-                    'L\'import du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a détecté des numéros de chèque déjà existant.'
+                    'L\'import du stock Chèque n° ' . $referenceBoiteToRemove . ' a détecté des numéros de chèque déjà existant.'
                 );
             }
 
@@ -170,6 +187,7 @@ class ChequeController extends Controller
         ///////////////////////////////////////////////////////////////// */
         $formOption = array();
         $formOption[] = $clientId;
+        $formOption[] = false;
         $formOption[] = $objectStock->getBanqueId();
 
         $form = $this->createForm(Cheque_stockType::class, $objectStock, array(

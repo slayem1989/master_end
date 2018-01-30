@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#table_lettreCheque').DataTable({
+    $('#table_modeleLettre').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
         },

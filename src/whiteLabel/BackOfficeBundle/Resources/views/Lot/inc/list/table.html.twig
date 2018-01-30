@@ -51,7 +51,12 @@
         {% for item in list %}
         <tr>
             <td>
-                <a href="{{ path('lot_update', {'clientId': clientId, 'lotId': item.lotId}) }}" title="link">
+                <a href="{{ path('lot_update', {'clientId': clientId, 'lotId': item.lotId}) }}"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Mettre à jour le Lot"
+                >
                 {{ item.lotNumero }}
                 </a>
             </td>
@@ -72,18 +77,22 @@
                    data-toggle="tooltip"
                    data-placement="bottom"
                    data-container="body"
-                   title="Afficher l'historique du lot"
+                   title="Afficher l'historique du Lot"
                 >
                     <i class="glyphicon glyphicon-time"></i>
                 </a>
 
-                <button type="button"
-                        class="btn {{ list_commentaireData[item.lotId] ? 'btn-danger' : 'btn-primary' }} btn-xs"
-                        data-toggle="modal"
-                        data-target="#modal_commentaire_{{ item.lotId }}"
-                >
-                    <i class="glyphicon glyphicon-comment"></i>
-                </button>
+                <span data-toggle="modal" data-target="#modal_commentaire_{{ item.lotId }}">
+                    <button type="button"
+                            class="btn {{ list_commentaireData[item.lotId] ? 'btn-danger' : 'btn-primary' }} btn-xs"
+                            data-toggle="tooltip"
+                            data-placement="bottom"
+                            data-container="body"
+                            title="Afficher les Commentaires du Lot"
+                    >
+                        <i class="glyphicon glyphicon-comment"></i>
+                    </button>
+                </span>
 
                 {# Modal Commentaire #}
                 <div class="modal fade modalBackdrop modal_commentaire" id="modal_commentaire_{{ item.lotId }}" tabindex="-1" role="dialog" data-backdrop="false">
@@ -100,6 +109,7 @@
                     </div>
                 </div>
 
+                {% if item.lotDateStatut2 %}
                 <a href="{{ path('lot_export_noteDebit', {'clientId': clientId, 'lotId': item.lotId}) }}"
                    class="btn btn-success btn-xs"
                    role="button"
@@ -111,6 +121,21 @@
                 >
                     <i class="glyphicon glyphicon-file"></i>
                 </a>
+                {% endif %}
+
+                {% if item.lotDateStatut3 %}
+                    <a href="{{ path('lot_export_BAT', {'clientId': clientId, 'lotNumero': item.lotNumero}) }}"
+                       class="btn btn-danger btn-xs"
+                       role="button"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Télécharger le BAT"
+                       target="_blank"
+                    >
+                        <i class="glyphicon glyphicon-file"></i>
+                    </a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

@@ -9,14 +9,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use blackLabel\GenericBundle\Entity\Log;
 
 /**
- * Cheque_rapprochementBancaire
+ * ModeleLettre
  *
- * @ORM\Table(name="cheque_rapprochement_bancaire", indexes={
+ * @ORM\Table(name="modele_lettre", indexes={
  *      @ORM\Index(name="client_idx", columns={"client_id"})
  * })
- * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\Cheque_rapprochementBancaireRepository")
+ * @ORM\Entity(repositoryClass="whiteLabel\BackOfficeBundle\Repository\ModeleLettreRepository")
+ * @ORM\HasLifecycleCallbacks
  */
-class Cheque_rapprochementBancaire extends Log
+class ModeleLettre extends Log
 {
     /**
      * @var int
@@ -35,6 +36,20 @@ class Cheque_rapprochementBancaire extends Log
     private $clientId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_beneficiaire", type="string", length=255)
+     */
+    private $typeBeneficiaire;
+
+    /**
      * @ORM\Column(name="file_url", type="string", length=255)
      */
     private $file_url;
@@ -46,8 +61,8 @@ class Cheque_rapprochementBancaire extends Log
 
     /**
      * @Assert\File(
-     *     maxSize="20480k",
-     *     mimeTypes={ "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+     *     maxSize="5120k",
+     *     mimeTypes={ "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }
      * )
      */
     private $file;
@@ -57,13 +72,13 @@ class Cheque_rapprochementBancaire extends Log
 
 
     /**
-     * Cheque_rapprochementBancaire constructor.
+     * ModeleLettre constructor.
      */
     public function __construct()
     {
         parent::__construct();
     }
-
+    
 
 
     /**
@@ -76,4 +91,3 @@ class Cheque_rapprochementBancaire extends Log
         return $this->id;
     }
 }
-

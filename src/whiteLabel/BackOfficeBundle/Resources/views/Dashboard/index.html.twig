@@ -19,7 +19,7 @@
     <div class="item-element">
         <div class="item-cell">
             <a href="{{ path('lot_list', {'clientId': item.id}) }}">
-                <img src="{{ path('upload_read', {'uploadId': item.id, 'fileKey': 0, 'extension': item.clientInformation.logoUrl, 'folderKey': 0}) }}" alt="thumbnail" />
+                <img src="{{ path('upload_read', {'clientId': item.id, 'uploadId': item.id, 'fileKey': 0, 'extension': item.logoUrl, 'folderKey': 0}) }}" alt="thumbnail" />
             </a>
         </div>
     </div>

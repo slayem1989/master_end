@@ -105,6 +105,13 @@ lot_export_noteDebit:
         clientId: \d+
         lotId: \d+
 
+lot_export_BAT:
+    path:     /lot/generate/BAT/{clientId}/{lotNumero}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Lot:exportBAT }
+    requirements:
+        clientId: \d+
+        lotNumero: \d+
+
 ################################
 ###       Prime Routing      ###
 ################################
@@ -149,33 +156,33 @@ prime_update_address:
         primeId: \d+
 
 ################################
-###  Lettre Chèque Routing   ###
+###  Modèle Lettre Routing   ###
 ################################
-lettreCheque_list:
-    path:     /lettreCheque/list/{clientId}
-    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:list }
+modeleLettre_list:
+    path:     /modele/lettre/list/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:ModeleLettre:list }
     requirements:
         clientId: \d+
 
-lettreCheque_create:
-    path:     /lettreCheque/create/{clientId}
-    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:create }
+modeleLettre_create:
+    path:     /modele/lettre/create/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:ModeleLettre:create }
     requirements:
         clientId: \d+
 
-lettreCheque_read:
-    path:     /lettreCheque/read/{clientId}/{lettreChequeId}
-    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:read }
+modeleLettre_read:
+    path:     /modele/lettre/read/{clientId}/{modeleLettreId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:ModeleLettre:read }
     requirements:
         clientId: \d+
-        lettreChequeId: \d+
+        modeleLettreId: \d+
 
-lettreCheque_update:
-    path:     /lettreCheque/update/{clientId}/{lettreChequeId}
-    defaults: { _controller: whiteLabelBackOfficeBundle:LettreCheque:update }
+modeleLettre_update:
+    path:     /modele/lettre/update/{clientId}/{modeleLettreId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:ModeleLettre:update }
     requirements:
         clientId: \d+
-        lettreChequeId: \d+
+        modeleLettreId: \d+
 
 ################################
 ###  Chèque Stock Routing    ###

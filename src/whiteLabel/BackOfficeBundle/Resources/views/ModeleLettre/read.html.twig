@@ -1,11 +1,11 @@
-{# src/whiteLabel/BackOfficeBundle/Resources/views/LettreCheque/read.html.twig #}
+{# src/whiteLabel/BackOfficeBundle/Resources/views/ModeleLettre/read.html.twig #}
 {% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
 
 {% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelbackoffice/css/core/form/*.css'
-    'bundles/whitelabelbackoffice/css/lettreCheque/read.css'
+    'bundles/whitelabelbackoffice/css/modeleLettre/read.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -14,22 +14,22 @@
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
-        <h2>Consulter une Lettre Ch&egrave;que: {{ lettreCheque.nomModele }}</h2>
-        <a href="{{ path('lettreCheque_update', {'clientId': clientId, 'lettreChequeId': lettreCheque.id}) }}"
+        <h2>Consulter un Mod&egrave;le de Lettre: {{ modeleLettre.nom }}</h2>
+        <a href="{{ path('modeleLettre_update', {'clientId': clientId, 'modeleLettreId': modeleLettre.id}) }}"
            class="btn btn-warning btn-xs container_action"
            id="action_update"
            role="button"
            data-toggle="tooltip"
            data-placement="bottom"
            data-container="body"
-           title="Modifier le Client"
+           title="Modifier le Modèle de Lettre"
         >
             <i class="glyphicon glyphicon-edit"></i>
         </a>
-        {{ include('whiteLabelBackOfficeBundle:LettreCheque:inc/back.html.twig') }}
+        {{ include('whiteLabelBackOfficeBundle:ModeleLettre:inc/back.html.twig') }}
     </div>
 
-{{ include('whiteLabelBackOfficeBundle:LettreCheque:inc/view/file.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:ModeleLettre:inc/view/file.html.twig') }}
 
 </div>
 {% endblock %}

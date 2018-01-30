@@ -1,11 +1,11 @@
-{# src/whiteLabel/BackOfficeBundle/Resources/views/LettreCheque/create.html.twig #}
+{# src/whiteLabel/BackOfficeBundle/Resources/views/ModeleLettre/update.html.twig #}
 {% extends "whiteLabelBackOfficeBundle::layout_core.html.twig" %}
 
 {% block stylesheet %}
     {{ parent() }}
     {% stylesheets filter='cssrewrite'
     'bundles/whitelabelbackoffice/css/core/form/*.css'
-    'bundles/whitelabelbackoffice/css/lettreCheque/create_update.css'
+    'bundles/whitelabelbackoffice/css/modeleLettre/create_update.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -14,15 +14,15 @@
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-3 marginBottom40 marginTop20 paddingBottom15 hidden" id="mainWrapper">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 noPadding" id="bloc_title">
-        <h2>Importer une Lettre Ch&egrave;que</h2>
-        {{ include('whiteLabelBackOfficeBundle:LettreCheque:inc/back.html.twig') }}
+        <h2>Modifier un Mod&egrave;le de Lettre: {{ modeleLettre.nom }}</h2>
+        {{ include('whiteLabelBackOfficeBundle:ModeleLettre:inc/back.html.twig') }}
     </div>
 
-{{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'form_addLettreCheque'}}) }}
+{{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'form_editModeleLettre'}}) }}
 
 {{ form_errors(form) }}
 
-{{ include('whiteLabelBackOfficeBundle:LettreCheque:inc/form/file.html.twig') }}
+{{ include('whiteLabelBackOfficeBundle:ModeleLettre:inc/form/file.html.twig') }}
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="container_submit">
     <div class="form-group">
@@ -41,7 +41,7 @@
     {{ parent() }}
     {% javascripts
     'bundles/whitelabelbackoffice/js/core/form/*.js'
-    'bundles/whitelabelbackoffice/js/lettreCheque/form/*.js'
+    'bundles/whitelabelbackoffice/js/modeleLettre/form/*.js'
     %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}

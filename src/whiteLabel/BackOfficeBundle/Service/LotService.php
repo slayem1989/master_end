@@ -9,7 +9,9 @@ use blackLabel\GenericBundle\Entity\Nuts;
 use Spipu\Html2Pdf\Html2Pdf;
 
 use Unoconv\Unoconv as Unoconv;
-use Symfony\Component\Process\Process;
+use iio\libmergepdf\Merger;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LotService
@@ -123,21 +125,20 @@ class LotService
     /**
      * @param $clientId
      * @param $lotId
-     * @param $listPrime
-     * @return bool
+     * @param $lotNumero
+     * @return string|Response
+     * @throws \iio\libmergepdf\Exception
      */
-    public function generateBAT($clientId, $lotId, $listPrime)
+    public function generateBAT($clientId, $lotId, $lotNumero)
     {
         set_time_limit(0);
         $EM = $this->doctrine->getManager();
-        $TBS = $this->container->get('opentbs');
-        $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
 
         /* /////////////////////////////////////////////////////////////////
-                                    GET LOT
+                                    GET PRIME
         ///////////////////////////////////////////////////////////////// */
-        $repo_lot = $EM->getRepository('blackLabelImportBundle:Import_lot');
-        $lot = $repo_lot->find($lotId);
+        $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
+        $listPrime = $repo_prime->findDataBATByLot($clientId, $lotId);
 
         /* /////////////////////////////////////////////////////////////////
                                     GET CHEQUE
@@ -146,79 +147,136 @@ class LotService
         $listChequeItem = $repo_chequeItem->findForBATByClient($clientId, $lotId);
 
         /* /////////////////////////////////////////////////////////////////
-                                GET LETTRE CHEQUE
+                                GET MODELE LETTRE
         ///////////////////////////////////////////////////////////////// */
-        $repo_lettreCheque = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
-        $listLettreCheque = $repo_lettreCheque->findBy(array(
+        $repo_modeleLettre = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $listModeleLettre = $repo_modeleLettre->findBy(array(
             'clientId' => $clientId
         ));
-        $arraySourceFile = array();
-        foreach ($listLettreCheque as $item) {
-            $arraySourceFile[$item->getId()] = $this->container->getParameter('kernel.project_dir').'/data/client/lettreCheque/' . $item->getId() . '_lettre_cheque.' . $item->getFileUrl();
+        $arrayModeleLettre = array();
+        foreach ($listModeleLettre as $item) {
+            $arrayModeleLettre[$item->getId()] = $this->container->getParameter('kernel.project_dir').'/data/'.$clientId.'/modeleLettre/' . $item->getId() . '_modele_lettre.' . $item->getFileUrl();
         }
 
-        if (count($listChequeItem)<count($listPrime)) {
-            $return = 0;
-        } else {
-            //$fmt_spellout = new \NumberFormatter('fr', \NumberFormatter::SPELLOUT);
-            $array = array();
+        /* /////////////////////////////////////////////////////////////////
+                                FORMAT LIST PRIME
+        ///////////////////////////////////////////////////////////////// */
+        $listPrimeBySheet = array();
+        foreach ($listPrime as $item) {
+            $listPrimeBySheet[$item['primeOnglet']][] = $item;
+        }
+
+        $return = false;
+        if (count($listChequeItem)>count($listPrime)) {
             $i = 0;
-            foreach ($listPrime as $item) {
-                // Load template
-                $TBS->LoadTemplate($arraySourceFile[(int)$item['modeleId']]);
+            $j = 0;
 
-                // Format montant
-                $numericMontant = str_replace('.00', '', $item['primeMontantAide']);
-                $nuts = new Nuts($numericMontant, "EUR");
-                $letterMontant = mb_strtoupper($nuts->convert('fr-FR'));
-                $letterMontant = str_replace(',', ' ET', $letterMontant);
-                $letterMontant = str_replace('-', ' ', $letterMontant);
-                $montantAideLettre = $this->shortenString($letterMontant, 5);
+            $folder = '/BAT';
+            $pathFolder = $this->container->getParameter('kernel.project_dir').'/data/'.$clientId.$folder;
+            if (!file_exists($pathFolder) || !is_dir($pathFolder)) {
+                mkdir($pathFolder, 0755);
+            }
 
-                // Replace variables
-                array_push($array, array(
-                    'denomination'                  => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeDenomination']),
-                    'identifiant'                   => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeIdentifiant']),
-                    'adresseFacturation'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeAdresseFacturation']),
-                    'complementAdresseFacturation'  => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeComplementFacturation']),
-                    'codePostalFacturation'         => $item['primeCodePostalFacturation'],
-                    'villeFacturation'              => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeVilleFacturation']),
-                    'numeroAction'                  => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeNumeroAction']),
-                    'apporteurAffaire'              => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeApporteurAffaire']),
-                    'montantAide'                   => $item['primeMontantAide'],
-                    'numero'                        => $listChequeItem[$i]['chequeNumero'],
-                    'adresseChantier'               => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeAdresseChantier']),
-                    'complementAdresseChantier'     => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeComplementChantier']),
-                    'codePostalChantier'            => $item['primeCodePostalChantier'],
-                    'villeChantier'                 => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeVilleChantier']),
-                    'lotDateStatut8'                => $item['lotDateStatut8'],
-                    'lotNumero'                     => $item['lotNumero'],
-                    'onglet'                        => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeOnglet']),
-                    'index'                         => $item['primeIndex'],
-                    'clientTitreDispositif'         => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['clientTitreDispositif']),
-                    //'montantAideLettre'             => strtoupper($fmt_spellout->format($item['primeMontantAide']))
-                    'montantAideLettre1'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $montantAideLettre[0]),
-                    'montantAideLettre2'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $montantAideLettre[1])
-                ));
-                $TBS->MergeBlock('prime', $array);
+            // Load TBS service
+            $TBS = $this->container->get('opentbs');
 
-                /* /////////////////////////////////////////////////////////////////
-                                    UPDATE PRIME NUMERO
-                ///////////////////////////////////////////////////////////////// */
-                $primeObject = $repo_prime->find($item['primeId']);
-                $primeObject->setNumero($listChequeItem[$i]['chequeNumero']);
-                $EM->persist($primeObject);
+            foreach ($listPrimeBySheet as $key => $value) {
+                $arrayData = array();
+                $countArray = count($value) + 1;
+                $now = date("YmdHis");
+                $iFormat = str_pad($i, 3, 000, STR_PAD_LEFT);
 
-                /* /////////////////////////////////////////////////////////////////
-                                    UPDATE CHEQUE STATUT
-                ///////////////////////////////////////////////////////////////// */
-                $chequeItemObject = $repo_chequeItem->find($listChequeItem[$i]['chequeId']);
-                $chequeItemObject->setStatut(1);
-                $EM->persist($chequeItemObject);
+                foreach ($value as $item) {
+                    // Load template
+                    $TBS->LoadTemplate($arrayModeleLettre[$item['primeModeleId']]);
+
+                    // Format variable montant
+                    $numericMontant = str_replace('.00', '', $item['primeMontantAide']);
+                    $nuts = new Nuts($numericMontant, "EUR");
+                    $letterMontant = mb_strtoupper($nuts->convert('fr-FR'));
+                    $letterMontant = str_replace(',', ' ET', $letterMontant);
+                    $letterMontant = str_replace('-', ' ', $letterMontant);
+                    $montantAideLettre = $this->shortenString($letterMontant, 5);
+
+                    // Replace variables
+                    array_push($arrayData, array(
+                        'denomination'                  => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeDenomination']),
+                        'identifiant'                   => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeIdentifiant']),
+                        'adresseFacturation'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeAdresseFacturation']),
+                        'complementAdresseFacturation'  => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeComplementFacturation']),
+                        'codePostalFacturation'         => $item['primeCodePostalFacturation'],
+                        'villeFacturation'              => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeVilleFacturation']),
+                        'numeroAction'                  => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeNumeroAction']),
+                        'apporteurAffaire'              => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeApporteurAffaire']),
+                        'montantAide'                   => $item['primeMontantAide'],
+                        'numero'                        => $listChequeItem[$i]['chequeNumero'],
+                        'adresseChantier'               => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeAdresseChantier']),
+                        'complementAdresseChantier'     => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeComplementChantier']),
+                        'codePostalChantier'            => $item['primeCodePostalChantier'],
+                        'villeChantier'                 => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeVilleChantier']),
+                        'lotDateStatut8'                => $item['lotDateStatut8'],
+                        'lotNumero'                     => $item['lotNumero'],
+                        'onglet'                        => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['primeOnglet']),
+                        'index'                         => $item['primeIndex'],
+                        'clientTitreDispositif'         => iconv("UTF-8", "Windows-1252//TRANSLIT", $item['clientTitreDispositif']),
+                        'montantAideLettre1'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $montantAideLettre[0]),
+                        'montantAideLettre2'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $montantAideLettre[1])
+                    ));
+                    $TBS->MergeBlock('prime', $arrayData);
+
+                    /* /////////////////////////////////////////////////////////////////
+                                        UPDATE PRIME NUMERO
+                    ///////////////////////////////////////////////////////////////// */
+                    $primeObject = $repo_prime->find($item['primeId']);
+                    $primeObject->setNumero($listChequeItem[$j]['chequeNumero']);
+                    $EM->persist($primeObject);
+
+                    /* /////////////////////////////////////////////////////////////////
+                                        UPDATE CHEQUE STATUT
+                    ///////////////////////////////////////////////////////////////// */
+                    $chequeItemObject = $repo_chequeItem->find($listChequeItem[$j]['chequeId']);
+                    $chequeItemObject->setStatut(1);
+                    $EM->persist($chequeItemObject);
+
+                    $j++;
+                }
+
+                // Declare PATH
+                $source = $this->container->getParameter('kernel.project_dir')
+                    . '/data/'.$clientId.'/BAT/BAT_'
+                    . $clientId . '_'
+                    . $lotNumero . '_'
+                    . '(' . $iFormat . ')_'
+                    . $key . '_'
+                    . $now
+                    . '.docx';
+
+                $destination = $this->container->getParameter('kernel.project_dir')
+                    . '/data/'.$clientId.'/BAT/BAT_'
+                    . $clientId . '_'
+                    . $lotNumero . '_'
+                    . '(' . $iFormat . ')_'
+                    . $key . '_'
+                    . $now
+                    . '.pdf';
+
+                // Generate DOCX by TBS
+                $TBS->Show(OPENTBS_FILE, $source);
+
+                // Generate PDF by Unoconv
+                $unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv'));
+                putenv('HOME=/tmp/');
+                $unoconv->transcode(
+                    $source,
+                    'pdf',
+                    $destination,
+                    '2-' . $countArray
+                );
 
                 $i++;
             }
 
+            /*
             // Declare PATH
             $source = $this->container->getParameter('kernel.project_dir') . '/data/BAT/BAT_' . $clientId . '_' . $lot->getNumero() . '_' . date("YmdHis") . '.docx';
             $destination = $this->container->getParameter('kernel.project_dir') . '/data/BAT/BAT_' . $clientId . '_' . $lot->getNumero() . '_' . date("YmdHis") . '.pdf';
@@ -228,32 +286,47 @@ class LotService
             $TBS->Show(OPENTBS_FILE, $source);
 
             // Generate PDF by Unoconv
-            /*
-            $unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv'));
-            putenv('HOME=/tmp/');
-            $unoconv->transcode(
-                $source,
-                'pdf',
-                $destination,
-                '2-' . count($listPrime)
-            );
-            */
+            //$unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv'));
+            //putenv('HOME=/tmp/');
+            //$unoconv->transcode(
+            //    $source,
+            //    'pdf',
+            //    $destination,
+            //    '2-' . $countListPrime
+            //);
 
             // Generate PDF by Unoconv command line
             putenv('HOME=/tmp/');
-            exec('unoconv -f pdf -e PageRange=2-' . (count($listPrime)+1) . ' -o ' . $destination . ' ' . $source);
+            exec('unoconv -f pdf -e PageRange=2-' . ($countListPrime + 1) . ' -o ' . $destination . ' ' . $source);
 
             // Debug Unoconv
-            /*
-            putenv('HOME=/var/www/html/');
-            $command = 'echo $HOME &  unoconv -vvvv --format %s --output %s %s 2>output.txt';
-            $command = sprintf($command, 'pdf', $destination, $source);
-            exec($command, $output, $result_var);
-            */
+            //putenv('HOME=/var/www/html/');
+            //$command = 'echo $HOME &  unoconv -vvvv --format %s --output %s %s 2>output.txt';
+            //$command = sprintf($command, 'pdf', $destination, $source);
+            //exec($command, $output, $result_var);
             //dump(exec('pwd'));
             //dump(exec('command -v unoconv'));
+            */
 
-            $return = 1;
+            $EM->flush();
+
+            // Create file to download
+            $finder = new Finder;
+            $finder->files()->in($this->container->getParameter('kernel.project_dir') . '/data/'.$clientId.'/BAT/')->name('*.pdf')->sortByName();
+
+            $merger = new Merger;
+            $merger->addFinder($finder);
+
+            $createdPdf = $merger->merge();
+
+            $destinationFinal = $this->container->getParameter('kernel.project_dir')
+                . '/data/'.$clientId.'/BAT/BAT_'
+                . $clientId . '_'
+                . $lotNumero
+                . '.pdf';
+            file_put_contents($destinationFinal, $createdPdf);
+
+            $return = true;
         }
 
         return $return;

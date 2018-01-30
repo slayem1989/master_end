@@ -46,7 +46,7 @@
             {% if 'ROLE_ADMIN' == item.roles[0] %}
                 {% set role = 'Administrateur' %}
             {% elseif 'ROLE_COORDINATEUR' == item.roles[0] %}
-                {% set role = 'Auditeur' %}
+                {% set role = 'Coordinateur' %}
             {% elseif 'ROLE_GESTIONNAIRE' == item.roles[0] %}
                 {% set role = 'Rénovateur' %}
             {% elseif 'ROLE_MEMBER' == item.roles[0] %}
@@ -55,7 +55,12 @@
             <tr>
                 <td class="breakWord textCenter">{{ item.id }}</td>
                 <td class="breakWord">
-                    <a href="{{ path('user_read', {'userId': item.id}) }}">
+                    <a href="{{ path('user_read', {'userId': item.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Consulter l'Utilisateur"
+                    >
                         {{ item.username }}
                     </a>
                 </td>

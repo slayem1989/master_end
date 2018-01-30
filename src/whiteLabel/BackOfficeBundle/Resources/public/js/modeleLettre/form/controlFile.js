@@ -1,13 +1,13 @@
 $(document).ready(function() {
     var messageImport = $("#file-error");
 
-    var idBoutonValider = $("#whitelabel_backofficebundle_lettrecheque_valider");
+    var idBoutonValider = $("#whitelabel_backofficebundle_modelelettre_valider");
     var fileExtension   = ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
 
     /* *************************************************
                     IMPORT FILE
     ************************************************* */
-    var idImport = $('#whitelabel_backofficebundle_lettrecheque_file');
+    var idImport = $('#whitelabel_backofficebundle_modelelettre_file');
 
     idImport.change(function() {
         validateFile(this.files[0], messageImport, idBoutonValider);

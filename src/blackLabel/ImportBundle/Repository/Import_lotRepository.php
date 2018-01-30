@@ -36,6 +36,8 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     il.file_alt AS lotFilename,
                     il.date_creation AS lotDateIntegration,
                     il.statut_id AS lotStatutId,
+                    il.date_statut_2 AS lotDateStatut2,
+                    il.date_statut_3 AS lotDateStatut3,
                     sl.slug AS lotStatut,
                     cb.nom AS banqueNom,
                     COUNT(CASE WHEN ip.type = 'LC' THEN ip.type ELSE NULL END) AS countLC,
@@ -142,6 +144,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     il.numero AS lotNumero,
                     il.file_alt AS lotFilename,
                     il.date_creation AS lotDateIntegration,
+                    il.date_statut_2 AS lotDateStatut2,
                     cb.titulaire AS banqueTitulaire,
                     cb.nom AS banqueNom,
             	    cb.rib AS banqueRib,
@@ -153,18 +156,20 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
                     cand.complement1 AS clientComplement,
                     cand.code_postal AS clientCodePostal,
                     cand.ville AS clientVille,
-                    ic.nombre_commande AS nombreCommande,
-                    ic.somme AS totalMontant,
-                    ic.title AS canalTitle,
+                    count(ip.id) AS nombreCommande,
+                    sum(ip.montant_aide) AS totalMontant,
+                    ip.onglet AS canalTitle,
                     c.id AS clientId
             FROM import_lot il
                 INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN import_prime ip ON ip.canal_id = ic.id
                 INNER JOIN client_ c ON c.id = il.client_id
                 INNER JOIN client_information ci ON ci.id = c.client_information_id
                 INNER JOIN client_adresse_note_debit cand ON cand.id = c.client_adresse_note_debit_id
                 INNER JOIN client_banque cb ON cb.id = il.banque_id
             WHERE il.client_id = " . $clientId . " 
                 AND il.id = " . $lotId . "
+            GROUP BY ip.onglet
         ";
 
         $stmt = $this->_em

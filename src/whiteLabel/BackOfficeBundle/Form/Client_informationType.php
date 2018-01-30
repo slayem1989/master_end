@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
  * Class Client_informationType
@@ -43,10 +42,6 @@ class Client_informationType extends AbstractType
                                                                 'attr'      => array(
                                                                     'placeholder' => 'Entrez un titre de dispositif'
                                                                 )
-                                                            ))
-            ->add('logo',               FileType::class,    array(
-                                                                'required'  => true,
-                                                                'label'     => 'Logo',
                                                             ))
         ;
     }

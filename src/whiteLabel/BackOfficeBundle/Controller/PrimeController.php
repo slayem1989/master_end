@@ -180,46 +180,47 @@ class PrimeController extends Controller
                         $columnSearch = $_POST['columns'][$i]['data'];
                         switch ($columnSearch) {
                             case 'lotNumero':
-                                $columnWhere[] =  "il.numero LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "il.numero LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                             case 'primeNumero':
-                                $columnWhere[] =  "ip.numero LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "ip.numero LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                             case 'primeIdentifiant':
-                                $columnWhere[] =   "ip.nom LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
-                                    " OR " .
-                                    "ip.prenom LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
-                                    " OR " .
-                                    "ip.siren LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
-                                    " OR " .
-                                    "ip.denomination LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
-                                    " OR " .
-                                    "ip.representant LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'"
+                                $columnWhere[] =    "(ip.nom LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                                    " OR " .
+                                                    "ip.prenom LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                                    " OR " .
+                                                    "ip.siren LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                                    " OR " .
+                                                    "ip.denomination LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                                    " OR " .
+                                                    "ip.representant LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%')"
                                 ;
                                 break;
                             case 'primeVille':
-                                $columnWhere[] =   "ip.code_postal_facturation LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
-                                    " OR " .
-                                    "ip.ville_facturation LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'"
+                                $columnWhere[] =    "(ip.code_postal_facturation LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'" .
+                                                    " OR " .
+                                                    "ip.ville_facturation LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%')"
                                 ;
                                 break;
                             case 'primeType':
-                                $columnWhere[] =  "ip.type LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "ip.type LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                             case 'primeEmail':
-                                $columnWhere[] =  "ip.email LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "ip.email LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                             case 'primeTelephone':
-                                $columnWhere[] =  "ip.telephone LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "ip.telephone LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                             case 'primeStatut':
-                                $columnWhere[] =  "sp.slug LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "sp.slug LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                             case 'primeDateIntegration':
-                                $columnWhere[] =  "ip.date LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $primeDateIntegration = \DateTime::createFromFormat('d/m/Y', str_replace('\\', '', $_POST['columns'][$i]['search']['value']));
+                                $columnWhere[] =    "ip.date LIKE '%" . $primeDateIntegration->format('Y-m-d') . "%'";
                                 break;
                             case 'primeOnglet':
-                                $columnWhere[] =  "ip.onglet LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
+                                $columnWhere[] =    "ip.onglet LIKE '%" . $_POST['columns'][$i]['search']['value'] . "%'";
                                 break;
                         }
                     }
@@ -272,21 +273,34 @@ class PrimeController extends Controller
         $EM = $this->getDoctrine()->getManager();
 
         /* /////////////////////////////////////////////////////////////////
-                                GET PRIME
+                                    GET PRIME
         ///////////////////////////////////////////////////////////////// */
         $repo = $EM->getRepository('blackLabelImportBundle:Import_prime');
         $prime = $repo->find($primeId);
 
         /* /////////////////////////////////////////////////////////////////
-                                GET LOT
+                                    GET LOT
         ///////////////////////////////////////////////////////////////// */
         $repo_lot = $EM->getRepository('blackLabelImportBundle:Import_lot');
         $lot = $repo_lot->findByPrime($clientId, $primeId);
 
+        /* /////////////////////////////////////////////////////////////////
+                            GET LIST OF MODELE LETTRE
+        ///////////////////////////////////////////////////////////////// */
+        $repo_modeleLettre = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $listModeleLettre = $repo_modeleLettre->findBy(array(
+            'clientId' => $clientId
+        ));
+        $arrayModeleLettre = array();
+        foreach ($listModeleLettre as $item) {
+            $arrayModeleLettre[$item->getId()] = $item->getNom();
+        }
+
         return $this->render('whiteLabelBackOfficeBundle:Prime:read.html.twig', array(
-            'prime'     => $prime,
-            'lot'       => $lot,
-            'clientId'  => $clientId
+            'prime'             => $prime,
+            'lot'               => $lot,
+            'clientId'          => $clientId,
+            'arrayModeleLettre' => $arrayModeleLettre
         ));
     }
 
@@ -312,22 +326,23 @@ class PrimeController extends Controller
         $prime->setDate($convert_date);
 
         /* /////////////////////////////////////////////////////////////////
-                                GET DATA FORM
+                                GET LIST OF MODELE LETTRE
         ///////////////////////////////////////////////////////////////// */
-        $repo_lettreCheque = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
-        $list_lettreCheque = $repo_lettreCheque->findBy(array(
+        $repo_modeleLettre = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $listModeleLettre = $repo_modeleLettre->findBy(array(
             'clientId' => $clientId
         ));
 
-        $array_lettreCheque = array();
-        foreach ($list_lettreCheque as $item) {
-            $array_lettreCheque[$item->getNomModele()] = $item->getId();
+        $arrayModeleLettre = array();
+        foreach ($listModeleLettre as $item) {
+            $arrayModeleLettre[$item->getNom()] = $item->getId();
         }
-        $formOption[] = $array_lettreCheque;
 
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
+        $formOption = array();
+        $formOption[] = $arrayModeleLettre;
         $form = $this->createForm(Import_primeType::class, $prime, array(
             'trait_choices' => $formOption
         ));

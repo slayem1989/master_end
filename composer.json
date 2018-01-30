@@ -28,6 +28,7 @@
         "doctrine/orm": "^2.5",
         "friendsofsymfony/user-bundle": "dev-master",
         "google/recaptcha": "~1.1",
+        "iio/libmergepdf": "^3.1",
         "incenteev/composer-parameter-handler": "^2.0",
         "jschaedl/iban": "~1.1",
         "leafo/scssphp": "~0.6",

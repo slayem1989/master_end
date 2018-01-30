@@ -10,8 +10,8 @@ services:
         class: whiteLabel\BackOfficeBundle\Service\PrimeService
         arguments: ['@doctrine', '@service_container']
 
-    white_label.service.lettreCheque:
-        class: whiteLabel\BackOfficeBundle\Service\LettreChequeService
+    white_label.service.modeleLettre:
+        class: whiteLabel\BackOfficeBundle\Service\ModeleLettreService
         arguments: ['@doctrine', '@service_container']
 
     white_label.service.cheque:

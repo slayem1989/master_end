@@ -7,16 +7,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-use whiteLabel\BackOfficeBundle\Entity\LettreCheque;
-use whiteLabel\BackOfficeBundle\Form\LettreChequeType;
+use whiteLabel\BackOfficeBundle\Entity\ModeleLettre;
+use whiteLabel\BackOfficeBundle\Form\ModeleLettreType;
 
 /**
- * Class LettreChequeController
+ * Class ModeleLettreController
  * @package whiteLabel\BackOfficeBundle\Controller
  *
  * @Security("has_role('ROLE_ADMIN')")
  */
-class LettreChequeController extends Controller
+class ModeleLettreController extends Controller
 {
     /**
      * @param $clientId
@@ -29,10 +29,10 @@ class LettreChequeController extends Controller
         /* /////////////////////////////////////////////////////////////////
                             GET LIST OF LETTRE CHEQUE
         ///////////////////////////////////////////////////////////////// */
-        $repo = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
+        $repo = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
         $list = $repo->findByClient($clientId);
 
-        return $this->render('whiteLabelBackOfficeBundle:LettreCheque:list.html.twig', array(
+        return $this->render('whiteLabelBackOfficeBundle:ModeleLettre:list.html.twig', array(
             'list'      => $list,
             'clientId'  => $clientId
         ));
@@ -50,49 +50,53 @@ class LettreChequeController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
-        $lettreCheque = new LettreCheque();
-        $form = $this->createForm(LettreChequeType::class, $lettreCheque);
+        $formOption = array();
+        $formOption[] = true;
+        $modeleLettre = new ModeleLettre();
+        $form = $this->createForm(ModeleLettreType::class, $modeleLettre, array(
+            'trait_choices' => $formOption
+        ));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $lettreCheque->setClientId($clientId);
+            $modeleLettre->setClientId($clientId);
 
-            $EM->persist($lettreCheque);
+            $EM->persist($modeleLettre);
             $EM->flush();
 
             $request->getSession()->getFlashBag()->add(
                 'success',
-                'La Lettre Chèque ' . $lettreCheque->getNomModele() . ' a été créée avec succès.'
+                'Le Modèle de Lettre ' . $modeleLettre->getNom() . ' a été créé avec succès.'
             );
 
-            return $this->redirectToRoute('lettreCheque_list', array(
+            return $this->redirectToRoute('modeleLettre_list', array(
                 'clientId' => $clientId
             ));
         }
 
-        return $this->render('whiteLabelBackOfficeBundle:LettreCheque:create.html.twig', array(
+        return $this->render('whiteLabelBackOfficeBundle:ModeleLettre:create.html.twig', array(
             'form'          => $form->createView(),
-            'lettreCheque'  => $lettreCheque,
+            'modeleLettre'  => $modeleLettre,
             'clientId'      => $clientId
         ));
     }
 
     /**
      * @param $clientId
-     * @param $lettreChequeId
+     * @param $modeleLettreId
      * @return Response
      */
-    public function readAction($clientId, $lettreChequeId)
+    public function readAction($clientId, $modeleLettreId)
     {
         $EM = $this->getDoctrine()->getManager();
 
         /* /////////////////////////////////////////////////////////////////
                                 GET LETTRE CHEQUE
         ///////////////////////////////////////////////////////////////// */
-        $repo = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
-        $lettreCheque = $repo->find($lettreChequeId);
+        $repo = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $modeleLettre = $repo->find($modeleLettreId);
 
-        return $this->render('whiteLabelBackOfficeBundle:LettreCheque:read.html.twig', array(
-            'lettreCheque'  => $lettreCheque,
+        return $this->render('whiteLabelBackOfficeBundle:ModeleLettre:read.html.twig', array(
+            'modeleLettre'  => $modeleLettre,
             'clientId'      => $clientId
         ));
     }
@@ -100,53 +104,48 @@ class LettreChequeController extends Controller
     /**
      * @param Request $request
      * @param $clientId
-     * @param $lettreChequeId
+     * @param $modeleLettreId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function updateAction(Request $request, $clientId, $lettreChequeId)
+    public function updateAction(Request $request, $clientId, $modeleLettreId)
     {
         $EM = $this->getDoctrine()->getManager();
 
         /* /////////////////////////////////////////////////////////////////
                                 GET LETTRE CHEQUE
         ///////////////////////////////////////////////////////////////// */
-        $repo = $EM->getRepository('whiteLabelBackOfficeBundle:LettreCheque');
-        $lettreCheque = $repo->find($lettreChequeId);
+        $repo = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $modeleLettre = $repo->find($modeleLettreId);
 
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
-        $form = $this->createForm(LettreChequeType::class, $lettreCheque);
+        $formOption = array();
+        $formOption[] = false;
+        $form = $this->createForm(ModeleLettreType::class, $modeleLettre, array(
+            'trait_choices' => $formOption
+        ));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $lettreCheque->setDateModif(new \Datetime());
-            $lettreCheque->setAuteurModif($_SESSION['login']->getUsername());
+            $modeleLettre->setDateModif(new \Datetime());
+            $modeleLettre->setAuteurModif($_SESSION['login']->getUsername());
 
-            $EM->persist($lettreCheque);
+            $EM->persist($modeleLettre);
             $EM->flush();
-
-            /* //////////////////////////////////////////////////////////
-                                    PERSIST DATA
-            /////////////////////////////////////////////////////////// */
-            $importService = $this->get('white_label.service.lettreCheque');
-            $importService->persistHTML(
-                $lettreCheque->getId(),
-                $lettreCheque->file_getWebPath()
-            );
 
             $request->getSession()->getFlashBag()->add(
                 'success',
-                'La Lettre Chèque ' . $lettreCheque->getNomModele() . ' a bien été mise à jour.'
+                'Le Modèle de Lettre ' . $modeleLettre->getNom() . ' a bien été mis à jour.'
             );
 
-            return $this->redirectToRoute('lettreCheque_list', array(
+            return $this->redirectToRoute('modeleLettre_list', array(
                 'clientId' => $clientId
             ));
         }
 
-        return $this->render('whiteLabelBackOfficeBundle:LettreCheque:update.html.twig', array(
+        return $this->render('whiteLabelBackOfficeBundle:ModeleLettre:update.html.twig', array(
             'form'          => $form->createView(),
-            'lettreCheque'  => $lettreCheque,
+            'modeleLettre'  => $modeleLettre,
             'clientId'      => $clientId
         ));
     }

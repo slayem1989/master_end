@@ -213,8 +213,8 @@ class Import_primeType extends AbstractType
                                                                             ))
             ->add('modeleId',                       ChoiceType::class,      array(
                                                                                 'required'      => true,
-                                                                                'label'         => 'Modèle de Lettre Chèque',
-                                                                                'placeholder'   => '-- Choisir un modèle de Lettre Chèque --',
+                                                                                'label'         => 'Modèle de Lettre',
+                                                                                'placeholder'   => '-- Choisir un Modèle de Lettre --',
                                                                                 'multiple'      => false,
                                                                                 'empty_data'    => null,
                                                                                 'choices'       => $this->traitChoices[0]

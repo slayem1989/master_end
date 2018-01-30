@@ -2,13 +2,11 @@
 
 namespace whiteLabel\BackOfficeBundle\Service;
 
-use Spipu\Html2Pdf\Html2Pdf;
-
 /**
- * Class LettreChequeService
+ * Class ModeleLettreService
  * @package whiteLabel\BackOfficeBundle\Service
  */
-class LettreChequeService
+class ModeleLettreService
 {
     /**
      * @var string
@@ -23,7 +21,7 @@ class LettreChequeService
 
 
     /**
-     * LettreChequeService constructor.
+     * ModeleLettreService constructor.
      * @param $doctrine
      * @param $container
      */

@@ -33,7 +33,7 @@ class CoreController extends Controller
         $client = $repo->find($_route_params['clientId']);
 
         return $this->render('whiteLabelBackOfficeBundle:Core:header.html.twig', array(
-            'clientLogoUrl' => $client->getClientInformation()->getLogoUrl()
+            'clientLogoUrl' => $client->getLogoUrl()
         ));
     }
 

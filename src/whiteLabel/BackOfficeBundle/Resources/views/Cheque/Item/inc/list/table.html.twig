@@ -16,7 +16,12 @@
         <tr>
             <td class="breakWord">
                 {% if '1' == item.chequeStatut and item.primeId %}
-                <a href="{{ path('prime_read', {'clientId': clientId, 'primeId': item.primeId}) }}" title="link">
+                    <a href="{{ path('prime_read', {'clientId': clientId, 'primeId': item.primeId}) }}"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Consulter la Prime"
+                    >
                     {{ item.chequeNumero }}
                     </a>
                 {% else %}
@@ -37,7 +42,7 @@
         {% endfor %}
     {% else %}
         <tr>
-            <th colspan="4" class="textCenter">Aucun Ch&egrave;que enregistr&eacute;.</th>
+            <th colspan="5" class="textCenter">Aucun Ch&egrave;que enregistr&eacute;.</th>
         </tr>
     {% endif %}
     </tbody>

@@ -35,7 +35,10 @@ class ImportController extends Controller
         /* //////////////////////////////////////////////////////////
                                 CREATE FORM
         /////////////////////////////////////////////////////////// */
-        $formOption = array($clientId, count($dataClient->getBanque()));
+        $formOption = array();
+        $formOption[] = $clientId;
+        $formOption[] = count($dataClient->getBanque());
+
         $lot = new Import_lot();
         $form = $this->createForm(Import_lotType::class, $lot, array(
             'trait_choices' => $formOption

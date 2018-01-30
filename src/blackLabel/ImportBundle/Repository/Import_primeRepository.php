@@ -2,6 +2,8 @@
 
 namespace blackLabel\ImportBundle\Repository;
 
+use whiteLabel\BackOfficeBundle\Entity\Statut_prime;
+
 /**
  * Import_primeRepository
  *
@@ -170,7 +172,7 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
                     ip.ville_chantier AS primeVilleChantier,
                     ip.index_prime AS primeIndex,
                     ip.onglet AS primeOnglet,
-                    ip.modele_id AS modeleId,
+                    ip.modele_id AS primeModeleId,
                     il.numero AS lotNumero,
                     CASE WHEN ('' != DATE_FORMAT(il.date_statut_8, '%d/%m/%Y'))
                         THEN DATE_FORMAT(il.date_statut_8, '%d/%m/%Y')
@@ -184,6 +186,7 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
                 INNER JOIN client_information ci ON ci.id = c.client_information_id
             WHERE il.client_id = " . $clientId . " 
                 AND il.id = " . $lotId . "
+                AND ip.statut_id = " . Statut_prime::STATUT_1 . "
             ORDER BY ip.index_prime ASC
         ";
 

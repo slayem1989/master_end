@@ -2,7 +2,7 @@ $(document).ready(function() {
     var elt_clientId = $('input#data_clientId').val();
 
     // Declare DataTable
-    $('#table_prime').DataTable({
+    var table = $('#table_prime').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
         },
@@ -11,6 +11,8 @@ $(document).ready(function() {
         "order": [[ 1, "asc" ]],
         "orderCellsTop": true,
         "scrollX": false,
+        "stateSave": true,
+        "stateDuration": -1,
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -40,7 +42,7 @@ $(document).ready(function() {
                         'data-toggle="tooltip"\n' +
                         'data-placement="bottom"\n' +
                         'data-container="body"\n' +
-                        'title="Consulter la prime">' +
+                        'title="Consulter la Prime">' +
                         row['primeNumero'] +
                         '</a>'
                     ;
@@ -102,14 +104,16 @@ $(document).ready(function() {
                         '<i class="glyphicon glyphicon-time"></i>' +
                         '</a>' +
                         '&nbsp;' +
+                        '<span data-toggle="modal" data-target="#modal_commentaire_' + row['primeId'] + '">' +
                         '<button type="button"\n' +
-                        'class="btn btn-' + buttonColor + ' btn-xs"\n' +
-                        'data-toggle="modal"\n' +
-                        'data-target="#modal_commentaire_' + row['primeId'] + '"\n' +
-                        'data-original-title="Commentaire de la prime"\n' +
-                        'data-title="Commenter la prime">' +
+                        'class="tooltip-commentaire btn btn-' + buttonColor + ' btn-xs"\n' +
+                        'data-toggle="tooltip"\n' +
+                        'data-placement="bottom"\n' +
+                        'data-container="body"\n' +
+                        'title="Afficher les Commentaires de la Prime">' +
                         '<i class="glyphicon glyphicon-comment"></i>' +
                         '</button>'+
+                        '</span>'+
                         '&nbsp;' +
                         '<div class="modal fade modalBackdrop modal_commentaire" id="modal_commentaire_' + row['primeId'] + '" tabindex="-1" role="dialog" data-backdrop="false">' +
                         '<div class="modal-dialog" role="document">' +
@@ -218,6 +222,18 @@ $(document).ready(function() {
                     select.append('<option value="' + d + '">' + d + '</option>');
                 });
             });
+
+            // Restore state
+            var state = table.state.loaded();
+            if (state) {
+                table.columns().eq(0).each(function (colIdx) {
+                    var colSearch = state.columns[colIdx].search;
+                    var indexChild = parseInt(colIdx+1);
+
+                    $('tr#filterrow th:nth-child( ' + indexChild + ') input').val(colSearch.search);
+                    $('tr#filterrow th:nth-child( ' + indexChild + ') select').val(colSearch.search);
+                });
+            }
         }
     });
 

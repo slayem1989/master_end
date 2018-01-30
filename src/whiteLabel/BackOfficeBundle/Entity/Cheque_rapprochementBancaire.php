@@ -253,7 +253,7 @@ class Cheque_rapprochementBancaire extends Log
     public function file_getUploadDir()
     {
         // On retourne le chemin relatif vers le fichier pour un navigateur
-        return 'import/rapprochementBancaire';
+        return $this->getClientId() . '/rapprochementBancaire';
     }
 
     /**

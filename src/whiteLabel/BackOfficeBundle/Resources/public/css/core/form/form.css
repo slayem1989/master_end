@@ -161,6 +161,22 @@ ul.file-error li::before, .form-error > ul li::before {
     font-weight: bold;
 }
 
+
+
+ul.list_error, .wrapper_error > ul {
+    padding: 0;
+}
+ul.list_error li, .wrapper_error > ul li {
+    list-style-type: none;
+    color: red;
+    text-align: left;
+}
+ul.list_error li::before, .wrapper_error > ul li::before {
+    content: '\03a7';
+    margin-right: 5px;
+    font-weight: bold;
+}
+
 /*******************************************
                 LIMIT STYLE
 *******************************************/

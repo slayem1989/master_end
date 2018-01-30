@@ -2,9 +2,10 @@
 ###       Upload Routing     ###
 ################################
 upload_read:
-    path:     /document/read/{uploadId}/{fileKey}/{extension}/{folderKey}
+    path:     /document/read/{clientId}/{uploadId}/{fileKey}/{extension}/{folderKey}
     defaults: { _controller: blackLabelGenericBundle:Upload:read }
     requirements:
+        clientId: \d+
         uploadId: \d+
         fileKey: \d+
         extension: jpeg|jpg|png|pdf|txt|docx

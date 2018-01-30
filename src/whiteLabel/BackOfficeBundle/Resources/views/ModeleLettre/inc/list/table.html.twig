@@ -1,0 +1,55 @@
+{# src/whiteLabel/BackOfficeBundle/Resources/views/ModeleLettre/inc/list/table.html.twig #}
+<table cellspacing="0" id="table_modeleLettre" class="table table-striped table-bordered big_table">
+    <thead>
+    <tr>
+        <th class="breakWord col0">Nom du mod&egrave;le</th>
+        <th class="breakWord col1">Date d'int&eacute;gration</th>
+        <th class="breakWord col2">Type de b&eacute;n&eacute;ficiaire</th>
+        <th class="breakWord col3">Descriptif</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% set typeArray = {
+        '0 | particulier': 'Particulier',
+        '1 | societe': 'Société',
+        '': '-'
+    } %}
+
+    {% if list is not empty %}
+        {% for item in list %}
+        <tr>
+            <td class="breakWord">
+                <a href="{{ path('modeleLettre_read', {'clientId': clientId, 'modeleLettreId': item.modeleLettreId}) }}"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Consulter le Modèle de Lettre"
+                >
+                    {{ item.modeleLettreNom }}
+                </a>
+            </td>
+            <td class="textCenter">{{ item.modeleLettreDateIntegration|date('d/m/Y H:i:s') }}</td>
+            <td class="breakWord">{{ typeArray[item.modeleLettreTypeBeneficiaire] }}</td>
+            <td class="breakWord">
+                {% if item and item.modeleLettreFileUrl %}
+                <a href="{{ path('upload_read', {'clientId': clientId, 'uploadId': item.modeleLettreId, 'fileKey': 1, 'extension': item.modeleLettreFileUrl, 'folderKey': 1}) }}"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Télécharger le Modèle de Lettre"
+                >
+                    Voir le fichier
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <th colspan="4" class="textCenter">Aucun Mod&egrave;le de Lettre enregistr&eacute;.</th>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

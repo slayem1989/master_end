@@ -1,4 +1,4 @@
-{# src/whiteLabel/BackOfficeBundle/Resources/views/LettreCheque/inc/view/file.html.twig #}
+{# src/whiteLabel/BackOfficeBundle/Resources/views/ModeleLettre/inc/view/file.html.twig #}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bloc" id="bloc-file">
     <fieldset>
         <legend><span class="legend-icon"></span>&nbsp;Information</legend>
@@ -12,22 +12,28 @@
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Type de b&eacute;n&eacute;ficiaire :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ typeArray[lettreCheque.typeBeneficiaire] }}
+                {{ typeArray[modeleLettre.typeBeneficiaire] }}
             </div>
         </div>
 
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Nom du mod&egrave;le :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {{ lettreCheque.nomModele }}
+                {{ modeleLettre.nom }}
             </div>
         </div>
 
         <div class="row">
             <label class="col-xs-12 col-sm-12 col-md-5 col-lg-5 control-label">Fichier :</label>
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                {% if lettreCheque and lettreCheque.fileUrl %}
-                <a href="{{ path('upload_read', {'uploadId': lettreCheque.id, 'fileKey': 1, 'extension': lettreCheque.fileUrl, 'folderKey': 1}) }}" target="_blank">
+                {% if modeleLettre and modeleLettre.fileUrl %}
+                <a href="{{ path('upload_read', {'clientId': clientId, 'uploadId': modeleLettre.id, 'fileKey': 1, 'extension': modeleLettre.fileUrl, 'folderKey': 1}) }}"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   data-container="body"
+                   title="Télécharger le Modèle de Lettre"
+                >
                     Voir le fichier
                 </a>
                 {% else %}

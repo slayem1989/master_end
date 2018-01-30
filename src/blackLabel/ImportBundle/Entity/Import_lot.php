@@ -694,7 +694,7 @@ class Import_lot extends Log
     public function file_getUploadDir()
     {
         // On retourne le chemin relatif vers l'image pour un navigateur
-        return 'import';
+        return $this->getClientId() . '/import';
     }
 
     /**

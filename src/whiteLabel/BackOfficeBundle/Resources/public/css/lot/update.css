@@ -9,6 +9,7 @@
                 BLOC CRUMBS
 *******************************************/
 #bloc_crumbs {
+    margin-right: 10px;
 }
 
 #crumbs ul { list-style: none; }

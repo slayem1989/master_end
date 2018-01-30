@@ -17,7 +17,7 @@
                 {% if app.request.attributes.get('_route_params')['clientId'] %}
                     {% set clientId = app.request.attributes.get('_route_params')['clientId'] %}
                     <a href="{{ path('lot_list', {'clientId': clientId}) }}">
-                        <img src="{{ path('upload_read', {'uploadId': clientId, 'fileKey': 0, 'extension': clientLogoUrl, 'folderKey': 0}) }}" alt="logo client" id="header_image_logo_client" />
+                        <img src="{{ path('upload_read', {'clientId': clientId, 'uploadId': clientId, 'fileKey': 0, 'extension': clientLogoUrl, 'folderKey': 0}) }}" alt="logo client" id="header_image_logo_client" />
                     </a>
                 {% endif %}
             </div>

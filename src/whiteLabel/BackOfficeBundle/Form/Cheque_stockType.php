@@ -39,6 +39,15 @@ class Cheque_stockType extends AbstractType
     {
         $this->traitChoices = $options['trait_choices'];
 
+        $varData = false;
+        if (true == $this->traitChoices[1]) {
+            if (1 == $this->traitChoices[2]) {
+                $varData = $this->repo_banque->findOneByClient($this->traitChoices[0]);
+            }
+        } elseif (false == $this->traitChoices[1]) {
+            $varData = $this->repo_banque->findOneBy(array('id' => $this->traitChoices[2]));
+        }
+
         $builder
             ->add('banqueId',       EntityType::class,  array(
                                                             'required'      => true,
@@ -52,7 +61,7 @@ class Cheque_stockType extends AbstractType
                                                                 return   $obj->getNom();
                                                             },
                                                             'choice_value'  => 'id',
-                                                            'data'          => $this->repo_banque->findOneBy(['id' => $this->traitChoices[1]])
+                                                            'data'          => $varData
                                                         ))
             ->add('referenceBoite', TextType::class,    array(
                                                             'required'  => true,

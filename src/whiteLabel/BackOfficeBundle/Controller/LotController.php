@@ -120,7 +120,7 @@ class LotController extends Controller
     public function updateAction(Request $request, $clientId, $lotId)
     {
         $EM = $this->getDoctrine()->getManager();
-        $return = 99;
+        $response = 99;
 
         /* /////////////////////////////////////////////////////////////////
                                 GET LOT
@@ -172,25 +172,19 @@ class LotController extends Controller
                     break;
                 case Statut_lot::STATUT_2:
                     /* /////////////////////////////////////////////////////////////////
-                                                GET PRIME
-                    ///////////////////////////////////////////////////////////////// */
-                    $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
-                    $listPrime = $repo_prime->findDataBATByLot($clientId, $lotId);
-
-                    /* /////////////////////////////////////////////////////////////////
                                                 GENERATE BAT
                     ///////////////////////////////////////////////////////////////// */
                     $lotService = $this->get('white_label.service.lot');
-                    $return = $lotService->generateBAT($clientId, $lotId, $listPrime);
+                    $response = $lotService->generateBAT($clientId, $lotId, $lotObject->getNumero());
 
-                    if (0 == $return) {
+                    if (true != $response) {
                         $historique = $historiqueService->saveLot(
                             $lotId,
                             Statut_lot::STATUT_SLUG_3.' => ERREUR: Le nombre de chèque restant est insuffisant.',
                             $_POST,
                             Statut_lot::STATUT_2
                         );
-                    } elseif (1 == $return) {
+                    } else {
                         $lotObject->setStatutId(Statut_lot::STATUT_3);
                         $lotObject->setDateStatut3($format_dateStatut);
 
@@ -270,21 +264,23 @@ class LotController extends Controller
             $EM->flush();
             $EM->clear();
 
-            if (0 == $return) {
-                $request->getSession()->getFlashBag()->add(
-                    'danger',
-                    'Le nombre de chèque restant est insuffisant.'
-                );
-            } elseif (1 == $return) {
-                $request->getSession()->getFlashBag()->add(
-                    'success',
-                    'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour et les BAT ont été générés avec succès.'
-                );
-            } else {
+            if (99 === $response) {
                 $request->getSession()->getFlashBag()->add(
                     'success',
                     'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour.'
                 );
+            } else {
+                if (true != $response) {
+                    $request->getSession()->getFlashBag()->add(
+                        'danger',
+                        'Le nombre de chèque restant est insuffisant.'
+                    );
+                } else {
+                    $request->getSession()->getFlashBag()->add(
+                        'success',
+                        'Le lot n°' . $lotObject->getNumero() . ' a bien été mise à jour et les BAT ont été générés avec succès.'
+                    );
+                }
             }
 
             return $this->redirectToRoute('lot_list', array(
@@ -488,5 +484,30 @@ class LotController extends Controller
          //////////////////////////////////////////////////////////////////// */
         $lotService = $this->get('white_label.service.lot');
         $lotService->exportND($data);
+
+        return;
+    }
+
+    /**
+     * @param $clientId
+     * @param $lotNumero
+     * @return Response
+     */
+    public function exportBATAction($clientId, $lotNumero)
+    {
+        $pathFile = $this->getParameter('kernel.project_dir')
+            . '/data/'.$clientId.'/BAT/BAT_'
+            . $clientId . '_'
+            . $lotNumero
+            . '.pdf';
+
+        // Download file
+        $response = new Response();
+        $response->setStatusCode(200);
+        $response->setContent(file_get_contents($pathFile));
+        $response->headers->set('Content-Type', 'application/pdf; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . basename($pathFile));
+
+        return $response;
     }
 }

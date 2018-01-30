@@ -12,10 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
- * Class LettreChequeType
+ * Class ModeleLettreType
  * @package whiteLabel\BackOfficeBundle\Form
  */
-class LettreChequeType extends AbstractType
+class ModeleLettreType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class LettreChequeType extends AbstractType
                                                                     'Société'       => '1 | societe'
                                                                 )
                                                             ))
-            ->add('nomModele',          TextType::class,    array(
+            ->add('nom',                TextType::class,    array(
                                                                 'required'  => true,
                                                                 'label'     => 'Nom',
                                                                 'attr'      => array(
@@ -45,7 +45,7 @@ class LettreChequeType extends AbstractType
                                                                 )
                                                             ))
             ->add('file',               FileType::class,    array(
-                                                                'required'  => true,
+                                                                'required'  => $this->traitChoices[0],
                                                                 'label'     => 'Fichier de données',
                                                             ))
             ->add('valider',            SubmitType::class)
@@ -58,7 +58,7 @@ class LettreChequeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => 'whiteLabel\BackOfficeBundle\Entity\LettreCheque',
+            'data_class'    => 'whiteLabel\BackOfficeBundle\Entity\ModeleLettre',
             'trait_choices' => null
         ));
     }
@@ -68,6 +68,8 @@ class LettreChequeType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'whitelabel_backofficebundle_lettrecheque';
+        return 'whitelabel_backofficebundle_modelelettre';
     }
+
+
 }

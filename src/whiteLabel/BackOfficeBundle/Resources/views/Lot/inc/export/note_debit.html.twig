@@ -149,6 +149,13 @@
                 {#
                 <img src="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up.jpg') }}" alt="logo_header" />
                 #}
+                {#
+                {% image
+                    'bundles/whitelabelbackoffice/images/logo/up.jpg'
+                %}
+                    <img src="{{ asset_url }}" alt="logo_header" />
+                {% endimage %}
+                #}
             </td>
             <td id="header_adresse" class="UPColor">
                 01 41 85 05 05<br>
@@ -171,7 +178,7 @@
                     {% if item.clientComplement is not empty %}{{ item.clientComplement }}<br>{% endif %}
                     {{ item.clientAdresse }}<br>
                     {{ item.clientCodePostal }} {{ item.clientVille|upper}}<br><br>
-                    Gennevilliers, le {{ 'now'|localizeddate('long', 'none', 'fr-FR') }}
+                    Gennevilliers, le {{ item.lotDateStatut2|localizeddate('long', 'none', 'fr-FR') }}
                 </td>
             </tr>
         </table>
@@ -221,7 +228,7 @@
                 <tr>
                     <td class="data_col1 textLeft">{{ item.canalTitle }}</td>
                     <td class="data_col2">{{ item.nombreCommande }}</td>
-                    <td class="data_col3 textRight">{{ item.totalMontant|number_format(2,'.',',') }} €</td>
+                    <td class="data_col3 textRight">{{ item.totalMontant|number_format(2,',',' ') }} €</td>
                 </tr>
 
                 {% set sumBeneficiaire = sumBeneficiaire + item.nombreCommande %}
@@ -231,7 +238,7 @@
             <tr>
                 <td class="data_col1 textBold">Total</td>
                 <td class="data_col2 textBold">{{ sumBeneficiaire }}</td>
-                <td class="data_col3 textBold textRight">{{ totalHT|number_format(2,'.',',') }} €</td>
+                <td class="data_col3 textBold textRight">{{ totalHT|number_format(2,',',' ') }} €</td>
             </tr>
         </tbody>
     </table>
@@ -242,15 +249,15 @@
     <table id="bloc-total">
         <tr class="total-value">
             <td class="total-left">TOTAL HT</td>
-            <td class="total-right">{{ totalHT|number_format(2,'.',',') }} €</td>
+            <td class="total-right">{{ totalHT|number_format(2,',',' ') }} €</td>
         </tr>
         <tr>
             <td class="total-left">TVA &agrave; {{ TVA }} %</td>
-            <td class="total-right">{{ TVA_calcul }} €</td>
+            <td class="total-right">{{ TVA_calcul|number_format(2,',',' ') }} €</td>
         </tr>
         <tr class="total-value">
             <td class="total-left">TOTAL TTC</td>
-            <td class="total-right">{{ (totalHT + TVA_calcul)|number_format(2,'.',',') }} €</td>
+            <td class="total-right">{{ (totalHT + TVA_calcul)|number_format(2,',',' ') }} €</td>
         </tr>
     </table>
 
