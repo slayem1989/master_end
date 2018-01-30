@@ -170,7 +170,7 @@ $(document).ready(function() {
         var $prototype = $(template);
 
         // On ajoute au prototype un lien pour pouvoir supprimer la banque
-        addDeleteLink($prototype);
+        addDeleteLink($prototype, 99);
 
         // On ajoute le prototype modifié à la fin de la balise <div>
         $container.append($prototype);
@@ -183,7 +183,7 @@ $(document).ready(function() {
      La fonction qui ajoute un lien de suppression d'un contact.
      ********************************************************************
      *******************************************************************/
-    function addDeleteLink($prototype, k=99) {
+    function addDeleteLink($prototype, k) {
         if (0 != k) {
             var $deleteLink = $('<p class="wrapper_deleteBanque"><a href="#" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a></p>');
 
@@ -226,7 +226,7 @@ $(document).ready(function() {
         }
     }
 
-    function validateIBAN(input, numberBanque, errorFlagIBAN=false) {
+    function validateIBAN(input, numberBanque, errorFlagIBAN) {
         var messageIBAN = $("#custom-control_IBAN");
 
         if ('1' == numberBanque) {
@@ -307,7 +307,7 @@ $(document).ready(function() {
         }
     }
 
-    function validateLogo(file, errorFlagLogo=false) {
+    function validateLogo(file, errorFlagLogo) {
         //var file = $('#whitelabel_backofficebundle_client__client_information_logo');
         var fileExtension   = ["image/jpg", "image/jpeg", "image/png"];
         var messageLogo = $("#file-error");
