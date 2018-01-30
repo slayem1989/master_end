@@ -197,4 +197,62 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
 
         return $stmt->fetchAll();
     }
+
+    /**
+     * @param $clientId
+     * @param $primeId
+     * @return array
+     */
+    public function findDataBATByPrime($clientId, $primeId)
+    {
+        $query = "
+            SELECT  ip.id AS primeId,
+                    CASE WHEN ('' != ip.prenom AND '' != ip.nom)
+                        THEN ''
+                        ELSE UPPER(ip.denomination)
+                    END AS primeDenomination,
+                    CASE WHEN ('' != ip.prenom AND '' != ip.nom)
+                        THEN CONCAT(' ', CONCAT(UCASE(LEFT(ip.prenom, 1)), LCASE(SUBSTRING(ip.prenom, 2))), ' ', UPPER(ip.nom))
+                        ELSE UPPER(ip.representant)
+                    END AS primeIdentifiant,
+                    ip.adresse_facturation AS primeAdresseFacturation,
+                    ip.complement_facturation AS primeComplementFacturation,
+                    ip.code_postal_facturation AS primeCodePostalFacturation,
+                    ip.ville_facturation AS primeVilleFacturation,
+                    ip.numero_action AS primeNumeroAction,
+                    ip.apporteur_affaire AS primeApporteurAffaire,
+                    ip.montant_aide AS primeMontantAide,
+                    '' AS primeMontantAideLettre,
+                    ip.numero AS primeNumero,
+                    ip.adresse_chantier AS primeAdresseChantier,
+                    ip.complement_chantier AS primeComplementChantier,
+                    ip.code_postal_chantier AS primeCodePostalChantier,
+                    ip.ville_chantier AS primeVilleChantier,
+                    ip.index_prime AS primeIndex,
+                    ip.onglet AS primeOnglet,
+                    ip.modele_id AS primeModeleId,
+                    il.numero AS lotNumero,
+                    CASE WHEN ('' != DATE_FORMAT(il.date_statut_8, '%d/%m/%Y'))
+                        THEN DATE_FORMAT(il.date_statut_8, '%d/%m/%Y')
+                        ELSE 'XX/XX/XXXX'
+                    END AS lotDateStatut8,
+                    ci.titre_dispositif AS clientTitreDispositif
+            FROM import_lot il
+                INNER JOIN import_canal ic ON ic.lot_id = il.id
+                INNER JOIN import_prime ip ON ip.canal_id = ic.id
+                INNER JOIN client_ c ON c.id = il.client_id
+                INNER JOIN client_information ci ON ci.id = c.client_information_id
+            WHERE il.client_id = " . $clientId . " 
+                AND ip.id = " . $primeId . "
+                AND ip.statut_id = " . Statut_prime::STATUT_1 . "
+            ORDER BY ip.index_prime ASC
+        ";
+
+        $stmt = $this->_em
+            ->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
 }

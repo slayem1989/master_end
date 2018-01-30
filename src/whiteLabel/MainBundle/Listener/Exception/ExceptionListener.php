@@ -85,6 +85,6 @@ class ExceptionListener
             $url = $this->router->generate('fos_user_security_login');
         }
         $response = new RedirectResponse($url);
-        //$event->setResponse($response);
+        $event->setResponse($response);
     }
 }

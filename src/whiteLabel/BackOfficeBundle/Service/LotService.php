@@ -332,6 +332,122 @@ class LotService
         return $return;
     }
 
+    /**
+     * @param $clientId
+     * @param $primeId
+     * @param $lotNumero
+     * @return Response
+     */
+    public function generatePrimeBAT($clientId, $primeId, $lotNumero)
+    {
+        $EM = $this->doctrine->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                    GET PRIME
+        ///////////////////////////////////////////////////////////////// */
+        $repo_prime = $EM->getRepository('blackLabelImportBundle:Import_prime');
+        $prime = $repo_prime->findDataBATByPrime($clientId, $primeId);
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET MODELE LETTRE
+        ///////////////////////////////////////////////////////////////// */
+        $repo_modeleLettre = $EM->getRepository('whiteLabelBackOfficeBundle:ModeleLettre');
+        $listModeleLettre = $repo_modeleLettre->findBy(array(
+            'clientId' => $clientId
+        ));
+        $arrayModeleLettre = array();
+        foreach ($listModeleLettre as $item) {
+            $arrayModeleLettre[$item->getId()] = $this->container->getParameter('kernel.project_dir').'/data/'.$clientId.'/modeleLettre/' . $item->getId() . '_modele_lettre.' . $item->getFileUrl();
+        }
+
+
+
+        // Load TBS service
+        $TBS = $this->container->get('opentbs');
+
+        // Load template
+        $TBS->LoadTemplate($arrayModeleLettre[$prime['primeModeleId']]);
+
+        // Format variable montant
+        $numericMontant = str_replace('.00', '', $prime['primeMontantAide']);
+        $nuts = new Nuts($numericMontant, "EUR");
+        $letterMontant = mb_strtoupper($nuts->convert('fr-FR'));
+        $letterMontant = str_replace(',', ' ET', $letterMontant);
+        $letterMontant = str_replace('-', ' ', $letterMontant);
+        $montantAideLettre = $this->shortenString($letterMontant, 5);
+
+        // Replace variables
+        $arrayData = array();
+        array_push($arrayData, array(
+            'denomination'                  => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeDenomination']),
+            'identifiant'                   => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeIdentifiant']),
+            'adresseFacturation'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeAdresseFacturation']),
+            'complementAdresseFacturation'  => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeComplementFacturation']),
+            'codePostalFacturation'         => $prime['primeCodePostalFacturation'],
+            'villeFacturation'              => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeVilleFacturation']),
+            'numeroAction'                  => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeNumeroAction']),
+            'apporteurAffaire'              => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeApporteurAffaire']),
+            'montantAide'                   => $prime['primeMontantAide'],
+            'numero'                        => $prime['primeNumero'],
+            'adresseChantier'               => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeAdresseChantier']),
+            'complementAdresseChantier'     => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeComplementChantier']),
+            'codePostalChantier'            => $prime['primeCodePostalChantier'],
+            'villeChantier'                 => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeVilleChantier']),
+            'lotDateStatut8'                => $prime['lotDateStatut8'],
+            'lotNumero'                     => $prime['lotNumero'],
+            'onglet'                        => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['primeOnglet']),
+            'index'                         => $prime['primeIndex'],
+            'clientTitreDispositif'         => iconv("UTF-8", "Windows-1252//TRANSLIT", $prime['clientTitreDispositif']),
+            'montantAideLettre1'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $montantAideLettre[0]),
+            'montantAideLettre2'            => iconv("UTF-8", "Windows-1252//TRANSLIT", $montantAideLettre[1])
+        ));
+        $TBS->MergeBlock('prime', $arrayData);
+
+        // Declare PATH
+        $source = $this->container->getParameter('kernel.project_dir')
+            . '/data/'.$clientId.'/BAT/BAT_'
+            . $clientId . '_'
+            . $lotNumero . '_'
+            . 'P' . $prime['primeNumero'] . '_'
+            . date("YmdHis")
+            . '.docx';
+
+        $destination = $this->container->getParameter('kernel.project_dir')
+            . '/data/'.$clientId.'/BAT/BAT_'
+            . $clientId . '_'
+            . $lotNumero . '_'
+            . 'P' . $prime['primeNumero'] . '_'
+            . date("YmdHis")
+            . '.pdf';
+
+        // Generate DOCX by TBS
+        $TBS->Show(OPENTBS_FILE, $source);
+
+        // Generate PDF by Unoconv
+        $unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv'));
+        putenv('HOME=/tmp/');
+        $unoconv->transcode(
+            $source,
+            'pdf',
+            $destination,
+            '2-2'
+        );
+
+        // Download file
+        $response = new Response();
+        $response->setStatusCode(200);
+        $response->setContent(file_get_contents($destination));
+        $response->headers->set('Content-Type', 'application/pdf; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . basename($destination));
+
+        if (file_exists($destination)) {
+            unlink($source);
+            unlink($destination);
+        }
+
+        return $response;
+    }
+
     /* *****************************************************************
     ********************************************************************
                             F U N C T I O N S

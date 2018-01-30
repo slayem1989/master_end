@@ -175,7 +175,17 @@ $(document).ready(function() {
                         '</div>' +
                         '</div>' +
                         '</div>' +
-                        '</div>'
+                        '</div>' +
+                        '<a href="../export/BAT/' + elt_clientId + '/' + row['primeId'] + '/' + row['lotNumero'] + '"\n' +
+                        'class="tooltip-BAT btn btn-danger btn-xs"\n' +
+                        'role="button"\n' +
+                        'data-toggle="tooltip"\n' +
+                        'data-placement="bottom"\n' +
+                        'data-container="body"\n' +
+                        'title="Télécharger le BAT de la Prime">' +
+                        '<i class="glyphicon glyphicon-file"></i>' +
+                        '</a>' +
+                        '&nbsp;'
                     ;
                 }
             }

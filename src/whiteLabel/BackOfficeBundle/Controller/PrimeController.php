@@ -510,4 +510,21 @@ class PrimeController extends Controller
             'clientId'  => $clientId
         ));
     }
+
+    /**
+     * @param $clientId
+     * @param $primeId
+     * @param $lotNumero
+     * @return mixed
+     */
+    public function exportBATAction($clientId, $primeId, $lotNumero)
+    {
+        /* /////////////////////////////////////////////////////////////////
+                                GENERATE PRIME BAT
+        ///////////////////////////////////////////////////////////////// */
+        $lotService = $this->get('white_label.service.lot');
+        $response = $lotService->generatePrimeBAT($clientId, $primeId, $lotNumero);
+
+        return $response;
+    }
 }

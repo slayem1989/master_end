@@ -106,7 +106,7 @@ lot_export_noteDebit:
         lotId: \d+
 
 lot_export_BAT:
-    path:     /lot/generate/BAT/{clientId}/{lotNumero}
+    path:     /lot/export/BAT/{clientId}/{lotNumero}
     defaults: { _controller: whiteLabelBackOfficeBundle:Lot:exportBAT }
     requirements:
         clientId: \d+
@@ -154,6 +154,14 @@ prime_update_address:
     requirements:
         clientId: \d+
         primeId: \d+
+
+prime_export_BAT:
+    path:     /prime/export/BAT/{clientId}/{primeId}/{lotNumero}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Prime:exportBAT }
+    requirements:
+        clientId: \d+
+        primeId: \d+
+        lotNumero: \d+
 
 ################################
 ###  Modèle Lettre Routing   ###
