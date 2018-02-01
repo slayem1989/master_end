@@ -18,6 +18,10 @@ services:
         class: whiteLabel\BackOfficeBundle\Service\ChequeService
         arguments: ['@doctrine', '@service_container']
 
+    white_label.service.anomalie:
+        class: whiteLabel\BackOfficeBundle\Service\AnomalieService
+        arguments: ['@doctrine', '@service_container']
+
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #  F O R M S   E N T I T Y   M A N A G E R
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

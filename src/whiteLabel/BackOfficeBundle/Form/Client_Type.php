@@ -46,7 +46,7 @@ class Client_Type extends AbstractType
                                                                                             'by_reference'  => false
                                                                                         ))
             ->add('logo',                       FileType::class,                        array(
-                                                                                            'required'  => true,
+                                                                                            'required'  => $this->traitChoices[0],
                                                                                             'label'     => 'Logo',
                                                                                         ))
             ->add('valider',                    SubmitType::class)

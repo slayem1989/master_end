@@ -58,7 +58,7 @@ class ChequeService
         $EM = $this->doctrine->getManager();
 
         /* /////////////////////////////////////////////////////////////////
-                                GET STOCK BY BANQUE
+                                GET CHEQUE BY BANQUE
         ///////////////////////////////////////////////////////////////// */
         $repo_chequeItem = $EM->getRepository('whiteLabelBackOfficeBundle:Cheque_item');
         $listChequeItem = $repo_chequeItem->findByBanque($clientId, $banqueId);

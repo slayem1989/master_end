@@ -264,7 +264,10 @@ class LotService
                 $TBS->Show(OPENTBS_FILE, $source);
 
                 // Generate PDF by Unoconv
-                $unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv'));
+                $unoconv = Unoconv::create(array(
+                    'timeout'           => 0,
+                    'unoconv.binaries'  => '/usr/bin/unoconv'
+                ));
                 putenv('HOME=/tmp/');
                 $unoconv->transcode(
                     $source,
@@ -340,6 +343,7 @@ class LotService
      */
     public function generatePrimeBAT($clientId, $primeId, $lotNumero)
     {
+        set_time_limit(0);
         $EM = $this->doctrine->getManager();
 
         /* /////////////////////////////////////////////////////////////////
@@ -424,7 +428,10 @@ class LotService
         $TBS->Show(OPENTBS_FILE, $source);
 
         // Generate PDF by Unoconv
-        $unoconv = Unoconv::create(array('unoconv.binaries' => '/usr/bin/unoconv'));
+        $unoconv = Unoconv::create(array(
+            'timeout'           => 0,
+            'unoconv.binaries'  => '/usr/bin/unoconv'
+        ));
         putenv('HOME=/tmp/');
         $unoconv->transcode(
             $source,

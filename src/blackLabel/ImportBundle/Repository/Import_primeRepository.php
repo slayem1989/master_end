@@ -31,6 +31,7 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
         $query = "
             SELECT  il.id AS lotId,
                     il.numero AS lotNumero,
+                    il.statut_id AS lotStatutId,
                     ip.canal_id AS canalId,
                     ip.date AS primeDateIntegration,
                     ip.id AS primeId,
@@ -102,6 +103,7 @@ class Import_primeRepository extends \Doctrine\ORM\EntityRepository
     {
         $query = "
             SELECT  il.numero AS lotNumero,
+                    il.statut_id AS lotStatutId,
                     ip.id AS primeId,
                     CASE WHEN ('' != ip.numero)
                         THEN ip.numero

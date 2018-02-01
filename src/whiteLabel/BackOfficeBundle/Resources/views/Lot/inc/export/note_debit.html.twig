@@ -7,8 +7,11 @@
         width: 100%;
     }
     #bloc-header #header_logo {
-        width: 70%;
         text-align: left;
+        width: 70%;
+    }
+    #bloc-header #header_logo img {
+        width: 60px;
     }
     #bloc-header #header_adresse {
         text-align: right;
@@ -19,8 +22,8 @@
                     BLOC CLIENT
     *******************************************/
     #bloc-client {
-        margin-bottom: 40px;
-        margin-top: 50px;
+        margin-bottom: 10px;
+        margin-top: 10px;
         width: 100%;
     }
     #bloc-client #client-left {
@@ -69,7 +72,7 @@
         text-align: center;
         width: 100%;
     }
-    #bloc-data .data_col1 { width: 59.6%;}
+    #bloc-data .data_col1 { width: 59.6%;font-size: 13px; }
     #bloc-data .data_col2 { width: 20%; }
     #bloc-data .data_col3 { width: 20%; }
     #bloc-data thead th {
@@ -123,10 +126,13 @@
                     BLOC FOOTER
     *******************************************/
     #bloc-footer {
-        margin-top: 20px;
         width: 100%;
     }
-    #bloc-footer img {
+    #bloc-footer #footer_logo {
+        text-align: left;
+        width: 100%;
+    }
+    #bloc-footer #footer_logo img {
         width: 100%;
     }
 
@@ -146,16 +152,7 @@
         <tr>
             <td id="header_logo">
                 &nbsp;
-                {#
                 <img src="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up.jpg') }}" alt="logo_header" />
-                #}
-                {#
-                {% image
-                    'bundles/whitelabelbackoffice/images/logo/up.jpg'
-                %}
-                    <img src="{{ asset_url }}" alt="logo_header" />
-                {% endimage %}
-                #}
             </td>
             <td id="header_adresse" class="UPColor">
                 01 41 85 05 05<br>
@@ -226,7 +223,7 @@
 
             {% for item in list_canal %}
                 <tr>
-                    <td class="data_col1 textLeft">{{ item.canalTitle }}</td>
+                    <td class="data_col1 textLeft">{{ item.lotFilename }} / {{ item.canalTitle }}</td>
                     <td class="data_col2">{{ item.nombreCommande }}</td>
                     <td class="data_col3 textRight">{{ item.totalMontant|number_format(2,',',' ') }} €</td>
                 </tr>
@@ -301,9 +298,11 @@
 
 
 
-    {#
     <table id="bloc-footer">
-        <img src="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up_footer.png') }}" alt="logo_footer" />
+        <tr>
+            <td id="footer_logo">
+                <img src="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset('bundles/whitelabelbackoffice/images/logo/up_footer.png') }}" alt="logo_footer" />
+            </td>
+        </tr>
     </table>
-    #}
 </page>

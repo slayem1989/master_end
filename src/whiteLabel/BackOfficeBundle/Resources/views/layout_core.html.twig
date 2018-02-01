@@ -95,6 +95,11 @@
                 <li class="sidebar-item"><a href="{{ path('modeleLettre_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste des Mod&egrave;les de Lettre</a></li>
 
                 <br>
+
+                <li class="sidebar-item"><a href="{{ path('anomaliePND_list', {'clientId': clientId}) }}" class="sidebar-anchor">Gestion des PND</a></li>
+                <li class="sidebar-item"><a href="{{ path('anomalieDesistement_list', {'clientId': clientId}) }}" class="sidebar-anchor">Gestion des D&eacute;sistements</a></li>
+
+                <br>
             {% endif %}
             <li class="sidebar-item"><a href="{{ path('bo_dashboard') }}" class="sidebar-anchor">Retour à la liste des Clients</a></li>
         </ul>

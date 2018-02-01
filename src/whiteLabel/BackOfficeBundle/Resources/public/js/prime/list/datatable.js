@@ -74,7 +74,9 @@ $(document).ready(function() {
                         countCommentaire = arrayCommentaire.length;
                     }
 
-                    return '<a href="../update/RIB/' + elt_clientId + '/' + row['primeId'] + '"\n' +
+                    var htmlAction = '';
+                    htmlAction +=
+                        '<a href="../update/RIB/' + elt_clientId + '/' + row['primeId'] + '"\n' +
                         'class="tooltip-updateRIB btn btn-primary btn-xs"\n' +
                         'role="button"\n' +
                         'data-toggle="tooltip"\n' +
@@ -100,7 +102,7 @@ $(document).ready(function() {
                         'data-toggle="tooltip"\n' +
                         'data-placement="bottom"\n' +
                         'data-container="body"\n' +
-                        'title="Afficher l\'historique de la prime">' +
+                        'title="Afficher l\'Historique de la Prime">' +
                         '<i class="glyphicon glyphicon-time"></i>' +
                         '</a>' +
                         '&nbsp;' +
@@ -175,18 +177,25 @@ $(document).ready(function() {
                         '</div>' +
                         '</div>' +
                         '</div>' +
-                        '</div>' +
-                        '<a href="../export/BAT/' + elt_clientId + '/' + row['primeId'] + '/' + row['lotNumero'] + '"\n' +
-                        'class="tooltip-BAT btn btn-danger btn-xs"\n' +
-                        'role="button"\n' +
-                        'data-toggle="tooltip"\n' +
-                        'data-placement="bottom"\n' +
-                        'data-container="body"\n' +
-                        'title="Télécharger le BAT de la Prime">' +
-                        '<i class="glyphicon glyphicon-file"></i>' +
-                        '</a>' +
-                        '&nbsp;'
+                        '</div>'
                     ;
+
+                    if ('1' != row['lotStatutId'] && '3' != row['lotStatutId']) {
+                        htmlAction +=
+                            '<a href="../export/BAT/' + elt_clientId + '/' + row['primeId'] + '/' + row['lotNumero'] + '"\n' +
+                            'class="tooltip-BAT btn btn-danger btn-xs"\n' +
+                            'role="button"\n' +
+                            'data-toggle="tooltip"\n' +
+                            'data-placement="bottom"\n' +
+                            'data-container="body"\n' +
+                            'title="Télécharger le BAT de la Prime">' +
+                            '<i class="glyphicon glyphicon-file"></i>' +
+                            '</a>' +
+                            '&nbsp;'
+                        ;
+                    }
+
+                    return htmlAction;
                 }
             }
         ],
@@ -196,6 +205,7 @@ $(document).ready(function() {
             $('.tooltip-updateAdresse').tooltip();
             $('.tooltip-historique').tooltip();
             $('.tooltip-commentaire').tooltip();
+            $('.tooltip-BAT').tooltip();
         },
         "initComplete": function() {
             var api = this.api();

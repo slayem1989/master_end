@@ -123,7 +123,7 @@ $(document).ready(function() {
     }
 
     // Checking LOGO
-    $('#whitelabel_backofficebundle_client__client_information_logo').change(function() {
+    $('#whitelabel_backofficebundle_client__logo').change(function() {
         validateAllLogo(this.files[0]);
     });
 
@@ -217,7 +217,7 @@ $(document).ready(function() {
             numberBanque++;
             errorFlagIBAN = validateIBAN(input, numberBanque, errorFlagIBAN);
         });
-        isErrorLogo = validateLogo($('#whitelabel_backofficebundle_client__client_information_logo')[0].files[0], errorFlagLogo);
+        isErrorLogo = validateLogo($('#whitelabel_backofficebundle_client__logo')[0].files[0], errorFlagLogo);
 
         if (true == errorFlagIBAN || true == isErrorLogo) {
             idBoutonValider.prop('disabled', true);
@@ -308,7 +308,7 @@ $(document).ready(function() {
     }
 
     function validateLogo(file, errorFlagLogo) {
-        //var file = $('#whitelabel_backofficebundle_client__client_information_logo');
+        //var file = $('#whitelabel_backofficebundle_client__logo');
         var fileExtension   = ["image/jpg", "image/jpeg", "image/png"];
         var messageLogo = $("#file-error");
         var normalSize = '5242880';

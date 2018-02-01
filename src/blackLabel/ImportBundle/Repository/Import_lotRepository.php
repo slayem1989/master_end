@@ -170,6 +170,7 @@ class Import_lotRepository extends \Doctrine\ORM\EntityRepository
             WHERE il.client_id = " . $clientId . " 
                 AND il.id = " . $lotId . "
             GROUP BY ip.onglet
+            ORDER BY il.id ASC
         ";
 
         $stmt = $this->_em

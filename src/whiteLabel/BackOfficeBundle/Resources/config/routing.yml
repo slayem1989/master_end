@@ -232,10 +232,45 @@ chequeItem_list:
         stockId: \d+
 
 ################################
-###     Chèque RP Routing    ###
+###     Chèque RB Routing    ###
 ################################
 chequeRapprochementBancaire_create:
     path:     /cheque/rapprochement/bancaire/create/{clientId}
     defaults: { _controller: whiteLabelBackOfficeBundle:Cheque:createRapprochementBancaire }
     requirements:
         clientId: \d+
+
+################################
+###     Anomalie Routing    ###
+################################
+anomaliePND_list:
+    path:     /anomalie/list/PND/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Anomalie:listPND }
+    requirements:
+        clientId: \d+
+
+anomalieDesistement_list:
+    path:     /anomalie/list/desistement/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Anomalie:listDesistement }
+    requirements:
+        clientId: \d+
+
+anomalie_create:
+    path:     /anomalie/create/{clientId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Anomalie:create }
+    requirements:
+        clientId: \d+
+
+anomalie_read:
+    path:     /anomalie/read/{clientId}/{anomalieId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Anomalie:read }
+    requirements:
+        clientId: \d+
+        anomalieId: \d+
+
+anomalie_update:
+    path:     /anomalie/update/{clientId}/{anomalieId}
+    defaults: { _controller: whiteLabelBackOfficeBundle:Anomalie:update }
+    requirements:
+        clientId: \d+
+        anomalieId: \d+

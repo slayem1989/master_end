@@ -50,8 +50,12 @@ class ClientController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
+        $formOption = array();
+        $formOption[] = true;
         $client = new Client_();
-        $form = $this->createForm(Client_Type::class, $client);
+        $form = $this->createForm(Client_Type::class, $client, array(
+            'trait_choices' => $formOption
+        ));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             /* /////////////////////////////////////////////////////////////////
@@ -130,7 +134,11 @@ class ClientController extends Controller
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
-        $form = $this->createForm(Client_Type::class, $client);
+        $formOption = array();
+        $formOption[] = false;
+        $form = $this->createForm(Client_Type::class, $client, array(
+            'trait_choices' => $formOption
+        ));
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $client->setDateModif(new \Datetime());

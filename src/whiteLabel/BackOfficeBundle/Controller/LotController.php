@@ -394,10 +394,6 @@ class LotController extends Controller
         $repo = $EM->getRepository('blackLabelImportBundle:Import_lot');
         $lotObject = $repo->find($lotId);
 
-        $uploadDir = $this->getParameter('kernel.project_dir').'/data';
-        $webPath_import = $lotObject->file_getWebPath();
-        $file_import = $uploadDir . '/' . $webPath_import;
-
         /* /////////////////////////////////////////////////////////////////
                                 GET CANAL
         ///////////////////////////////////////////////////////////////// */
@@ -440,6 +436,20 @@ class LotController extends Controller
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                // Declare PATH
+                $folder_BAT = $this->getParameter('kernel.project_dir') . '/data/' . $clientId.'/BAT/';
+                $file_import = $this->getParameter('kernel.project_dir') . '/data/' . $lotObject->file_getWebPath();
+
+                foreach (scandir($folder_BAT) as $row) {
+                    if ($row == '.' || $row == '..') {
+                        continue;
+                    } else {
+                        if (stristr($row, $lotObject->getNumero()) === true) {
+                            unlink($folder_BAT.$row);
+                        }
+                    }
+                }
+                if (file_exists($folder_BAT)) unlink($folder_BAT);
                 if (file_exists($file_import)) unlink($file_import);
                 foreach ($commentaireArray as $item) {$EM->remove($item);}
                 foreach ($historiqueArray as $item) {$EM->remove($item);}
@@ -468,6 +478,7 @@ class LotController extends Controller
     /**
      * @param $clientId
      * @param $lotId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function exportNoteDebitAction($clientId, $lotId)
     {
@@ -485,7 +496,9 @@ class LotController extends Controller
         $lotService = $this->get('white_label.service.lot');
         $lotService->exportND($data);
 
-        return;
+        return $this->redirectToRoute('lot_list', array(
+            'clientId' => $clientId
+        ));
     }
 
     /**

@@ -61,7 +61,13 @@
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group textCenter" id="container_submit">
-                    {{ form_widget(form_validate.valider, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-success'}}) }}
+                    {% if 2 == lot.lotStatutId %}
+                    <span id="flagLoading">
+                    {{ form_widget(form_validate.valider, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-success' }}) }}
+                    </span>
+                    {% else %}
+                    {{ form_widget(form_validate.valider, {'attr': {'class': 'col-xs-12 col-sm-8 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 btn btn-success' }}) }}
+                    {% endif %}
                 </div>
 
                 {{ form_rest(form_validate) }}

@@ -103,8 +103,6 @@ class ChequeController extends Controller
                 foreach ($listCheque as $item) {
                     $EM->persist($item);
                 }
-                $EM->flush();
-                $EM->clear();
 
                 $request->getSession()->getFlashBag()->add(
                     'success',
@@ -117,17 +115,15 @@ class ChequeController extends Controller
                 $repo_chequeStock = $EM->getRepository('whiteLabelBackOfficeBundle:Cheque_stock');
                 $objectStockToRemove = $repo_chequeStock->find($objectStock->getId());
 
-                $referenceBoiteToRemove = $objectStockToRemove->getReferenceBoite();
-
                 $EM->remove($objectStockToRemove);
-                $EM->flush();
-                $EM->clear();
 
                 $request->getSession()->getFlashBag()->add(
                     'danger',
-                    'L\'import du stock Chèque n° ' . $referenceBoiteToRemove . ' a détecté des numéros de chèque déjà existant.'
+                    'L\'import du stock Chèque n° ' . $objectStockToRemove->getReferenceBoite() . ' a détecté des numéros de chèque déjà existant.'
                 );
             }
+            $EM->flush();
+            $EM->clear();
 
             return $this->redirectToRoute('chequeStock_list', array(
                 'clientId' => $clientId
@@ -215,6 +211,7 @@ class ChequeController extends Controller
             $chequeService = $this->get('white_label.service.cheque');
             $listCheque = $chequeService->createChequeItem(
                 $clientId,
+                $objectStock->getId(),
                 $objectStock->getBanqueId(),
                 $objectStock->getFirst(),
                 $objectStock->getLast()
@@ -222,30 +219,29 @@ class ChequeController extends Controller
 
             if (!empty($listCheque)) {
                 foreach ($listCheque as $item) {
-                    $objectStock->addCheque($item);
+                    $EM->persist($item);
                 }
-
-                $EM->persist($objectStock);
-                $EM->flush();
-                $EM->clear();
-
-                /* //////////////////////////////////////////////////////////
-                            UPDATE CHEQUE ITEM WITH STOCK ID
-                /////////////////////////////////////////////////////////// */
-                $chequeService->updateStockId($listCheque, $objectStock->getId());
 
                 $request->getSession()->getFlashBag()->add(
                     'success',
-                    'Le stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a bien été mis à jour.'
+                    'L\'import du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a été effectué avec succès.'
                 );
             } else {
-                $EM->clear();
+                /* /////////////////////////////////////////////////////////////////
+                                        GET STOCK TO REMOVE
+                ///////////////////////////////////////////////////////////////// */
+                $repo_chequeStock = $EM->getRepository('whiteLabelBackOfficeBundle:Cheque_stock');
+                $objectStockToRemove = $repo_chequeStock->find($objectStock->getId());
+
+                $EM->remove($objectStockToRemove);
 
                 $request->getSession()->getFlashBag()->add(
                     'danger',
-                    'La mise à jour du stock Chèque n° ' . $objectStock->getReferenceBoite() . ' a détecté des numéros de chèque déjà existant.'
+                    'L\'import du stock Chèque n° ' . $objectStockToRemove->getReferenceBoite() . ' a détecté des numéros de chèque déjà existant.'
                 );
             }
+            $EM->flush();
+            $EM->clear();
 
             return $this->redirectToRoute('chequeStock_list', array(
                 'clientId' => $clientId
