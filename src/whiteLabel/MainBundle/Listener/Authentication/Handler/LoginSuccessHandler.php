@@ -45,10 +45,9 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         }, $roles);
 
         if (
-            in_array('ROLE_ADMIN', $rolesTab, true) ||
-            in_array('ROLE_CLIENT', $rolesTab, true) ||
             in_array('ROLE_COORDINATEUR', $rolesTab, true) ||
-            in_array('ROLE_GESTIONNAIRE', $rolesTab, true)
+            in_array('ROLE_GESTIONNAIRE', $rolesTab, true) ||
+            in_array('ROLE_ADMIN', $rolesTab, true)
         ) {
             // S'il s'agit d'un admin ou d'un super admin on le redirige vers le backoffice
             $request->getSession()->getFlashBag()->add(

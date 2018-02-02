@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * Class PrimeController
  * @package whiteLabel\BackOfficeBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
  */
 class PrimeController extends Controller
 {

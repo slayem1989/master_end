@@ -14,13 +14,13 @@ use whiteLabel\BackOfficeBundle\Form\ModeleLettreType;
  * Class ModeleLettreController
  * @package whiteLabel\BackOfficeBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
  */
 class ModeleLettreController extends Controller
 {
     /**
      * @param $clientId
      * @return Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
      */
     public function listAction($clientId)
     {
@@ -42,6 +42,7 @@ class ModeleLettreController extends Controller
      * @param Request $request
      * @param $clientId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_ADMIN')")
      */
     public function createAction(Request $request, $clientId)
     {
@@ -84,6 +85,7 @@ class ModeleLettreController extends Controller
      * @param $clientId
      * @param $modeleLettreId
      * @return Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
      */
     public function readAction($clientId, $modeleLettreId)
     {
@@ -106,6 +108,7 @@ class ModeleLettreController extends Controller
      * @param $clientId
      * @param $modeleLettreId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_ADMIN')")
      */
     public function updateAction(Request $request, $clientId, $modeleLettreId)
     {

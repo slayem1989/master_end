@@ -15,7 +15,7 @@ use blackLabel\ImportBundle\Form\Import_lotType;
  * Class ImportController
  * @package blackLabel\ImportBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
  */
 class ImportController extends Controller
 {

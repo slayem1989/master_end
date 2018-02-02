@@ -83,19 +83,20 @@
     <div class="sidebar">
         <ul class="sidebar-list">
             {% set clientId = app.request.get('_route_params')['clientId'] %}
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_COORDINATEUR') or is_granted('ROLE_GESTIONNAIRE') or is_granted('ROLE_ADMIN') %}
                 <li class="sidebar-item"><a href="{{ path('lot_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste des Lots</a></li>
                 <li class="sidebar-item"><a href="{{ path('prime_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste des Primes</a></li>
-
+            {% endif %}
                 <br>
-
+            {% if is_granted('ROLE_COORDINATEUR') or is_granted('ROLE_ADMIN') %}
                 <li class="sidebar-item"><a href="{{ path('chequeStock_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste de Stock Ch&egrave;que</a></li>
                 <li class="sidebar-item"><a href="{{ path('chequeItem_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste des Ch&egrave;ques</a></li>
                 <li class="sidebar-item"><a href="{{ path('chequeRapprochementBancaire_create', {'clientId': clientId}) }}" class="sidebar-anchor">Rapprochement Bancaire</a></li>
+            {% endif %}
                 <li class="sidebar-item"><a href="{{ path('modeleLettre_list', {'clientId': clientId}) }}" class="sidebar-anchor">Liste des Mod&egrave;les de Lettre</a></li>
 
                 <br>
-
+            {% if is_granted('ROLE_COORDINATEUR') or is_granted('ROLE_GESTIONNAIRE') or is_granted('ROLE_ADMIN') %}
                 <li class="sidebar-item"><a href="{{ path('anomaliePND_list', {'clientId': clientId}) }}" class="sidebar-anchor">Gestion des PND</a></li>
                 <li class="sidebar-item"><a href="{{ path('anomalieDesistement_list', {'clientId': clientId}) }}" class="sidebar-anchor">Gestion des D&eacute;sistements</a></li>
 

@@ -17,7 +17,7 @@ use whiteLabel\BackOfficeBundle\Form\Cheque_rapprochementBancaireType;
  * Class ChequeController
  * @package whiteLabel\BackOfficeBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_ADMIN')")
  */
 class ChequeController extends Controller
 {

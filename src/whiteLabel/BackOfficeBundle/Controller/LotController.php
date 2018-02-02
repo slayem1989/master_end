@@ -15,7 +15,6 @@ use blackLabel\CommentaireBundle\Form\Commentaire_lotType;
  * Class LotController
  * @package whiteLabel\BackOfficeBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
  */
 class LotController extends Controller
 {
@@ -23,6 +22,7 @@ class LotController extends Controller
      * @param Request $request
      * @param $clientId
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
      */
     public function listAction(Request $request, $clientId)
     {
@@ -116,6 +116,7 @@ class LotController extends Controller
      * @param Request $request
      * @param $clientId
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
      */
     public function updateAction(Request $request, $clientId, $lotId)
     {
@@ -383,6 +384,7 @@ class LotController extends Controller
      * @param $clientId
      * @param $lotId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, $clientId, $lotId)
     {
@@ -479,6 +481,7 @@ class LotController extends Controller
      * @param $clientId
      * @param $lotId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
      */
     public function exportNoteDebitAction($clientId, $lotId)
     {
@@ -505,6 +508,7 @@ class LotController extends Controller
      * @param $clientId
      * @param $lotNumero
      * @return Response
+     * @Security("has_role('ROLE_COORDINATEUR') or has_role('ROLE_GESTIONNAIRE') or has_role('ROLE_ADMIN')")
      */
     public function exportBATAction($clientId, $lotNumero)
     {

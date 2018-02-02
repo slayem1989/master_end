@@ -13,7 +13,7 @@ use whiteLabel\MainBundle\Form\UserType;
  * Class UserController
  * @package whiteLabel\BackOfficeBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_COORDINATEUR')")
  */
 class UserController extends Controller
 {
