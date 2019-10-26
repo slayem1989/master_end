@@ -2,6 +2,7 @@
 
 namespace whiteLabel\MainBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -118,17 +119,23 @@ class UserController extends Controller
         ///////////////////////////////////////////////////////////////// */
         $repo = $EM->getRepository('whiteLabelMainBundle:User');
         $user = $repo->find($userId);
-
+        $updateRoleAction = false;
         /* /////////////////////////////////////////////////////////////////
                                 BUILD FORM
         ///////////////////////////////////////////////////////////////// */
         $roles = $user->getRoles();
         $form = $this->createForm(UserType::class, $user, array(
-            'trait_choices' => $roles
+            'trait_choices' => array(
+                $roles,
+                $updateRoleAction
+            )
         ));
+
+
         $form->remove('plainPassword');
         $form->remove('password');
         $form->remove('enabled');
+        $form->remove('isRoleAdmin');
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $userService = $this->get('white_label.service.user');
@@ -153,5 +160,69 @@ class UserController extends Controller
             'form'  => $form->createView(),
             'user'  => $user
         ));
+    }
+
+
+    public function updateRoleAction(Request $request, $userId)
+    {
+        $EM = $this->getDoctrine()->getManager();
+
+        /* /////////////////////////////////////////////////////////////////
+                                GET USER
+        ///////////////////////////////////////////////////////////////// */
+        $repo = $EM->getRepository('whiteLabelMainBundle:User');
+        $user = $repo->find($userId);
+        //check user have role Admin
+        $isRoleAdmin = $user->hasRole('ROLE_ADMIN');
+        $updateRoleAction = true;
+
+        /* /////////////////////////////////////////////////////////////////
+                                BUILD FORM
+        ///////////////////////////////////////////////////////////////// */
+
+        $form = $this->createForm(UserType::class, $user, array(
+            'trait_choices' => array(
+                $isRoleAdmin,
+                $updateRoleAction
+            )
+        ));
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+
+            $isRoleAdminSubmitted = $form->get("isRoleAdmin")->getData();
+
+            // Add the role to the user
+            $this->setRoleAdmin($isRoleAdminSubmitted, $user);
+
+
+            $EM->persist($user);
+            $EM->flush();
+
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'L\'utilisateur ' . $user->getUsername() . ' a bien été modifié.'
+            );
+
+            return $this->redirectToRoute('user_list', array());
+        }
+
+        $form->remove('plainPassword');
+        $form->remove('password');
+        $form->remove('enabled');
+        $form->remove('roles');
+
+        return $this->render('whiteLabelMainBundle:User:update_role.html.twig', array(
+            'form'  => $form->createView(),
+            'user'  => $user
+        ));
+    }
+
+    private function setRoleAdmin($isRoleAdminSubmitted, $user)
+    {
+        if ($isRoleAdminSubmitted){
+            $user->addRole("ROLE_ADMIN");
+        } else {
+            $user->removeRole("ROLE_ADMIN");
+        }
     }
 }

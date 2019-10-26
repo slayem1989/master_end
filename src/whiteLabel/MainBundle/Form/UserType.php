@@ -2,6 +2,7 @@
 
 namespace whiteLabel\MainBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
@@ -50,7 +51,13 @@ class UserType extends BaseType
                                                                 'Coordinateur'      => 'ROLE_COORDINATEUR',
                                                                 'Gestionnaire'      => 'ROLE_GESTIONNAIRE'
                                                             ),
-                                                            'data'          => $this->traitChoices[0]
+                                                            'data'          => $this->traitChoices[0][0]
+                                                        ))
+            ->add('isRoleAdmin', CheckboxType::class, array(
+                                                              'label'    => 'Role Admin',
+                                                              'required' => false,
+                                                              'mapped'   => false,
+                                                              'data'     => ($this->traitChoices[1] === true) ? $this->traitChoices[0] : false,
                                                         ))
             ->add('valider',    SubmitType::class)
         ;

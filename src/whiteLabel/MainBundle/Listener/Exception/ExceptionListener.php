@@ -43,7 +43,7 @@ class ExceptionListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
 
-        $session = $event->getRequest()->getSession();
+        /*$session = $event->getRequest()->getSession();
         $nomDomaine_current = $_SERVER["SERVER_NAME"];
 
         // You get the exception object from the received event
@@ -85,6 +85,6 @@ class ExceptionListener
             $url = $this->router->generate('fos_user_security_login');
         }
         $response = new RedirectResponse($url);
-        $event->setResponse($response);
+        $event->setResponse($response);*/
     }
 }

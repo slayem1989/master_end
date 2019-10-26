@@ -109,3 +109,9 @@ user_delete:
     defaults: { _controller: whiteLabelMainBundle:User:delete }
     requirements:
         userId: \d+
+
+user_update_role:
+    path:     /user/update/role/{userId}
+    defaults: { _controller: whiteLabelMainBundle:User:updateRole }
+    requirements:
+        userId: \d+

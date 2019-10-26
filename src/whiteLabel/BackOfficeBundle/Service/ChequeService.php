@@ -91,6 +91,8 @@ class ChequeService
 
     /**
      * @param $fileWebPath
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
      */
     public function processRapprochementBancaire($fileWebPath)
     {

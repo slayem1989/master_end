@@ -101,6 +101,14 @@
                        </a>
                    {% endif %}
                    #}
+                    <a href="{{ path('user_update_role', {'userId': item.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="bottom"
+                       data-container="body"
+                       title="Modifier Role Utilisateur"
+                    >
+                        {{ item.username }}
+                    </a>
                 </td>
             </tr>
         {% endfor %}
